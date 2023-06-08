@@ -1,6 +1,6 @@
 # ================# API #================ #
 
-# SCHEDULE_URL = "https://zsem.edu.pl/plany/plany"
+#SCHEDULE_URL = "https://zsem.edu.pl/plany/plany"
 SCHEDULE_URL = "https://zsemm.edu.pl/plan/plany"
 
 # Examples
@@ -10,6 +10,8 @@ SCHEDULE_URL = "https://zsemm.edu.pl/plan/plany"
 
 SCHEDULE_BRANCH_ENDPOINT = "/o{}.html"
 SCHEDULE_MAX_BAD_BRANCHES = 3
+
+SCHEDULE_TABLE_CLASS_NAME = "tabela"
 
 # SCHEDULE_TEACHER_ENDPOINT = "/n{teacher_index}.html"
 # SCHEDULE_CLASSROOM_ENDPOINT = "/s{classroom_index}.html"

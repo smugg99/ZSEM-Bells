@@ -29,19 +29,19 @@ def _get_valid_branches():
                     "Failed to get response from branch of index: " + str(branch_index) + "\n" + str(e))
                 bad_branches_count += 1
             else:
-                parsed_url = urlparse(response.request.path_url)
-                query_params = parse_qs(parsed_url.query)
+                parsed_url: str = urlparse(response.request.path_url)
+                query_params: dict = parse_qs(parsed_url.query)
 
-                print(response.request.path_url, parsed_url, query_params)
-
-                # "error" query parameter is specific for zsem.edu.pl site
-                if not ("error" in query_params) or response.status_code == 200:
+                # "error" query parameter is specific for zsem.edu.pl
+                if ("error" not in query_params) and response.status_code == 200:
                     valid_branches.append(branch_index)
                     utils.logger.info(
                         "Got response from a valid branch of index: " + str(branch_index) + " : " + str(response.status_code))
+                    utils.scrape_schedule_table(response.content)
                 else:
+                    utils.logger.warn(
+                        "Response returned an error query parameter: " + str(query_params))
                     bad_branches_count += 1
-                    raise
 
             branch_index += 1
 
@@ -49,7 +49,6 @@ def _get_valid_branches():
                 utils.logger.warning(
                     "Max number of bad branches reached: " + str(bad_branches_count))
                 break
-            # break
     except Exception as e:
         utils.logger.error("Failed to get valid branches: " + str(e))
 
@@ -67,7 +66,7 @@ class ScheduleKeeper():
     def __init__(self) -> None:
         schedule: dict = None
         valid_branches: list = _get_valid_branches()
-        pass
+        _scraped_schedules: list = []
 
     def scrape_site():
         pass
