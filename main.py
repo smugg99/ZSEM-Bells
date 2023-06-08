@@ -26,6 +26,11 @@ if __name__ == "__main__":
     schedule_keeper = ScheduleKeeper()
 
     try:
+        schedule_keeper.sync_schedule()
+    except Exception as e:
+        utils.logger.error("Failed to sync the schedule keeper: " + str(e))
+
+    try:
         asyncio.run(virtual_clock.start())
     except Exception as e:
         utils.logger.error("Failed to start the virtual clock: " + str(e))
