@@ -16,7 +16,8 @@ class VirtualClock:
 
     def sync_time(self) -> datetime:
         try:
-            response = requests.get(config.TIME_API_URL, timeout=10)
+            response = requests.get(
+                config.TIME_API_URL, timeout=config.TIME_API_REQUEST_TIMEOUT)
             response.raise_for_status()
         except Exception as e:
             self.current_time = datetime.datetime.now()
@@ -39,19 +40,19 @@ class VirtualClock:
             await asyncio.sleep(1)
             self.current_time += datetime.timedelta(seconds=1)
 
-            utils.logger.info("Current Time:" +
+            utils.logger.info("Current Time: " +
                               str(self.current_time))
 
     async def start(self) -> None:
         if not self.is_started:
-            utils.logger.info("Starting clock")
+            utils.logger.info("Starting virtual clock")
 
             self.is_started = True
             self.sync_time()
 
             await self.increment_time()
         else:
-            utils.logger.warning("Clock has already been started")
+            utils.logger.warning("Virtual clock has already been started")
 
 
 # ================# Classes #================ #
