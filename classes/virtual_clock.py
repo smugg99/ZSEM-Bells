@@ -3,6 +3,8 @@ import requests
 import asyncio
 
 import config
+import utils
+
 
 # ================# Classes #================ #
 
@@ -18,8 +20,8 @@ class VirtualClock:
             response.raise_for_status()
         except Exception as e:
             self.current_time = datetime.datetime.now()
-            print(
-                "Exception has been thrown while syncing time from API, using system time: " + str(self.current_time) + "\n" + str(e))
+            utils.logger.error(
+                "Failed to sync time from API, using system time: " + str(self.current_time) + "\n" + str(e))
         else:
             _data = response.json()
             _current_time = datetime.datetime.strptime(
@@ -27,7 +29,8 @@ class VirtualClock:
 
             self.current_time = _current_time
 
-            print("Time has been synced from API to: " + str(self.current_time))
+            utils.logger.info("Synced time from API to: " +
+                              str(self.current_time))
 
         return self.current_time
 
@@ -36,18 +39,19 @@ class VirtualClock:
             await asyncio.sleep(1)
             self.current_time += datetime.timedelta(seconds=1)
 
-            print("Current Time:", self.current_time.strftime("%H:%M:%S"))
+            utils.logger.info("Current Time:" +
+                              str(self.current_time))
 
     async def start(self) -> None:
         if not self.is_started:
-            print("Starting clock")
+            utils.logger.info("Starting clock")
 
             self.is_started = True
             self.sync_time()
 
             await self.increment_time()
         else:
-            print("Clock has already been started")
+            utils.logger.warning("Clock has already been started")
 
 
 # ================# Classes #================ #
