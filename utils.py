@@ -8,9 +8,11 @@ import config
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+logging_formatter = LoggingFormatter()
+
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
-stream_handler.setFormatter(LoggingFormatter())
+stream_handler.setFormatter(logging_formatter)
 
 logger.addHandler(stream_handler)
 
@@ -23,7 +25,7 @@ def build_branch_url(branch_index: int) -> str:
 
 def check_website_status(url: str) -> bool:
     try:
-        response = requests.get(url)
+        response: requests.Response = requests.get(url)
         if response.status_code == 200:
             logger.info("Website " + url + " is up and running")
             return True

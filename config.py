@@ -15,6 +15,8 @@ SCHEDULE_MAX_BAD_BRANCHES: int = 3
 SCHEDULE_TABLE_CLASS_NAME: str = "tabela"
 SCHEDULE_TABLE_HOUR_CLASS_NAME: str = "g"
 
+SCHEDULE_TABLE_MIN_ROWS: int = 2
+
 # SCHEDULE_TEACHER_ENDPOINT = "/n{teacher_index}.html"
 # SCHEDULE_CLASSROOM_ENDPOINT = "/s{classroom_index}.html"
 

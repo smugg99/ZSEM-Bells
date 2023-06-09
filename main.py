@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import time
 import asyncio
 import tracemalloc
 
@@ -13,14 +14,9 @@ tracemalloc.start()
 
 # ================# Functions #================ #
 
-if __name__ == "__main__":
-    print("\n# ================# Logger Test #================ #")
-    utils.logger.debug("debug message test")
-    utils.logger.info("info message test")
-    utils.logger.warning("warning message test")
-    utils.logger.error("error message test")
-    utils.logger.critical("critical message test")
-    print("# ================# Logger Test #================ #\n")
+
+async def main():
+    utils.logging_formatter.test()
 
     virtual_clock = VirtualClock()
     schedule_keeper = ScheduleKeeper()
@@ -31,8 +27,21 @@ if __name__ == "__main__":
         utils.logger.error("Failed to sync the schedule keeper: " + str(e))
 
     try:
-        asyncio.run(virtual_clock.start())
+        asyncio.create_task(virtual_clock.start())
     except Exception as e:
         utils.logger.error("Failed to start the virtual clock: " + str(e))
+
+# note for tommorow, learn how to handle coroutines and async shit
+    await asyncio.sleep(5)
+    await virtual_clock.stop()
+
+    await asyncio.sleep(5)
+    await virtual_clock.start()
+
+    while True:
+        await asyncio.sleep(1)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
 # ================# Functions #================ #
