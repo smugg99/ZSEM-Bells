@@ -1,12 +1,14 @@
 import json
 import requests
+import asyncio
+
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
+from datetime import datetime
 
 import config
 import utils
-
 
 # ================# Functions #================ #
 
@@ -15,7 +17,7 @@ def _parse_hour_range(hour_range: str) -> list[str]:
     return hour_range.replace(" ", "").split("-")
 
 
-def _extract_hour_ranges(page_content: str, branch_index: int) -> Union[None, list[str]]:
+def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[list[str]]:
     soup = BeautifulSoup(page_content, "html.parser")
     schedule_table = soup.find(
         "table", class_=config.SCHEDULE_TABLE_CLASS_NAME)
@@ -29,7 +31,7 @@ def _extract_hour_ranges(page_content: str, branch_index: int) -> Union[None, li
 
     if len(table_rows) <= config.SCHEDULE_TABLE_MIN_ROWS:
         utils.logger.warning(
-            "Schedule table of index {branch_index} has not enough table rows to be considered valid")
+            "Schedule table of index {} has not enough table rows to be considered valid".format(branch_index))
         pass
 
     # Remove the first element of the table because it contains column titles
@@ -47,11 +49,12 @@ def _extract_hour_ranges(page_content: str, branch_index: int) -> Union[None, li
     return hour_ranges
 
 
-def _get_valid_branches() -> Tuple[list[int], list[str]]:
-    valid_branches: list = []
-    longest_hour_ranges: list = []
+def _get_valid_branches() -> Tuple[list[int], list[str], int]:
+    valid_branches: list[int] = []
+    longest_hour_ranges: list[str] = []
 
-    _branch_index: int = 32
+    _branch_index: int = 0
+    _schedule_branch: int = None
     _bad_branches_count: int = 0
 
     utils.logger.info(
@@ -83,10 +86,9 @@ def _get_valid_branches() -> Tuple[list[int], list[str]]:
 
                     valid_branches.append(_branch_index)
 
-                    if not longest_hour_ranges:
+                    if not longest_hour_ranges or len(longest_hour_ranges) <= len(hour_ranges):
                         longest_hour_ranges = hour_ranges
-                    elif len(longest_hour_ranges) <= len(hour_ranges):
-                        longest_hour_ranges = hour_ranges
+                        _schedule_branch = _branch_index
 
                     utils.logger.info(
                         "Got response from a valid branch of index: " + str(_branch_index) + " : " + str(response.status_code))
@@ -104,10 +106,8 @@ def _get_valid_branches() -> Tuple[list[int], list[str]]:
     except Exception as e:
         utils.logger.error("Failed to get valid branches: " + str(e))
 
-    utils.logger.info("Number of valid branches: " +
-                      str(len(valid_branches)) + " : " + str(longest_hour_ranges))
+    return valid_branches, longest_hour_ranges, _schedule_branch
 
-    return valid_branches, longest_hour_ranges
 
 # ================# Functions #================ #
 
@@ -116,23 +116,72 @@ def _get_valid_branches() -> Tuple[list[int], list[str]]:
 
 
 class ScheduleKeeper():
-    def __init__(self) -> None:
-        schedule: list = []
-        valid_branches: list = []
+    def __init__(self, file_path: str) -> None:
+        self.file_path: str = file_path
+        self.alarms: list[datetime] = []
 
-    def sync_schedule(self) -> None:
-        _s_k_text: str = "Syncing Schedule"
-        utils.logging_formatter.separator(True, _s_k_text)
+        self.schedule: list[str] = []
+        self.schedule_branch: int = []
+        self.valid_branches: list[int] = []
+
+    def read_schedule_file(self) -> Optional[dict[str]]:
+        with open(self.file_path, "r") as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError:
+                utils.logger.critical("Failed to decode schedule file")
+                raise
+            else:
+                if len(data) <= 0:
+                    utils.logger.critical("Schedule file is empty")
+                    raise
+
+                # Reconsider this?
+                if isinstance(data, dict):
+                    return data
+                else:
+                    utils.logger.critical("Invalid data in the schedule file")
+                    raise TypeError()
+
+    def write_schedule_file(self, data: dict[str]) -> None:
+        with open(self.file_path, "w") as file:
+            json.dump(data, file)
+
+    async def sync_schedule(self) -> None:
+        utils.logging_formatter.separator("Syncing Schedule")
 
         utils.logger.info("Syncing schedule from: " + config.SCHEDULE_URL)
         if utils.check_website_status(config.MAIN_SITE):
-            self.valid_branches, self.schedule = _get_valid_branches()
+            self.valid_branches, self.schedule, self.schedule_branch = _get_valid_branches()
+
+            self.write_schedule_file({
+                "valid_branches": self.valid_branches,
+                "schedule_branch": self.schedule_branch,
+                "schedule": self.schedule
+            })
+
+            # Compare fetched data to the cached one?
         else:
             utils.logger.error(
-                "Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the cached one...")
-            # Load the json file as self.schedule
+                "Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the saved one...")
+            data: list[str] = self.read_schedule_file()
 
-        utils.logging_formatter.separator(False, _s_k_text)
+            self.schedule_branch = data["schedule_branch"]
+            self.schedule = data["schedule"]
+            self.valid_branches = data["valid_branches"]
+
+        utils.logger.info("Valid branches: " + str(self.schedule_branch) +
+                          "/" + str(self.valid_branches))
+        utils.logger.info("Schedule: " + str(self.schedule))
+
+    def get_alarms(self) -> list[datetime]:
+        alarms: list[datetime] = []
+        
+        for schedule_hours in self.schedule:
+            for schedule_hour in schedule_hours:
+                alarms.append(datetime.strptime(schedule_hour, "%H:%M"))
+
+        return alarms
 
 
 # ================# Classes #================ #

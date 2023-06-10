@@ -1,0 +1,344 @@
+[00:37:34] - # ================# Program Startup #================ #
+[00:37:34] - 2023-06-11 00:37:34.340158
+[00:37:34] - # ================# Logger Test #================ #
+[00:37:34] - raw message test
+[00:37:34] - info message test
+[00:37:34] - warning message test
+[00:37:34] - error message test
+[00:37:34] - critical message test
+[00:37:34] - # ================# Syncing Schedule #================ #
+[00:37:34] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:37:34] - Website https://zsem.edu.pl is up and running
+[00:37:34] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:37:34] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:37:35] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:35] - Got response from a valid branch of index: 1 : 200
+[00:37:35] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:35] - Got response from a valid branch of index: 2 : 200
+[00:37:35] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:35] - Got response from a valid branch of index: 3 : 200
+[00:37:35] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:35] - Got response from a valid branch of index: 4 : 200
+[00:37:36] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:36] - Got response from a valid branch of index: 5 : 200
+[00:37:36] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:36] - Got response from a valid branch of index: 6 : 200
+[00:37:36] - Got response from a valid branch of index: 7 : 200
+[00:37:36] - Got response from a valid branch of index: 8 : 200
+[00:37:37] - Got response from a valid branch of index: 9 : 200
+[00:37:37] - Got response from a valid branch of index: 10 : 200
+[00:37:37] - Got response from a valid branch of index: 11 : 200
+[00:37:37] - Got response from a valid branch of index: 12 : 200
+[00:37:38] - Got response from a valid branch of index: 13 : 200
+[00:37:38] - Got response from a valid branch of index: 14 : 200
+[00:37:38] - Got response from a valid branch of index: 15 : 200
+[00:37:38] - Got response from a valid branch of index: 16 : 200
+[00:37:39] - Got response from a valid branch of index: 17 : 200
+[00:37:39] - Got response from a valid branch of index: 18 : 200
+[00:37:39] - Got response from a valid branch of index: 19 : 200
+[00:37:39] - Got response from a valid branch of index: 20 : 200
+[00:37:40] - Got response from a valid branch of index: 21 : 200
+[00:37:40] - Got response from a valid branch of index: 22 : 200
+[00:37:40] - Got response from a valid branch of index: 23 : 200
+[00:37:40] - Got response from a valid branch of index: 24 : 200
+[00:37:41] - Got response from a valid branch of index: 25 : 200
+[00:37:41] - Got response from a valid branch of index: 26 : 200
+[00:37:41] - Got response from a valid branch of index: 27 : 200
+[00:37:41] - Got response from a valid branch of index: 28 : 200
+[00:37:42] - Got response from a valid branch of index: 29 : 200
+[00:37:42] - Got response from a valid branch of index: 30 : 200
+[00:37:42] - Got response from a valid branch of index: 31 : 200
+[00:37:42] - Got response from a valid branch of index: 32 : 200
+[00:37:43] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:37:43] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:37:43] - Max number of bad branches reached: 3
+[00:37:43] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:37:43] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:37:43] - # ================# Syncing Virtual Clock #================ #
+[00:37:43] - Website http://worldtimeapi.org/api/ip is up and running
+[00:37:43] - Synced time from API to: 2023-06-11 00:37:43.941383+02:00
+[00:37:43] - # ================# Starting Virtual Clock #================ #
+[00:37:43] - Starting virtual clock
+[00:37:44] - Current Time: 2023-06-11 00:37:44.941383+02:00
+[00:37:45] - Current Time: 2023-06-11 00:37:45.941383+02:00
+[00:37:46] - Current Time: 2023-06-11 00:37:46.941383+02:00
+[00:37:47] - Current Time: 2023-06-11 00:37:47.941383+02:00
+[00:37:48] - # ================# Syncing Schedule #================ #
+[00:37:48] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:37:49] - Website https://zsem.edu.pl is up and running
+[00:37:49] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:37:49] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:37:49] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:49] - Got response from a valid branch of index: 1 : 200
+[00:37:50] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:50] - Got response from a valid branch of index: 2 : 200
+[00:37:50] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:50] - Got response from a valid branch of index: 3 : 200
+[00:37:50] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:50] - Got response from a valid branch of index: 4 : 200
+[00:37:50] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:50] - Got response from a valid branch of index: 5 : 200
+[00:37:50] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:37:50] - Got response from a valid branch of index: 6 : 200
+[00:37:51] - Got response from a valid branch of index: 7 : 200
+[00:37:51] - Got response from a valid branch of index: 8 : 200
+[00:37:51] - Got response from a valid branch of index: 9 : 200
+[00:37:51] - Got response from a valid branch of index: 10 : 200
+[00:37:52] - Got response from a valid branch of index: 11 : 200
+[00:37:52] - Got response from a valid branch of index: 12 : 200
+[00:37:52] - Got response from a valid branch of index: 13 : 200
+[00:37:53] - Got response from a valid branch of index: 14 : 200
+[00:37:53] - Got response from a valid branch of index: 15 : 200
+[00:37:53] - Got response from a valid branch of index: 16 : 200
+[00:37:53] - Got response from a valid branch of index: 17 : 200
+[00:37:54] - Got response from a valid branch of index: 18 : 200
+[00:37:54] - Got response from a valid branch of index: 19 : 200
+[00:37:54] - Got response from a valid branch of index: 20 : 200
+[00:37:54] - Got response from a valid branch of index: 21 : 200
+[00:37:55] - Got response from a valid branch of index: 22 : 200
+[00:37:55] - Got response from a valid branch of index: 23 : 200
+[00:37:55] - Got response from a valid branch of index: 24 : 200
+[00:37:55] - Got response from a valid branch of index: 25 : 200
+[00:37:56] - Got response from a valid branch of index: 26 : 200
+[00:37:56] - Got response from a valid branch of index: 27 : 200
+[00:37:56] - Got response from a valid branch of index: 28 : 200
+[00:37:56] - Got response from a valid branch of index: 29 : 200
+[00:37:57] - Got response from a valid branch of index: 30 : 200
+[00:37:57] - Got response from a valid branch of index: 31 : 200
+[00:37:57] - Got response from a valid branch of index: 32 : 200
+[00:37:57] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:37:58] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:37:58] - Max number of bad branches reached: 3
+[00:37:58] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:37:58] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:37:58] - # ================# Syncing Virtual Clock #================ #
+[00:37:58] - Website http://worldtimeapi.org/api/ip is up and running
+[00:37:58] - Synced time from API to: 2023-06-11 00:37:58.271989+02:00
+[00:37:58] - Current Time: 2023-06-11 00:37:59.271989+02:00
+[00:37:59] - Current Time: 2023-06-11 00:38:00.271989+02:00
+[00:38:00] - Current Time: 2023-06-11 00:38:01.271989+02:00
+[00:38:01] - Current Time: 2023-06-11 00:38:02.271989+02:00
+[00:38:02] - Current Time: 2023-06-11 00:38:03.271989+02:00
+[00:38:03] - # ================# Syncing Schedule #================ #
+[00:38:03] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:38:03] - Website https://zsem.edu.pl is up and running
+[00:38:03] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:38:03] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:38:04] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:04] - Got response from a valid branch of index: 1 : 200
+[00:38:04] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:04] - Got response from a valid branch of index: 2 : 200
+[00:38:04] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:04] - Got response from a valid branch of index: 3 : 200
+[00:38:04] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:04] - Got response from a valid branch of index: 4 : 200
+[00:38:05] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:05] - Got response from a valid branch of index: 5 : 200
+[00:38:05] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:05] - Got response from a valid branch of index: 6 : 200
+[00:38:05] - Got response from a valid branch of index: 7 : 200
+[00:38:05] - Got response from a valid branch of index: 8 : 200
+[00:38:06] - Got response from a valid branch of index: 9 : 200
+[00:38:06] - Got response from a valid branch of index: 10 : 200
+[00:38:06] - Got response from a valid branch of index: 11 : 200
+[00:38:06] - Got response from a valid branch of index: 12 : 200
+[00:38:07] - Got response from a valid branch of index: 13 : 200
+[00:38:07] - Got response from a valid branch of index: 14 : 200
+[00:38:07] - Got response from a valid branch of index: 15 : 200
+[00:38:07] - Got response from a valid branch of index: 16 : 200
+[00:38:08] - Got response from a valid branch of index: 17 : 200
+[00:38:08] - Got response from a valid branch of index: 18 : 200
+[00:38:08] - Got response from a valid branch of index: 19 : 200
+[00:38:08] - Got response from a valid branch of index: 20 : 200
+[00:38:09] - Got response from a valid branch of index: 21 : 200
+[00:38:09] - Got response from a valid branch of index: 22 : 200
+[00:38:09] - Got response from a valid branch of index: 23 : 200
+[00:38:09] - Got response from a valid branch of index: 24 : 200
+[00:38:10] - Got response from a valid branch of index: 25 : 200
+[00:38:10] - Got response from a valid branch of index: 26 : 200
+[00:38:10] - Got response from a valid branch of index: 27 : 200
+[00:38:10] - Got response from a valid branch of index: 28 : 200
+[00:38:11] - Got response from a valid branch of index: 29 : 200
+[00:38:11] - Got response from a valid branch of index: 30 : 200
+[00:38:11] - Got response from a valid branch of index: 31 : 200
+[00:38:11] - Got response from a valid branch of index: 32 : 200
+[00:38:12] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:38:12] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:38:12] - Max number of bad branches reached: 3
+[00:38:12] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:38:12] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:38:12] - # ================# Syncing Virtual Clock #================ #
+[00:38:12] - Website http://worldtimeapi.org/api/ip is up and running
+[00:38:12] - Synced time from API to: 2023-06-11 00:38:12.537574+02:00
+[00:38:12] - Current Time: 2023-06-11 00:38:13.537574+02:00
+[00:38:13] - Current Time: 2023-06-11 00:38:14.537574+02:00
+[00:38:14] - Current Time: 2023-06-11 00:38:15.537574+02:00
+[00:38:15] - Current Time: 2023-06-11 00:38:16.537574+02:00
+[00:38:16] - Current Time: 2023-06-11 00:38:17.537574+02:00
+[00:38:17] - # ================# Syncing Schedule #================ #
+[00:38:17] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:38:17] - Website https://zsem.edu.pl is up and running
+[00:38:17] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:38:18] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:38:18] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:18] - Got response from a valid branch of index: 1 : 200
+[00:38:18] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:18] - Got response from a valid branch of index: 2 : 200
+[00:38:18] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:18] - Got response from a valid branch of index: 3 : 200
+[00:38:19] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:19] - Got response from a valid branch of index: 4 : 200
+[00:38:19] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:19] - Got response from a valid branch of index: 5 : 200
+[00:38:19] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:19] - Got response from a valid branch of index: 6 : 200
+[00:38:19] - Got response from a valid branch of index: 7 : 200
+[00:38:20] - Got response from a valid branch of index: 8 : 200
+[00:38:20] - Got response from a valid branch of index: 9 : 200
+[00:38:20] - Got response from a valid branch of index: 10 : 200
+[00:38:20] - Got response from a valid branch of index: 11 : 200
+[00:38:21] - Got response from a valid branch of index: 12 : 200
+[00:38:21] - Got response from a valid branch of index: 13 : 200
+[00:38:21] - Got response from a valid branch of index: 14 : 200
+[00:38:21] - Got response from a valid branch of index: 15 : 200
+[00:38:22] - Got response from a valid branch of index: 16 : 200
+[00:38:22] - Got response from a valid branch of index: 17 : 200
+[00:38:22] - Got response from a valid branch of index: 18 : 200
+[00:38:22] - Got response from a valid branch of index: 19 : 200
+[00:38:23] - Got response from a valid branch of index: 20 : 200
+[00:38:23] - Got response from a valid branch of index: 21 : 200
+[00:38:23] - Got response from a valid branch of index: 22 : 200
+[00:38:23] - Got response from a valid branch of index: 23 : 200
+[00:38:24] - Got response from a valid branch of index: 24 : 200
+[00:38:24] - Got response from a valid branch of index: 25 : 200
+[00:38:24] - Got response from a valid branch of index: 26 : 200
+[00:38:24] - Got response from a valid branch of index: 27 : 200
+[00:38:25] - Got response from a valid branch of index: 28 : 200
+[00:38:25] - Got response from a valid branch of index: 29 : 200
+[00:38:25] - Got response from a valid branch of index: 30 : 200
+[00:38:25] - Got response from a valid branch of index: 31 : 200
+[00:38:26] - Got response from a valid branch of index: 32 : 200
+[00:38:26] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:38:26] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:38:26] - Max number of bad branches reached: 3
+[00:38:26] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:38:26] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:38:26] - # ================# Syncing Virtual Clock #================ #
+[00:38:26] - Website http://worldtimeapi.org/api/ip is up and running
+[00:38:26] - Synced time from API to: 2023-06-11 00:38:26.849190+02:00
+[00:38:26] - Current Time: 2023-06-11 00:38:27.849190+02:00
+[00:38:27] - Current Time: 2023-06-11 00:38:28.849190+02:00
+[00:38:28] - Current Time: 2023-06-11 00:38:29.849190+02:00
+[00:38:29] - Current Time: 2023-06-11 00:38:30.849190+02:00
+[00:38:30] - Current Time: 2023-06-11 00:38:31.849190+02:00
+[00:38:31] - # ================# Syncing Schedule #================ #
+[00:38:31] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:38:32] - Website https://zsem.edu.pl is up and running
+[00:38:32] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:38:32] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:38:32] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:32] - Got response from a valid branch of index: 1 : 200
+[00:38:32] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:32] - Got response from a valid branch of index: 2 : 200
+[00:38:33] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:33] - Got response from a valid branch of index: 3 : 200
+[00:38:33] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:33] - Got response from a valid branch of index: 4 : 200
+[00:38:33] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:33] - Got response from a valid branch of index: 5 : 200
+[00:38:33] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:33] - Got response from a valid branch of index: 6 : 200
+[00:38:34] - Got response from a valid branch of index: 7 : 200
+[00:38:34] - Got response from a valid branch of index: 8 : 200
+[00:38:34] - Got response from a valid branch of index: 9 : 200
+[00:38:34] - Got response from a valid branch of index: 10 : 200
+[00:38:35] - Got response from a valid branch of index: 11 : 200
+[00:38:35] - Got response from a valid branch of index: 12 : 200
+[00:38:35] - Got response from a valid branch of index: 13 : 200
+[00:38:35] - Got response from a valid branch of index: 14 : 200
+[00:38:36] - Got response from a valid branch of index: 15 : 200
+[00:38:36] - Got response from a valid branch of index: 16 : 200
+[00:38:36] - Got response from a valid branch of index: 17 : 200
+[00:38:36] - Got response from a valid branch of index: 18 : 200
+[00:38:37] - Got response from a valid branch of index: 19 : 200
+[00:38:37] - Got response from a valid branch of index: 20 : 200
+[00:38:37] - Got response from a valid branch of index: 21 : 200
+[00:38:37] - Got response from a valid branch of index: 22 : 200
+[00:38:38] - Got response from a valid branch of index: 23 : 200
+[00:38:38] - Got response from a valid branch of index: 24 : 200
+[00:38:38] - Got response from a valid branch of index: 25 : 200
+[00:38:38] - Got response from a valid branch of index: 26 : 200
+[00:38:39] - Got response from a valid branch of index: 27 : 200
+[00:38:39] - Got response from a valid branch of index: 28 : 200
+[00:38:39] - Got response from a valid branch of index: 29 : 200
+[00:38:39] - Got response from a valid branch of index: 30 : 200
+[00:38:40] - Got response from a valid branch of index: 31 : 200
+[00:38:40] - Got response from a valid branch of index: 32 : 200
+[00:38:40] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:38:41] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:38:41] - Max number of bad branches reached: 3
+[00:38:41] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:38:41] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:38:41] - # ================# Syncing Virtual Clock #================ #
+[00:38:41] - Website http://worldtimeapi.org/api/ip is up and running
+[00:38:41] - Synced time from API to: 2023-06-11 00:38:41.113369+02:00
+[00:38:41] - Current Time: 2023-06-11 00:38:42.113369+02:00
+[00:38:42] - Current Time: 2023-06-11 00:38:43.113369+02:00
+[00:38:43] - Current Time: 2023-06-11 00:38:44.113369+02:00
+[00:38:44] - Current Time: 2023-06-11 00:38:45.113369+02:00
+[00:38:45] - Current Time: 2023-06-11 00:38:46.113369+02:00
+[00:38:46] - # ================# Syncing Schedule #================ #
+[00:38:46] - Syncing schedule from: https://zsem.edu.pl/plany/plany
+[00:38:46] - Website https://zsem.edu.pl is up and running
+[00:38:46] - Getting valid branches from base url of: https://zsem.edu.pl/plany/plany
+[00:38:46] - Response returned an error query parameter: {'error': ['plany/plany/o0.html']}
+[00:38:46] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:46] - Got response from a valid branch of index: 1 : 200
+[00:38:47] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:47] - Got response from a valid branch of index: 2 : 200
+[00:38:47] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:47] - Got response from a valid branch of index: 3 : 200
+[00:38:47] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:47] - Got response from a valid branch of index: 4 : 200
+[00:38:47] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:47] - Got response from a valid branch of index: 5 : 200
+[00:38:48] - Schedule table of index {branch_index} has not enough table rows to be considered valid
+[00:38:48] - Got response from a valid branch of index: 6 : 200
+[00:38:48] - Got response from a valid branch of index: 7 : 200
+[00:38:48] - Got response from a valid branch of index: 8 : 200
+[00:38:48] - Got response from a valid branch of index: 9 : 200
+[00:38:49] - Got response from a valid branch of index: 10 : 200
+[00:38:49] - Got response from a valid branch of index: 11 : 200
+[00:38:49] - Got response from a valid branch of index: 12 : 200
+[00:38:49] - Got response from a valid branch of index: 13 : 200
+[00:38:50] - Got response from a valid branch of index: 14 : 200
+[00:38:50] - Got response from a valid branch of index: 15 : 200
+[00:38:50] - Got response from a valid branch of index: 16 : 200
+[00:38:50] - Got response from a valid branch of index: 17 : 200
+[00:38:51] - Got response from a valid branch of index: 18 : 200
+[00:38:51] - Got response from a valid branch of index: 19 : 200
+[00:38:51] - Got response from a valid branch of index: 20 : 200
+[00:38:51] - Got response from a valid branch of index: 21 : 200
+[00:38:52] - Got response from a valid branch of index: 22 : 200
+[00:38:52] - Got response from a valid branch of index: 23 : 200
+[00:38:52] - Got response from a valid branch of index: 24 : 200
+[00:38:52] - Got response from a valid branch of index: 25 : 200
+[00:38:53] - Got response from a valid branch of index: 26 : 200
+[00:38:53] - Got response from a valid branch of index: 27 : 200
+[00:38:53] - Got response from a valid branch of index: 28 : 200
+[00:38:53] - Got response from a valid branch of index: 29 : 200
+[00:38:54] - Got response from a valid branch of index: 30 : 200
+[00:38:54] - Got response from a valid branch of index: 31 : 200
+[00:38:54] - Got response from a valid branch of index: 32 : 200
+[00:38:55] - Response returned an error query parameter: {'error': ['plany/plany/o33.html']}
+[00:38:55] - Response returned an error query parameter: {'error': ['plany/plany/o34.html']}
+[00:38:55] - Max number of bad branches reached: 3
+[00:38:55] - Valid branches: 18/[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+[00:38:55] - Schedule: [['7:00', '7:45'], ['7:50', '8:35'], ['8:40', '9:25'], ['9:30', '10:15'], ['10:30', '11:15'], ['11:20', '12:05'], ['12:10', '12:55'], ['13:15', '14:00'], ['14:05', '14:50'], ['14:55', '15:40'], ['15:45', '16:30'], ['16:35', '17:20'], ['17:25', '18:10'], ['18:15', '19:00'], ['19:05', '19:50']]
+[00:38:55] - # ================# Syncing Virtual Clock #================ #
+[00:38:55] - Website http://worldtimeapi.org/api/ip is up and running
+[00:38:55] - Synced time from API to: 2023-06-11 00:38:55.427735+02:00
+[00:38:55] - Current Time: 2023-06-11 00:38:56.427735+02:00
+[00:38:56] - Current Time: 2023-06-11 00:38:57.427735+02:00
+[00:38:57] - Current Time: 2023-06-11 00:38:58.427735+02:00
+[00:38:58] - Current Time: 2023-06-11 00:38:59.427735+02:00
