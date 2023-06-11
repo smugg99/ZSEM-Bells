@@ -4,7 +4,7 @@ import asyncio
 
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
-from typing import Union, Tuple, Optional
+from typing import Union, Tuple, Optional, List, Dict, Any
 from datetime import datetime
 
 import config
@@ -13,11 +13,11 @@ import utils
 # ================# Functions #================ #
 
 
-def _parse_hour_range(hour_range: str) -> list[str]:
+def _parse_hour_range(hour_range: str) -> List[str]:
     return hour_range.replace(" ", "").split("-")
 
 
-def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[list[str]]:
+def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[str]]:
     soup = BeautifulSoup(page_content, "html.parser")
     schedule_table = soup.find(
         "table", class_=config.SCHEDULE_TABLE_CLASS_NAME)
@@ -49,9 +49,9 @@ def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[list[
     return hour_ranges
 
 
-def _get_valid_branches() -> Tuple[list[int], list[str], int]:
-    valid_branches: list[int] = []
-    longest_hour_ranges: list[str] = []
+def _get_valid_branches() -> Tuple[List[int], List[str], int]:
+    valid_branches: List[int] = []
+    longest_hour_ranges: List[str] = []
 
     _branch_index: int = 0
     _schedule_branch: int = None
@@ -118,13 +118,12 @@ def _get_valid_branches() -> Tuple[list[int], list[str], int]:
 class ScheduleKeeper():
     def __init__(self, file_path: str) -> None:
         self.file_path: str = file_path
-        self.alarms: list[datetime] = []
 
-        self.schedule: list[str] = []
+        self.schedule: List[str] = []
         self.schedule_branch: int = []
-        self.valid_branches: list[int] = []
+        self.valid_branches: List[int] = []
 
-    def read_schedule_file(self) -> Optional[dict[str]]:
+    def read_schedule_file(self) -> Optional[Dict[str, Any]]:
         with open(self.file_path, "r") as file:
             try:
                 data = json.load(file)
@@ -143,7 +142,7 @@ class ScheduleKeeper():
                     utils.logger.critical("Invalid data in the schedule file")
                     raise TypeError()
 
-    def write_schedule_file(self, data: dict[str]) -> None:
+    def write_schedule_file(self, data: Dict[str, Any]) -> None:
         with open(self.file_path, "w") as file:
             json.dump(data, file)
 
@@ -164,7 +163,7 @@ class ScheduleKeeper():
         else:
             utils.logger.error(
                 "Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the saved one...")
-            data: list[str] = self.read_schedule_file()
+            data: List[str] = self.read_schedule_file()
 
             self.schedule_branch = data["schedule_branch"]
             self.schedule = data["schedule"]
@@ -174,14 +173,14 @@ class ScheduleKeeper():
                           "/" + str(self.valid_branches))
         utils.logger.info("Schedule: " + str(self.schedule))
 
-    def get_alarms(self) -> list[datetime]:
-        alarms: list[datetime] = []
+    def get_timestamps(self) -> List[str]:
+        timestamps: List[str] = []
         
         for schedule_hours in self.schedule:
             for schedule_hour in schedule_hours:
-                alarms.append(datetime.strptime(schedule_hour, "%H:%M"))
+                timestamps.append(utils.to_timestamp(schedule_hour))
 
-        return alarms
+        return timestamps
 
 
 # ================# Classes #================ #

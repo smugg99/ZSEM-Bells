@@ -55,11 +55,11 @@ class LoggingFormatter:
     def test(self) -> None:
         self.separator("Logger Test")
 
-        utils.logger.raw("raw message test")
         utils.logger.debug("debug message test")
         utils.logger.info("info message test")
         utils.logger.warning("warning message test")
         utils.logger.error("error message test")
         utils.logger.critical("critical message test")
+        utils.logger.raw("raw message test")
 
 # ================# Classes #================ #

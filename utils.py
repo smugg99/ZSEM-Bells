@@ -2,7 +2,9 @@ import logging
 import requests
 import asyncio
 
+from datetime import datetime, time
 from classes.logging_formatter import LoggingFormatter
+from typing import Tuple, Optional, Union
 
 import config
 
@@ -43,5 +45,33 @@ def check_website_status(url: str) -> bool:
 		logger.warn("Website " + url + " failed to report it\'s status")
 		return False
 
+def is_valid_timestamp(timestamp: str) -> Tuple[bool, Optional[time]]:
+	try:
+		_time : time = to_timestamp(timestamp)
+		return True, _time
+	except ValueError:
+		return False, None
+
+def to_timestamp(timestamp: str) -> Optional[time]:
+	try:
+		# Try parsing timestamp with seconds
+		return datetime.strptime(timestamp, "%H:%M:%S").time()
+	except ValueError:
+		try:
+			# Try parsing timestamp without seconds
+			return datetime.strptime(timestamp, "%H:%M").time()
+		except ValueError:
+			return None
+
+def compare_timestamps(timestamp_a: time, timestamp_b: time) -> Tuple[bool, float]:
+	def to_minutes(timestamp: time) -> int:
+		return timestamp.hour * 60 + timestamp.minute + (timestamp.second / 60)
+	
+	minutes_a = to_minutes(timestamp_a)
+	minutes_b = to_minutes(timestamp_b)
+
+	difference = minutes_b - minutes_a
+
+	return difference < 0, difference
 
 # ================# Functions #================ #

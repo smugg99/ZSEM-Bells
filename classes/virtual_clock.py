@@ -1,33 +1,23 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import requests
 import asyncio
-from typing import Optional, Union, Tuple
+from typing import Optional, Union, Tuple, Callable, Dict, List
 
 import config
 import utils
-
-# ================# Functions #================ #
-
-
-def compare_alarm_time(alarm_a: datetime, alarm_b: datetime) -> Tuple[bool, Optional[bool], Optional[datetime]]:
-	time_a = alarm_a.time()
-	time_b = alarm_b.time()
-
-	delta_minutes: int = (time_b.minute - time_a.minute) + 60 * (time_b.hour - time_a.hour)
-
-	return (time_a > time_b), delta_minutes
-
-# ================# Functions #================ #
 
 
 # ================# Classes #================ #
 
 
 class VirtualClock:
-	def __init__(self, alarms: list[datetime]) -> None:
+	def __init__(self, timestamps: List[str]) -> None:
 		self.is_started: bool = False
 		self.current_time: datetime = None
-		self.alarms: list[datetime] = alarms
+  
+		# Internal timestamps, aquired from schedule keeper
+		self._timestamps: List[time] = timestamps
+		self._callback_timestamps: List[List[List[time], Callable]] = []
 
 	async def sync_time(self) -> datetime:
 		def _use_system_time(e: Exception = None) -> datetime:
@@ -73,9 +63,27 @@ class VirtualClock:
 				self.current_time += timedelta(seconds=1)
 				utils.logger.info("Current Time: " + str(self.current_time))
 				
-				for index, alarm in enumerate(self.alarms):
-					is_past, delta_minutes = compare_alarm_time(self.current_time, alarm)
-					print(index, is_past, delta_minutes)
+				current_timestamp : time = self.current_time.time()
+    
+				# Schedule timestamps, I should also add a way to distingush
+				# break timestamps (every second one) and work ones (every first one)
+				# for index, _timestamp in enumerate(self._timestamps):
+				# 	is_past, delta_minutes = utils.compare_timestamps(current_timestamp, _timestamp)
+				# 	print(index, is_past, delta_minutes)
+	 
+				# Other timestamps, they may be used to synchronise things,
+				# they get called on specific time objects
+				for callback_timestamp in self._callback_timestamps:
+					timestamps : List[time] = callback_timestamp[0]
+					callback : Callable = callback_timestamp[1]
+					
+					for timestamp in timestamps:
+						is_past, delta_minutes = utils.compare_timestamps(current_timestamp, timestamp)
+						print(is_past, delta_minutes)
+						# if is_past:
+						# 	callback()
+						if delta_minutes == 0:
+							callback()
 		else:
 			utils.logger.warning("Virtual clock is already running")
 
@@ -88,6 +96,10 @@ class VirtualClock:
 			self.is_started = False
 		else:
 			utils.logger.warning("Virtual clock is already not running")
+
+	def add_triggered_callback(self, timestamps: List[time], callback: Callable):
+		self._callback_timestamps.append([timestamps, callback])
+		print(str(self._callback_timestamps))
 
 
 # ================# Classes #================ #
