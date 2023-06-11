@@ -2,31 +2,43 @@ import logging
 import requests
 import asyncio
 
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from classes.logging_formatter import LoggingFormatter
-from typing import Tuple, Optional, Union
+from classes.config_manager import ConfigManager
+from typing import Tuple, Optional, Union, Dict, List
+from tabulate import tabulate
 
 import config
+
+config_manager = ConfigManager()
+user_config = config_manager.get_config()
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-file_handler = logging.FileHandler(config.LOGS_FILE_PATH)
-file_handler.setLevel(logging.INFO)
-
 logging_formatter = LoggingFormatter()
-file_handler.setFormatter(logging_formatter.raw_formatter)
 
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 stream_handler.setFormatter(logging_formatter)
 
 logger.addHandler(stream_handler)
-logger.addHandler(file_handler)
+
+if user_config["enable_logs"]:
+	file_handler = logging.FileHandler(config.LOGS_FILE_PATH)
+	file_handler.setLevel(logging.INFO)
+	
+	file_handler.setFormatter(logging_formatter.log_formatter)
+	logger.addHandler(file_handler)
+
+logging.addLevelName(config.LOGGER_RAW_LEVEL, "RAW")
+logging.addLevelName(config.LOGGER_LOG_LEVEL, "LOG")
+
 
 # ================# Functions #================ #
 
 logging.Logger.raw = lambda self, message, *args, **kwargs: self._log(config.LOGGER_RAW_LEVEL, message, args, **kwargs) if self.isEnabledFor(config.LOGGER_RAW_LEVEL) else None
+logging.Logger.log = lambda self, message, *args, **kwargs: self._log(config.LOGGER_LOG_LEVEL, message, args, **kwargs) if self.isEnabledFor(config.LOGGER_LOG_LEVEL) else None
 
 def build_branch_url(branch_index: int) -> str:
 	return config.SCHEDULE_URL + config.SCHEDULE_BRANCH_ENDPOINT.format(branch_index)
@@ -52,6 +64,41 @@ def is_valid_timestamp(timestamp: str) -> Tuple[bool, Optional[time]]:
 	except ValueError:
 		return False, None
 
+def get_adjacent_timestamp(timestamps: List[time], be_next: bool = False) -> Optional[Tuple[time, int]]:
+    current_timestamp = datetime.now().time()
+    
+    closest_timestamp: time = None
+    lowest_delta_seconds: int = None
+    
+    for timestamp in timestamps:
+        is_past, delta_seconds = compare_timestamps(current_timestamp, timestamp)
+        
+        if be_next and is_past:
+            continue
+        elif not be_next and not is_past:
+            continue
+            
+        if lowest_delta_seconds is None or delta_seconds < lowest_delta_seconds:
+            lowest_delta_seconds = delta_seconds
+            closest_timestamp = timestamp
+
+    return closest_timestamp, lowest_delta_seconds
+
+def to_string(timestamp: time) -> Optional[str]:
+	date_obj = datetime.now().date()
+	datetime_obj = datetime.combine(date_obj, timestamp)
+
+	# Can't decide what to do here yet...
+	try:
+    	# Try parsing timestamp without seconds
+		return datetime.strftime(datetime_obj, "%H:%M:%S")
+	except ValueError:
+		try:
+			# Try parsing timestamp with seconds
+			return datetime.strftime(datetime_obj, "%H:%M")
+		except ValueError:
+			return None
+
 def to_timestamp(timestamp: str) -> Optional[time]:
 	try:
 		# Try parsing timestamp with seconds
@@ -64,14 +111,17 @@ def to_timestamp(timestamp: str) -> Optional[time]:
 			return None
 
 def compare_timestamps(timestamp_a: time, timestamp_b: time) -> Tuple[bool, float]:
-	def to_minutes(timestamp: time) -> int:
-		return timestamp.hour * 60 + timestamp.minute + (timestamp.second / 60)
+	def to_seconds(timestamp: time) -> int:
+		return (timestamp.hour * 3600) + (timestamp.minute * 60) + timestamp.second 
 	
-	minutes_a = to_minutes(timestamp_a)
-	minutes_b = to_minutes(timestamp_b)
+	seconds_a = to_seconds(timestamp_a)
+	seconds_b = to_seconds(timestamp_b)
 
-	difference = minutes_b - minutes_a
+	delta_seconds = seconds_b - seconds_a
 
-	return difference < 0, difference
+	return delta_seconds <= 0, delta_seconds
+
+def log_table(data : List, headers: List[str] = "firstrow") -> None:
+	logger.raw(tabulate(data, headers=headers, tablefmt="fancy_grid", stralign="center"))
 
 # ================# Functions #================ #

@@ -28,7 +28,8 @@ class LoggingFormatter:
     
     FORMATS = {
         # 25 is between INFO level and WARNING level, it stands for the RAW level
-        25: bright_white + config.LOGGER_RAW_FORMAT + reset,
+        25: white + config.LOGGER_RAW_FORMAT + reset,
+        24: cyan + config.LOGGER_LOG_FORMAT + reset,
         logging.DEBUG: blue + config.LOGGER_MED_FORMAT + reset,
         logging.INFO: green + config.LOGGER_MIN_FORMAT + reset,
         logging.WARNING: yellow + config.LOGGER_MAX_FORMAT + reset,
@@ -37,7 +38,9 @@ class LoggingFormatter:
     }
 
     def __init__(self) -> None:
+        # Can't choose between them yet...
         self.raw_formatter = logging.Formatter(config.LOGGER_RAW_FORMAT, datefmt="%H:%M:%S")
+        self.log_formatter = logging.Formatter(config.LOGGER_LOG_FORMAT, datefmt="%H:%M:%S")
 
     def format(self, record) -> str:
         log_fmt: str = self.FORMATS.get(record.levelno)
@@ -47,7 +50,7 @@ class LoggingFormatter:
 
     def startup(self) -> None:
         self.separator("Program Startup")
-        utils.logger.info(str(datetime.now()))
+        utils.logger.raw(str(datetime.now()))
 
     def separator(self, text: str) -> None:
         utils.logger.raw("# ================# {} #================ #".format(text))
@@ -55,11 +58,12 @@ class LoggingFormatter:
     def test(self) -> None:
         self.separator("Logger Test")
 
+        utils.logger.log("log message test")
+        utils.logger.raw("raw message test")
         utils.logger.debug("debug message test")
         utils.logger.info("info message test")
         utils.logger.warning("warning message test")
         utils.logger.error("error message test")
         utils.logger.critical("critical message test")
-        utils.logger.raw("raw message test")
 
 # ================# Classes #================ #

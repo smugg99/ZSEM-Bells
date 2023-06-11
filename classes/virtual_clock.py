@@ -11,15 +11,31 @@ import utils
 
 
 class VirtualClock:
-	def __init__(self, timestamps: List[str]) -> None:
+	_instance = None
+
+	def __new__(cls, *args, **kwargs):
+		if not cls._instance:
+			cls._instance = super().__new__(cls)
+		return cls._instance
+	
+	def __init__(self) -> None:
 		self.is_started: bool = False
 		self.current_time: datetime = None
   
 		# Internal timestamps, aquired from schedule keeper
-		self._timestamps: List[time] = timestamps
+		self._timestamps: List[time] = []
+  
+		# External timestamps, can be added to trigger callbacks on certain occasions
 		self._callback_timestamps: List[List[List[time], Callable]] = []
-
-	async def sync_time(self) -> datetime:
+  
+		self.work_callback: Callable = None
+		self.break_callback: Callable = None
+  
+	def __call__(self) -> 'VirtualClock':
+		return self
+	
+ 
+	def sync_time(self) -> datetime:
 		def _use_system_time(e: Exception = None) -> datetime:
 			self.current_time = datetime.now()
 			utils.logger.error("Failed to sync time from API, using system time: " + str(self.current_time) + ("\n" + str(e) if e else ""))
@@ -44,8 +60,11 @@ class VirtualClock:
 								str(self.current_time))
 		else:
 			_use_system_time()
-   
+
 		return self.current_time
+
+	def set_timestamps(self, timestamps: List[time]) -> None:
+		self._timestamps = timestamps
 
 	async def start_t(self) -> None:
 		utils.logging_formatter.separator("Starting Virtual Clock")
@@ -55,35 +74,63 @@ class VirtualClock:
 
 			self.is_started = True
 			if not self.current_time:
-				await self.sync_time()
+				self.sync_time()
 
 			while self.is_started:
 				await asyncio.sleep(1)
 	
 				self.current_time += timedelta(seconds=1)
-				utils.logger.info("Current Time: " + str(self.current_time))
+				current_timestamp: time = self.current_time.time()
 				
-				current_timestamp : time = self.current_time.time()
-    
 				# Schedule timestamps, I should also add a way to distingush
 				# break timestamps (every second one) and work ones (every first one)
-				# for index, _timestamp in enumerate(self._timestamps):
-				# 	is_past, delta_minutes = utils.compare_timestamps(current_timestamp, _timestamp)
-				# 	print(index, is_past, delta_minutes)
-	 
+				for index, _timestamp in enumerate(self._timestamps):
+					is_past, delta_seconds = utils.compare_timestamps(current_timestamp, _timestamp)
+
+					if is_past and delta_seconds == 0:
+						if index % 2:
+							self.break_callback()
+						else:
+							self.work_callback()
+						callback()
+
 				# Other timestamps, they may be used to synchronise things,
 				# they get called on specific time objects
 				for callback_timestamp in self._callback_timestamps:
-					timestamps : List[time] = callback_timestamp[0]
-					callback : Callable = callback_timestamp[1]
-					
-					for timestamp in timestamps:
-						is_past, delta_minutes = utils.compare_timestamps(current_timestamp, timestamp)
-						print(is_past, delta_minutes)
-						# if is_past:
-						# 	callback()
-						if delta_minutes == 0:
+					timestamps: List[time] = callback_timestamp[0]
+					callback: Callable = callback_timestamp[1]
+
+					for index, timestamp in enumerate(timestamps):
+						is_past, delta_seconds = utils.compare_timestamps(current_timestamp, timestamp)
+
+						# Note, this implementation may need to be changed in the future after tests
+						# I don't know yet if the timings will be correct so it won't skip some seconds...
+						if is_past and delta_seconds == 0:
 							callback()
+
+				# Print other things here, like time to sync and wb callbacks...
+				# utils.logger.info("Current Time: " + str(self.current_time))
+				# utils.log_table({
+				# 	"Closest Timestamp": str(closest_timestamp),
+				# 	"Delta Seconds": str(delta_seconds),
+				# 	"Current Datetime": str(self.current_time)
+				# })
+    
+				closest_timestamp, closest_delta_seconds = utils.get_adjacent_timestamp(self._timestamps, True)
+
+				table_data: List[str] = [
+       				"Next Timestamp",
+        			"Delta Seconds",
+        			"Current Datetime"
+        		]
+    
+				headers: List[str] = [
+        			utils.to_string(closest_timestamp),
+           			str(closest_delta_seconds),
+              		str(self.current_time.strftime("%Y-%m-%d %H:%M:%S"))
+                ]
+
+				utils.log_table((table_data, headers))
 		else:
 			utils.logger.warning("Virtual clock is already running")
 
@@ -97,9 +144,12 @@ class VirtualClock:
 		else:
 			utils.logger.warning("Virtual clock is already not running")
 
-	def add_triggered_callback(self, timestamps: List[time], callback: Callable):
+	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable) -> None:
+		self.work_callback = work_callback
+		self.break_callback = break_callback
+
+	def add_timestamp_callback(self, timestamps: List[time], callback: Callable):
 		self._callback_timestamps.append([timestamps, callback])
-		print(str(self._callback_timestamps))
 
 
 # ================# Classes #================ #

@@ -1,4 +1,4 @@
 {
-	"enable_logs": true,
-	"sync_timestamps": ["18:03:50", "17:57:00", "01:25:00"]	
+	"enable_logs": false,
+	"sync_timestamps": ["00:00:00", "6:30:00", "01:42:00", "00:00:10", "00:00:20"]	
 }

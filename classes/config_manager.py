@@ -1,4 +1,5 @@
 import json
+import config
 
 # ================# Classes #================ #
 
@@ -13,10 +14,8 @@ class ConfigManager:
 
     def __init__(self):
         self.config : dict = {}
-
-    def load_config(self, config_file):
-        with open(config_file, 'r') as file:
-            self.config = json.load(file)
+        with open(config.USER_CONFIG_FILE_PATH, 'r') as file:
+            self.config = json.load(file) 
 
     def get_config(self):
         return self.config

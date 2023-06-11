@@ -1,28 +1,21 @@
+from datetime import datetime
+
 # ================# API #================ #
-
-# SCHEDULE_URL = "https://zsem.edu.pl/plany/plany"
-# MAIN_SITE: str = "https://niggercum.edu.pl"
-# SCHEDULE_URL: str = "https://zsem.edu.pl" + "/plany/plany"
-
-# MAIN_SITE: str = "https://zsem.edu.pl"
-# SCHEDULE_URL: str = MAIN_SITE + "/plany/plany"
-
-# For disabling syncing while testing
-MAIN_SITE: str = "https://zsemmm.edu.pl"
-SCHEDULE_URL: str = MAIN_SITE + "/plan/plany"
-TIME_API_URL: str = "http://worldtimeapis.org/api/ip"
 
 # Examples
 # http://www.plan.lzk.pl/plany/o1.html
 # https://zsem.edu.pl/plany/plany/o5.html
 # https://zsemm.edu.pl/plan/plany/o1.html
 
+MAIN_SITE: str = "https://zsem.edu.pl"
+SCHEDULE_URL: str = MAIN_SITE + "/plany/plany"
+
 SCHEDULE_BRANCH_ENDPOINT: str = "/o{}.html"
 SCHEDULE_REQUEST_TIMEOUT: int = 5
 
 SYNC_INTERVAL: int = 5
 
-#TIME_API_URL: str = "http://worldtimeapi.org/api/ip"
+TIME_API_URL: str = "http://worldtimeapi.org/api/ip"
 TIME_API_REQUEST_TIMEOUT: int = 5
 
 # ================# API #================ #
@@ -50,9 +43,11 @@ SCHEDULE_FILE_PATH: str = "schedule.json"
 
 LOGS_FILE_PATH: str = "last_logs.txt"
 
-LOGGER_LOG_FORMAT: str = "[%(asctime)s] - [%(levelname)s] - %(message)s"
-LOGGER_RAW_FORMAT: str = "[%(asctime)s] - %(message)s"
+LOGGER_LOG_FORMAT: str = "%(message)s - (%(filename)s:%(lineno)d) - [%(asctime)s]"
+LOGGER_RAW_FORMAT: str = "%(message)s"
+
 LOGGER_RAW_LEVEL: int = 25
+LOGGER_LOG_LEVEL: int = 24
 
 LOGGER_MIN_FORMAT: str = "[%(asctime)s] - %(message)s"
 LOGGER_MED_FORMAT: str = "[%(asctime)s] - %(message)s (%(filename)s:%(lineno)d)"

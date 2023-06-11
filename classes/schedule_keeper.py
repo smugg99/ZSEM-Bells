@@ -4,8 +4,9 @@ import asyncio
 
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
-from typing import Union, Tuple, Optional, List, Dict, Any
-from datetime import datetime
+from typing import Union, Tuple, Optional, List, Dict, Any, Callable
+from datetime import datetime, time
+from tabulate import tabulate
 
 import config
 import utils
@@ -116,12 +117,22 @@ def _get_valid_branches() -> Tuple[List[int], List[str], int]:
 
 
 class ScheduleKeeper():
-    def __init__(self, file_path: str) -> None:
-        self.file_path: str = file_path
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self) -> None:
+        self.file_path: str = config.SCHEDULE_FILE_PATH
 
         self.schedule: List[str] = []
         self.schedule_branch: int = []
         self.valid_branches: List[int] = []
+
+    def __call__(self) -> 'ScheduleKeeper':
+        return self
 
     def read_schedule_file(self) -> Optional[Dict[str, Any]]:
         with open(self.file_path, "r") as file:
@@ -146,7 +157,7 @@ class ScheduleKeeper():
         with open(self.file_path, "w") as file:
             json.dump(data, file)
 
-    async def sync_schedule(self) -> None:
+    def sync_schedule(self) -> None:
         utils.logging_formatter.separator("Syncing Schedule")
 
         utils.logger.info("Syncing schedule from: " + config.SCHEDULE_URL)
@@ -169,18 +180,20 @@ class ScheduleKeeper():
             self.schedule = data["schedule"]
             self.valid_branches = data["valid_branches"]
 
-        utils.logger.info("Valid branches: " + str(self.schedule_branch) +
-                          "/" + str(self.valid_branches))
-        utils.logger.info("Schedule: " + str(self.schedule))
+        utils.log_table(self.schedule, ["Work", "Break"])
 
-    def get_timestamps(self) -> List[str]:
-        timestamps: List[str] = []
+        # utils.logger.info("Valid branches: " + str(self.schedule_branch) + "/" + str(self.valid_branches))
+        # utils.logger.info("Schedule: " + str(self.schedule))
+
+    def get_timestamps(self) -> List[time]:
+        timestamps: List[time] = []
         
         for schedule_hours in self.schedule:
             for schedule_hour in schedule_hours:
                 timestamps.append(utils.to_timestamp(schedule_hour))
 
-        return timestamps
+        return sorted(timestamps)
+
 
 
 # ================# Classes #================ #
