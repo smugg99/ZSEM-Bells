@@ -10,7 +10,7 @@ Instructions for further maintainers are work in progress
 ```cd ./ZSEM-Bells```
 3. Setup the virtual environment:
 ```python -venv venv```
-```source ./venv/bin/activate
+```source ./venv/bin/activate```
 4. Install required packages
 ```pip install -r requirements.txt```
 5. Make the main file executable 
