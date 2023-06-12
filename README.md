@@ -7,7 +7,7 @@ Instructions for further maintainers are work in progress
 1. Clone this repo:
 ```git clone https://www.github.com/DudusJestem/ZSEM-Bells```
 2. Cd into the directory:
-```cd ./ZSEM-Bells 
+```cd ./ZSEM-Bells```
 3. Setup the virtual environment:
 ```python -venv venv```
 ```source ./venv/bin/activate
