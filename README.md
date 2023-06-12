@@ -5,21 +5,35 @@ Instructions for further maintainers are work in progress
 
 # Setup ⚙️
 1. Clone this repo:
-```git clone https://www.github.com/DudusJestem/ZSEM-Bells```
+```
+git clone https://www.github.com/DudusJestem/ZSEM-Bells
+```
 2. Cd into the directory:
-```cd ./ZSEM-Bells```
+```
+cd ./ZSEM-Bells
+```
 3. Setup the virtual environment:
-```python -venv venv```
-```source ./venv/bin/activate```
+```
+python -venv venv
+```
+```
+source ./venv/bin/activate
+```
 4. Install required packages
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 5. Make the main file executable 
-```chmod +x ./main.py```
+```
+chmod +x ./main.py
+```
 
 # Running ⚡
 ### Option A:
 1. Run the main script directly
-```./main.py &```
-### Optiob B:
+```
+./main.py &
+```
+### Option B:
 1. Make a system service
 ... 
