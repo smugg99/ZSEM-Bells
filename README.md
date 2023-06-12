@@ -14,7 +14,7 @@ Instructions for further maintainers are work in progress
 4. Install required packages
 ```pip install -r requirements.txt```
 5. Make the main file executable 
-```chmod -X ./main.py```
+```chmod +x ./main.py```
 
 # Running ⚡
 ### Option A:
