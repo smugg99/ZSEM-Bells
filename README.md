@@ -17,9 +17,9 @@ Instructions for further maintainers are work in progress
 ```chmod -X ./main.py```
 
 # Running ⚡
-## Option A:
+### Option A:
 1. Run the main script directly
 ```./main.py &```
-## Optiob B:
+### Optiob B:
 1. Make a system service
 ... 
