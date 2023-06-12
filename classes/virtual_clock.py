@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta, time
 import requests
 import asyncio
+
+from datetime import datetime, timedelta, time
 from typing import Optional, Union, Tuple, Callable, Dict, List
 
 import config
@@ -76,6 +77,9 @@ class VirtualClock:
 			if not self.current_time:
 				self.sync_time()
 
+			self.log_status_table()
+
+			_repetition: int = 0
 			while self.is_started:
 				await asyncio.sleep(1)
 	
@@ -88,7 +92,7 @@ class VirtualClock:
 					is_past, delta_seconds = utils.compare_timestamps(current_timestamp, _timestamp)
 
 					if is_past and delta_seconds == 0:
-						if index % 2:
+						if index % 2 == 0:
 							self.break_callback()
 						else:
 							self.work_callback()
@@ -115,22 +119,15 @@ class VirtualClock:
 				# 	"Delta Seconds": str(delta_seconds),
 				# 	"Current Datetime": str(self.current_time)
 				# })
-    
-				closest_timestamp, closest_delta_seconds = utils.get_adjacent_timestamp(self._timestamps, True)
-
-				table_data: List[str] = [
-       				"Next Timestamp",
-        			"Delta Seconds",
-        			"Current Datetime"
-        		]
-    
-				headers: List[str] = [
-        			utils.to_string(closest_timestamp),
-           			str(closest_delta_seconds),
-              		str(self.current_time.strftime("%Y-%m-%d %H:%M:%S"))
-                ]
-
-				utils.log_table((table_data, headers))
+	
+				if utils.user_config.get("wasteful_debug"):
+					self.log_status_table()
+				else:
+					if _repetition >= config.CLOCK_RUNNING_ANNOUNCE_INTERVAL:
+						self.log_status_table()
+						_repetition = 0
+		
+					_repetition += 1
 		else:
 			utils.logger.warning("Virtual clock is already running")
 
@@ -143,6 +140,23 @@ class VirtualClock:
 			self.is_started = False
 		else:
 			utils.logger.warning("Virtual clock is already not running")
+
+	def log_status_table(self):
+		closest_timestamp, closest_delta_seconds = utils.get_adjacent_timestamp(self._timestamps, True)
+
+		table_data: List[str] = [
+			"Next Timestamp",
+			"Delta Seconds",
+			"Current Datetime"
+		]
+
+		headers: List[str] = [
+			utils.to_string(closest_timestamp),
+			str(closest_delta_seconds),
+			self.current_time.strftime("%Y-%m-%d %H:%M:%S")
+		]
+
+		utils.log_table((table_data, headers))
 
 	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable) -> None:
 		self.work_callback = work_callback

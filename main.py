@@ -20,10 +20,7 @@ import config
 async def main():
 	utils.logging_formatter.startup()
 	utils.logging_formatter.test()
-	
-	config_manager = ConfigManager()
-	user_config = config_manager.get_config()
-	
+
 	schedule_keeper = ScheduleKeeper()
 	virtual_clock = VirtualClock()
 
@@ -48,7 +45,7 @@ async def main():
 	virtual_clock.add_wb_callbacks(work_callback, break_callback)	
 
 	clock_task = asyncio.create_task(virtual_clock.start_t())
-	sync_timestamps: Optional[List[str]] = user_config.get("sync_timestamps", [])
+	sync_timestamps: Optional[List[str]] = utils.user_config.get("sync_timestamps", [])
  
 	if not sync_timestamps:
 		utils.logger.warn("Sync timestamps are empty")
