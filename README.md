@@ -11,7 +11,7 @@ Instructions for further maintainers are work in progress
 # Setup ⚙️
 1. Clone this repo:
 ```
-git clone https://www.github.com/DudusJestem/ZSEM-Bells
+git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
 2. Cd into the directory:
 ```
