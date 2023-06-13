@@ -1,7 +1,8 @@
 # ZSEM-Bells
+
 Program for managing bells in my school
 
-Instructions for further maintainers are work in progress
+Instructions for further maintainers are currently being work on...
 
 # Prerequisites (tested on) 📚
 - Python >3.10.6
@@ -9,7 +10,11 @@ Instructions for further maintainers are work in progress
 - Git >2.34.1
 
 # Setup ⚙️
-1. Clone this repo:
+0. Install venv (if needed):
+```
+sudo apt install python3 python3-venv
+```
+2. Clone this repo:
 ```
 git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
@@ -20,6 +25,13 @@ cd ./ZSEM-Bells
 3. Setup the virtual environment:
 ```
 python -venv venv
+```
+or
+```
+python3 -m venv venv
+```
+and activate it 
+```
 source ./venv/bin/activate
 ```
 4. Install required packages
