@@ -64,25 +64,31 @@ def is_valid_timestamp(timestamp: str) -> Tuple[bool, Optional[time]]:
 	except ValueError:
 		return False, None
 
-def get_adjacent_timestamp(timestamps: List[time], be_next: bool = False) -> Optional[Tuple[time, int]]:
-    current_timestamp = datetime.now().time()
-    
-    closest_timestamp: time = None
-    lowest_delta_seconds: int = None
-    
-    for timestamp in timestamps:
-        is_past, delta_seconds = compare_timestamps(current_timestamp, timestamp)
-        
-        if be_next and is_past:
-            continue
-        elif not be_next and not is_past:
-            continue
-            
-        if lowest_delta_seconds is None or delta_seconds < lowest_delta_seconds:
-            lowest_delta_seconds = delta_seconds
-            closest_timestamp = timestamp
+def get_adjacent_timestamp(timestamps: List[time], be_next: bool = False) -> Optional[Tuple[time, int, int]]:
+	current_timestamp = datetime.now().time()
+	
+	closest_timestamp: time = None
+	lowest_delta_seconds: int = None
+	its_index: int = None
+ 
+	for index, timestamp in enumerate(timestamps):
+		is_past, delta_seconds = compare_timestamps(current_timestamp, timestamp)
+		
+		if (be_next and is_past) or (not be_next and not is_past):
+			continue
+			
+		if lowest_delta_seconds is None or delta_seconds < lowest_delta_seconds:
+			lowest_delta_seconds = delta_seconds
+			closest_timestamp = timestamp
+			its_index = index
 
-    return closest_timestamp, lowest_delta_seconds
+	if closest_timestamp is None:
+		its_index = 0 if be_next else len(timestamps) - 1
+		closest_timestamp = timestamps[its_index]
+		_, delta_seconds = compare_timestamps(current_timestamp, closest_timestamp)
+		lowest_delta_seconds = delta_seconds
+
+	return closest_timestamp, lowest_delta_seconds, its_index
 
 def to_string(timestamp: time) -> Optional[str]:
 	date_obj = datetime.now().date()
@@ -90,7 +96,7 @@ def to_string(timestamp: time) -> Optional[str]:
 
 	# Can't decide what to do here yet...
 	try:
-    	# Try parsing timestamp without seconds
+		# Try parsing timestamp without seconds
 		return datetime.strftime(datetime_obj, "%H:%M:%S")
 	except ValueError:
 		try:

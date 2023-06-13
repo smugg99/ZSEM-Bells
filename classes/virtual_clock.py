@@ -86,8 +86,7 @@ class VirtualClock:
 				self.current_time += timedelta(seconds=1)
 				current_timestamp: time = self.current_time.time()
 				
-				# Schedule timestamps, I should also add a way to distingush
-				# break timestamps (every second one) and work ones (every first one)
+				# Schedule timestamps
 				for index, _timestamp in enumerate(self._timestamps):
 					is_past, delta_seconds = utils.compare_timestamps(current_timestamp, _timestamp)
 
@@ -99,7 +98,7 @@ class VirtualClock:
 						callback()
 
 				# Other timestamps, they may be used to synchronise things,
-				# they get called on specific time objects
+				# they get called on specific timestamps
 				for callback_timestamp in self._callback_timestamps:
 					timestamps: List[time] = callback_timestamp[0]
 					callback: Callable = callback_timestamp[1]
@@ -141,19 +140,22 @@ class VirtualClock:
 		else:
 			utils.logger.warning("Virtual clock is already not running")
 
+	# This needs testing when ill sober up
 	def log_status_table(self):
-		closest_timestamp, closest_delta_seconds = utils.get_adjacent_timestamp(self._timestamps, True)
+		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, True)
 
 		table_data: List[str] = [
 			"Next Timestamp",
 			"Delta Seconds",
-			"Current Datetime"
+			"Current Datetime",
+			"Action"
 		]
 
 		headers: List[str] = [
-			utils.to_string(closest_timestamp),
-			str(closest_delta_seconds),
-			self.current_time.strftime("%Y-%m-%d %H:%M:%S")
+			utils.to_string(next_timestamp) if next_timestamp else "None",
+			str(next_delta_seconds) if next_delta_seconds else "None",
+			self.current_time.strftime("%Y-%m-%d %H:%M:%S"),
+			"Break" if its_index and its_index % 2 else "Work"
 		]
 
 		utils.log_table((table_data, headers))

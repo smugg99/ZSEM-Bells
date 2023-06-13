@@ -64,6 +64,7 @@ async def main():
 		for timestamp in timestamps:
 			parsed_timestamps.append(utils.to_string(timestamp))
 
+		# Note: make the sync tables vertical instead of retarded horizontal
 		table_data: List[str] = ["Sync Timestamps"]
 		headers: List[str] = parsed_timestamps
 
