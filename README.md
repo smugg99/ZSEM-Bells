@@ -3,6 +3,11 @@ Program for managing bells in my school
 
 Instructions for further maintainers are work in progress
 
+# Prerequisites (tested on) 📚
+- Python >3.10.6
+- Pip >22.0.2
+- Git >2.34.1
+
 # Setup ⚙️
 1. Clone this repo:
 ```
@@ -15,8 +20,6 @@ cd ./ZSEM-Bells
 3. Setup the virtual environment:
 ```
 python -venv venv
-```
-```
 source ./venv/bin/activate
 ```
 4. Install required packages
