@@ -1,5 +1,5 @@
 {
 	"enable_logs": false,
-	"sync_timestamps": ["00:00:00", "6:30:00", "02:01:00"],
-	"wasteful_debug": false
+	"sync_timestamps": ["00:00:00", "03:15:00", "6:30:00"],
+	"wasteful_debug": true
 }

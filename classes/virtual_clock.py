@@ -95,8 +95,7 @@ class VirtualClock:
 							self.break_callback()
 						else:
 							self.work_callback()
-						callback()
-
+       
 				# Other timestamps, they may be used to synchronise things,
 				# they get called on specific timestamps
 				for callback_timestamp in self._callback_timestamps:
@@ -142,23 +141,38 @@ class VirtualClock:
 
 	# This needs testing when ill sober up
 	def log_status_table(self):
-		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, True)
+		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, self.current_time.time(), True)
+		previous_timestamp, previous_delta_seconds, _its_index = utils.get_adjacent_timestamp(self._timestamps, self.current_time.time(), False)
 
 		table_data: List[str] = [
-			"Next Timestamp",
+			"Timestamp",
 			"Delta Seconds",
-			"Current Datetime",
-			"Action"
+			"Action",
+			"Current Datetime"
 		]
 
+		next_timestamp_string: str = utils.to_string(next_timestamp) if next_timestamp else "None"
+		next_delta_seconds_string: str = str(next_delta_seconds) if next_delta_seconds else "None"
+		next_type_string: str = "Break" if its_index and its_index % 2 else "Work"
+  
+		previous_timestamp_string: str = utils.to_string(previous_timestamp) if previous_timestamp else "None"
+		previous_delta_seconds_string: str = str(previous_delta_seconds) if previous_delta_seconds else "None"
+		previous_type_string: str = "Break" if _its_index and _its_index % 2 else "Work"
+  
 		headers: List[str] = [
-			utils.to_string(next_timestamp) if next_timestamp else "None",
-			str(next_delta_seconds) if next_delta_seconds else "None",
-			self.current_time.strftime("%Y-%m-%d %H:%M:%S"),
-			"Break" if its_index and its_index % 2 else "Work"
+			next_timestamp_string,
+			next_delta_seconds_string,
+			next_type_string,
+			self.current_time.strftime("%Y-%m-%d %H:%M:%S")
 		]
 
-		utils.log_table((table_data, headers))
+		_headers: List[str] = [
+			previous_timestamp_string,
+			previous_delta_seconds_string,
+			previous_type_string,
+		]
+
+		utils.log_table((table_data, headers, _headers))
 
 	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable) -> None:
 		self.work_callback = work_callback

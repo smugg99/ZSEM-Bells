@@ -64,23 +64,24 @@ def is_valid_timestamp(timestamp: str) -> Tuple[bool, Optional[time]]:
 	except ValueError:
 		return False, None
 
-def get_adjacent_timestamp(timestamps: List[time], be_next: bool = False) -> Optional[Tuple[time, int, int]]:
-	current_timestamp = datetime.now().time()
-	
+def get_adjacent_timestamp(timestamps: List[time], current_timestamp : time, be_next: bool = False) -> Optional[Tuple[time, int, int]]:
 	closest_timestamp: time = None
 	lowest_delta_seconds: int = None
 	its_index: int = None
- 
+
 	for index, timestamp in enumerate(timestamps):
 		is_past, delta_seconds = compare_timestamps(current_timestamp, timestamp)
-		
+
 		if (be_next and is_past) or (not be_next and not is_past):
 			continue
 			
-		if lowest_delta_seconds is None or delta_seconds < lowest_delta_seconds:
-			lowest_delta_seconds = delta_seconds
-			closest_timestamp = timestamp
-			its_index = index
+		if closest_timestamp is not None:
+			if (be_next and delta_seconds > lowest_delta_seconds) or (not be_next and delta_seconds <= lowest_delta_seconds):
+				continue
+				
+		lowest_delta_seconds = delta_seconds
+		closest_timestamp = timestamp
+		its_index = index
 
 	if closest_timestamp is None:
 		its_index = 0 if be_next else len(timestamps) - 1

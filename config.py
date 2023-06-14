@@ -7,7 +7,7 @@ from datetime import datetime
 # https://zsem.edu.pl/plany/plany/o5.html
 # https://zsemm.edu.pl/plan/plany/o1.html
 
-MAIN_SITE: str = "https://zssssem.edu.pl"
+MAIN_SITE: str = "https://zsem.edu.pl"
 SCHEDULE_URL: str = MAIN_SITE + "/plany/plany"
 
 SCHEDULE_BRANCH_ENDPOINT: str = "/o{}.html"
@@ -15,7 +15,7 @@ SCHEDULE_REQUEST_TIMEOUT: int = 5
 
 SYNC_INTERVAL: int = 5
 
-TIME_API_URL: str = "http://worldtimeapis.org/api/ip"
+TIME_API_URL: str = "http://worldtimeapi.org/api/ip"
 TIME_API_REQUEST_TIMEOUT: int = 5
 
 # ================# API #================ #
