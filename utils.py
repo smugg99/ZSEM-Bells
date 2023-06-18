@@ -45,7 +45,7 @@ def build_branch_url(branch_index: int) -> str:
 
 def check_website_status(url: str) -> bool:
 	try:
-		response: requests.Response = requests.get(url)
+		response: requests.Response = requests.get(url, timeout=config.STATUS_REQUEST_TIMEOUT)
 		if response.status_code == 200:
 			logger.info("Website " + url + " is up and running")
 			return True

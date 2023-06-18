@@ -18,6 +18,8 @@ SYNC_INTERVAL: int = 5
 TIME_API_URL: str = "http://worldtimeapi.org/api/ip"
 TIME_API_REQUEST_TIMEOUT: int = 5
 
+STATUS_REQUEST_TIMEOUT: int = 5
+
 # ================# API #================ #
 
 

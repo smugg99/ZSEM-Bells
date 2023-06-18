@@ -109,14 +109,6 @@ class VirtualClock:
 						# I don't know yet if the timings will be correct so it won't skip some seconds...
 						if is_past and delta_seconds == 0:
 							callback()
-
-				# Print other things here, like time to sync and wb callbacks...
-				# utils.logger.info("Current Time: " + str(self.current_time))
-				# utils.log_table({
-				# 	"Closest Timestamp": str(closest_timestamp),
-				# 	"Delta Seconds": str(delta_seconds),
-				# 	"Current Datetime": str(self.current_time)
-				# })
 	
 				if utils.user_config.get("wasteful_debug"):
 					self.log_status_table()
