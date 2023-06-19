@@ -14,7 +14,7 @@ Instructions for further maintainers are currently being work on...
 ```
 sudo apt install python3 python3-venv
 ```
-2. Clone this repo:
+1. Clone this repo:
 ```
 git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
