@@ -29,7 +29,7 @@ def setup_gpio():
 			utils.logger.warn("GPIO config is empty")
 		else:
 			GPIO.setmode(GPIO.BOARD)
-      
+
 			pins_to_setup = [
 				gpio_pins_config["neutral_callback"],
 				gpio_pins_config["work_callback"],
@@ -39,7 +39,7 @@ def setup_gpio():
 			for pin in pins_to_setup:
 				print(pin)
 				try:
-					GPIO.setup(pin, GPIO.OUT, GPIO.LOW)
+					GPIO.setup(int(pin), GPIO.OUT, GPIO.LOW)
 				except Exception as e:
 					utils.logger.error("GPIO pins are probably not supported on this device: " + str(e))
 					break
