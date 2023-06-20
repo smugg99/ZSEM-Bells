@@ -6,7 +6,7 @@
 	"disable_schedule_sync": true,
 	"disable_clock_sync": true,
 	"gpio_pins": {
-		"neutral_callback": 8,
+		"neutral_callback": 11,
 		"work_callback": 6,
 		"break_callback": 5	
 	}
