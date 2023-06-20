@@ -19,6 +19,7 @@ def play_wav_file(file_path):
 	subprocess.run(command)
 
 def setup_gpio():
+	GPIO.cleanup()
 	GPIO.setmode(GPIO.BOARD)
  
 	GPIO.setup(12, GPIO.OUT, GPIO.LOW)
