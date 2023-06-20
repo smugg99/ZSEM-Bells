@@ -12,6 +12,7 @@ from typing import List, Optional
 
 import utils
 import config
+import wrapper
 
 
 # ================# Functions #================ #
@@ -25,14 +26,15 @@ async def main():
 
 	# ================# Local Functions #================ #
 
-	# In below functions GPIO of fe. a raspberry pi can be controlled
-	def break_callback() -> None:
+	def break_callback():
 		utils.logger.info("Break callback triggered")
+		asyncio.create_task(wrapper.callback_handler(False))
 
-	def work_callback() -> None:
+	def work_callback():
 		utils.logger.info("Work callback triggered")
+		asyncio.create_task(wrapper.callback_handler(True))
 
-	def update() -> None:
+	def update():
 		schedule_keeper.sync_schedule()
 		
 		virtual_clock.sync_time()
@@ -40,8 +42,11 @@ async def main():
 
  	# ================# Local Functions #================ #
   
+	wrapper.setup_gpio()
 	update()
-	#virtual_clock.current_time = datetime(2023, 5, 15, 7, 44, 50)
+ 
+	# Remove after tests...
+	virtual_clock.current_time = datetime(2023, 5, 15, 7, 44, 50)
 	virtual_clock.add_wb_callbacks(work_callback, break_callback)	
 
 	clock_task = asyncio.create_task(virtual_clock.start_t())
@@ -76,5 +81,6 @@ async def main():
 
 if __name__ == "__main__":
 	asyncio.run(main())
+	wrapper.cleanup_gpio()
 
 # ================# Functions #================ #

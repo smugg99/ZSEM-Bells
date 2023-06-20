@@ -128,7 +128,7 @@ def compare_timestamps(timestamp_a: time, timestamp_b: time) -> Tuple[bool, floa
 
 	return delta_seconds <= 0, delta_seconds
 
-def log_table(data : List, headers: List[str] = "firstrow") -> None:
+def log_table(data : List, headers: List[str] = "firstrow"):
 	logger.raw(tabulate(data, headers=headers, tablefmt="fancy_grid", stralign="center"))
 
 # ================# Functions #================ #

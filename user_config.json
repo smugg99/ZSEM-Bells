@@ -1,5 +1,13 @@
 {
 	"enable_logs": false,
 	"sync_timestamps": ["00:00:00", "03:15:00", "6:30:00"],
-	"wasteful_debug": true
+	"wasteful_debug": true,
+	"disable_gpio_pins": false,
+	"disable_schedule_sync": true,
+	"disable_clock_sync": true,
+	"gpio_pins": {
+		"neutral_callback": 8,
+		"work_callback": 6,
+		"break_callback": 5	
+	}
 }

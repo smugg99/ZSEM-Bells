@@ -124,7 +124,7 @@ class ScheduleKeeper():
             cls._instance = super().__new__(cls)
         return cls._instance
     
-    def __init__(self) -> None:
+    def __init__(self):
         self.file_path: str = config.SCHEDULE_FILE_PATH
 
         self.schedule: List[str] = []
@@ -153,15 +153,17 @@ class ScheduleKeeper():
                     utils.logger.critical("Invalid data in the schedule file")
                     raise TypeError()
 
-    def write_schedule_file(self, data: Dict[str, Any]) -> None:
+    def write_schedule_file(self, data: Dict[str, Any]):
         with open(self.file_path, "w") as file:
             json.dump(data, file)
 
     def sync_schedule(self) -> None:
         utils.logging_formatter.separator("Syncing Schedule")
-
         utils.logger.info("Syncing schedule from: " + config.SCHEDULE_URL)
-        if utils.check_website_status(config.MAIN_SITE):
+        
+        schedule_sync_disabled: Optional[bool] = utils.user_config.get("disable_schedule_sync", False)	
+  
+        if not schedule_sync_disabled and utils.check_website_status(config.MAIN_SITE):
             self.valid_branches, self.schedule, self.schedule_branch = _get_valid_branches()
 
             self.write_schedule_file({
@@ -172,8 +174,11 @@ class ScheduleKeeper():
 
             # Compare fetched data to the cached one?
         else:
-            utils.logger.error(
-                "Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the saved one...")
+            if schedule_sync_disabled:
+                utils.logger.warn("Syncing schedule is disabled")
+            else:
+                utils.logger.error("Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the saved one...")
+            
             data: List[str] = self.read_schedule_file()
 
             self.schedule_branch = data["schedule_branch"]

@@ -19,7 +19,7 @@ class VirtualClock:
 			cls._instance = super().__new__(cls)
 		return cls._instance
 	
-	def __init__(self) -> None:
+	def __init__(self):
 		self.is_started: bool = False
 		self.current_time: datetime = None
   
@@ -31,19 +31,31 @@ class VirtualClock:
   
 		self.work_callback: Callable = None
 		self.break_callback: Callable = None
+		self.neutral_callback: Callable = None
   
 	def __call__(self) -> 'VirtualClock':
 		return self
 	
  
 	def sync_time(self) -> datetime:
+		
+		utils.logging_formatter.separator("Syncing Virtual Clock")
+		clock_sync_disabled: Optional[bool] = utils.user_config.get("disable_clock_sync", False)	
+  
+
+		# ================# Local Functions #================ #
+  
 		def _use_system_time(e: Exception = None) -> datetime:
 			self.current_time = datetime.now()
-			utils.logger.error("Failed to sync time from API, using system time: " + str(self.current_time) + ("\n" + str(e) if e else ""))
-	 
-		utils.logging_formatter.separator("Syncing Virtual Clock")
+			if clock_sync_disabled:
+				utils.logger.warn("Syncing clock is disabled")
+			else:
+				utils.logger.error("Failed to sync time from API, using system time: " + str(self.current_time) + ("\n" + str(e) if e else ""))
+		
+  		# ================# Local Functions #================ #
+
   
-		if utils.check_website_status(config.TIME_API_URL):
+		if not clock_sync_disabled and utils.check_website_status(config.TIME_API_URL):
 			try:
 				response = requests.get(
 					config.TIME_API_URL, timeout=config.TIME_API_REQUEST_TIMEOUT)
@@ -64,10 +76,10 @@ class VirtualClock:
 
 		return self.current_time
 
-	def set_timestamps(self, timestamps: List[time]) -> None:
+	def set_timestamps(self, timestamps: List[time]):
 		self._timestamps = timestamps
 
-	async def start_t(self) -> None:
+	async def start_t(self):
 		utils.logging_formatter.separator("Starting Virtual Clock")
 
 		if not self.is_started:
@@ -91,6 +103,9 @@ class VirtualClock:
 					is_past, delta_seconds = utils.compare_timestamps(current_timestamp, _timestamp)
 
 					if is_past and delta_seconds == 0:
+						if callable(self.neutral_callback):
+							self.neutral_callback()
+
 						if index % 2 == 0:
 							self.break_callback()
 						else:
@@ -121,7 +136,7 @@ class VirtualClock:
 		else:
 			utils.logger.warning("Virtual clock is already running")
 
-	def stop(self) -> None:
+	def stop(self):
 		utils.logging_formatter.separator("Stopping Virtual Clock")
 
 		if self.is_started:
@@ -166,9 +181,11 @@ class VirtualClock:
 
 		utils.log_table((table_data, headers, _headers))
 
-	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable) -> None:
+	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable, neutral_callback: Callable = None):
 		self.work_callback = work_callback
 		self.break_callback = break_callback
+  
+		self.neutral_callback = neutral_callback
 
 	def add_timestamp_callback(self, timestamps: List[time], callback: Callable):
 		self._callback_timestamps.append([timestamps, callback])
