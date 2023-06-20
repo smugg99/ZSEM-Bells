@@ -23,13 +23,13 @@ def setup_gpio():
 	gpio_pins_disabled: Optional[bool] = utils.user_config.get("disable_gpio_pins", False)	
 
 	if not gpio_pins_disabled:
-		GPIO.setmode(GPIO.BOARD)
-  
 		gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
 	
 		if not gpio_pins_config:
 			utils.logger.warn("GPIO config is empty")
 		else:
+			GPIO.setmode(GPIO.BOARD)
+      
 			pins_to_setup = [
 				gpio_pins_config["neutral_callback"],
 				gpio_pins_config["work_callback"],
@@ -37,6 +37,7 @@ def setup_gpio():
 			]
 
 			for pin in pins_to_setup:
+				print(pin)
 				try:
 					GPIO.setup(pin, GPIO.OUT)
 				except Exception as e:
