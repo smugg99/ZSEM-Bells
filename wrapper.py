@@ -33,8 +33,8 @@ def setup_gpio():
 
 			pins_to_setup = [
 				gpio_pins_config["neutral_callback"],
-				gpio_pins_config["work_callback"],
-				gpio_pins_config["break_callback"]
+				# gpio_pins_config["work_callback"],
+				# gpio_pins_config["break_callback"]
 			]
 
 			print(gpio_pins_config, gpio_pins_disabled, pins_to_setup)
@@ -70,6 +70,7 @@ async def callback_handler(is_work: bool):
 		return
 
 	gpio_pin: int = gpio_pins_config[("work" if is_work else "break") + "_callback"]
+	print(gpio_pin)
 	# Check if the gpio pins are useable
 	GPIO.output(gpio_pin, GPIO.HIGH)
 	await asyncio.sleep(5)
