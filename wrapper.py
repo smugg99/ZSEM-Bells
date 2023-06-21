@@ -29,7 +29,7 @@ def setup_gpio():
 			utils.logger.warn("GPIO config is empty")
 		else:
 			GPIO.setmode(GPIO.BOARD)
-			print(GPIO.getmode())
+			print(GPIO.getmode(), type(GPIO.getmode()))
 
 			pins_to_setup = [
 				gpio_pins_config["neutral_callback"],
