@@ -88,12 +88,18 @@ async def callback_handler(is_work: bool):
 		utils.logger.warn("GPIO config is empty, not executing callback handler")
 		return
 
-	gpio_pin: int = gpio_pins_config[("work" if is_work else "break") + "_callback"]
-	print(gpio_pin)
+	callback_type: str = ("work" if is_work else "break")
+	gpio_pin: int = gpio_pins_config[callback_type + "_callback"]
+	if not gpio_pin:
+		utils.logger.warn("GPIO pins for wb callback are invalid")
+		return
+
 	# Check if the gpio pins are useable
 	GPIO.output(gpio_pin, GPIO.HIGH)
 	await asyncio.sleep(5)
 	GPIO.output(gpio_pin, GPIO.LOW)
+ 
+	utils.logger.info("Callback of type " + callback_type + " finished successfully")
 
 
 
