@@ -10,9 +10,12 @@ Instructions for further maintainers are currently being work on...
 - Git >2.34.1
 
 # Setup ⚙️
-0. Install venv (if needed):
+0. Install venv  and python3 header files (if needed):
 ```
 sudo apt install python3 python3-venv
+```
+```
+sudo apt install python3-dev
 ```
 1. Clone this repo:
 ```
@@ -22,23 +25,32 @@ git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
 cd ./ZSEM-Bells
 ```
+3. Clone my fork of the OPI.GPIO:
+```
+git clone https://github.com/DudusJestem/OPI.GPIO.git/
+```
 3. Setup the virtual environment:
-```
-python -venv venv
-```
-or
 ```
 python3 -m venv venv
 ```
-and activate it 
 ```
 source ./venv/bin/activate
 ```
-4. Install required packages
+5. Build the OPI.GPIO module:
+```
+cd OPI.GPIO
+```
+```
+sudo python3 setup.py install
+```
+```
+pip install ./
+```
+6. Install required packages
 ```
 pip install -r requirements.txt
 ```
-5. Make the main file executable 
+7. Make the main file executable 
 ```
 chmod +x ./main.py
 ```
