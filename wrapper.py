@@ -28,6 +28,7 @@ def setup_gpio():
 		if not gpio_pins_config:
 			utils.logger.warn("GPIO config is empty")
 		else:
+			GPIO.setboard(GPIO.H616)
 			GPIO.setmode(GPIO.BOARD)
 			print(GPIO.getmode(), type(GPIO.getmode()))
 
