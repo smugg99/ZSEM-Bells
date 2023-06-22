@@ -34,7 +34,8 @@ async def main():
 
 	def update():
 		schedule_keeper.sync_schedule()
-		
+		utils.log_table(schedule_keeper.get_schedule())
+  
 		virtual_clock.sync_time()
 		virtual_clock.set_timestamps(schedule_keeper.get_timestamps())
 
@@ -44,7 +45,7 @@ async def main():
 	update()
  
 	# Remove after tests...
-	virtual_clock.current_time = datetime(2023, 5, 15, 7, 44, 50)
+	virtual_clock.current_time = datetime(2023, 5, 15, 7, 54, 50)
 	virtual_clock.add_wb_callbacks(work_callback, break_callback)	
 
 	clock_task = asyncio.create_task(virtual_clock.start_t())
@@ -53,7 +54,7 @@ async def main():
 	if not sync_timestamps:
 		utils.logger.warn("Sync timestamps are empty")
 	else:
-		timestamps: time = []
+		timestamps: List[time] = []
 		for raw_timestamp in sync_timestamps:
 			is_valid, timestamp = utils.is_valid_timestamp(raw_timestamp)
    
@@ -62,16 +63,8 @@ async def main():
 				continue
 			
 			timestamps.append(timestamp)
-		
-		parsed_timestamps: List[str] = []
-		for timestamp in timestamps:
-			parsed_timestamps.append(utils.to_string(timestamp))
 
-		# Note: make the sync tables vertical instead of retarded horizontal
-		table_data: List[str] = ["Sync Timestamps"]
-		headers: List[str] = parsed_timestamps
-
-		utils.log_table((table_data, headers))
+		utils.log_table([[utils.to_string(timestamp) for timestamp in timestamps]], [])
   
 		virtual_clock.add_timestamp_callback(timestamps, update)
 		

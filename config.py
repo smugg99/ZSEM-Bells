@@ -55,5 +55,10 @@ LOGGER_MAX_FORMAT: str = "[%(asctime)s] - [%(levelname)s] - %(message)s (%(filen
 
 # ================# Logger #================ #
 
+
+# ================# Misc #================ #
+
 USER_CONFIG_FILE_PATH: str = "user_config.json"
 CLOCK_RUNNING_ANNOUNCE_INTERVAL: int = 60
+
+# ================# Misc #================ #

@@ -37,7 +37,6 @@ class VirtualClock:
 	
  
 	def sync_time(self) -> datetime:
-		
 		utils.logging_formatter.separator("Syncing Virtual Clock")
 		clock_sync_disabled: Optional[bool] = utils.user_config.get("disable_clock_sync", False)	
   
@@ -147,38 +146,25 @@ class VirtualClock:
 
 	# This needs testing when ill sober up
 	def log_status_table(self):
-		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, self.current_time.time(), True)
-		previous_timestamp, previous_delta_seconds, _its_index = utils.get_adjacent_timestamp(self._timestamps, self.current_time.time(), False)
+		current_time = self.current_time.time()
+		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, current_time, True)
+		previous_timestamp, previous_delta_seconds, _its_index = utils.get_adjacent_timestamp(self._timestamps, current_time, False)
 
-		table_data: List[str] = [
-			"Timestamp",
-			"Delta Seconds",
-			"Action",
-			"Current Datetime"
+		next_timestamp_string = utils.to_string(next_timestamp) if next_timestamp else "None"
+		next_delta_seconds_string = str(next_delta_seconds) if next_delta_seconds else "None"
+		next_type_string = "Break" if its_index and its_index % 2 else "Work"
+
+		previous_timestamp_string = utils.to_string(previous_timestamp) if previous_timestamp else "None"
+		previous_delta_seconds_string = str(previous_delta_seconds) if previous_delta_seconds else "None"
+		previous_type_string = "Break" if _its_index and _its_index % 2 else "Work"
+
+		table_data = [
+			["Timestamp", "Delta Seconds", "Action", "Current Datetime"],
+			[next_timestamp_string, next_delta_seconds_string, next_type_string, self.current_time.strftime("%Y-%m-%d %H:%M:%S")],
+			[previous_timestamp_string, previous_delta_seconds_string, previous_type_string]
 		]
 
-		next_timestamp_string: str = utils.to_string(next_timestamp) if next_timestamp else "None"
-		next_delta_seconds_string: str = str(next_delta_seconds) if next_delta_seconds else "None"
-		next_type_string: str = "Break" if its_index and its_index % 2 else "Work"
-  
-		previous_timestamp_string: str = utils.to_string(previous_timestamp) if previous_timestamp else "None"
-		previous_delta_seconds_string: str = str(previous_delta_seconds) if previous_delta_seconds else "None"
-		previous_type_string: str = "Break" if _its_index and _its_index % 2 else "Work"
-  
-		headers: List[str] = [
-			next_timestamp_string,
-			next_delta_seconds_string,
-			next_type_string,
-			self.current_time.strftime("%Y-%m-%d %H:%M:%S")
-		]
-
-		_headers: List[str] = [
-			previous_timestamp_string,
-			previous_delta_seconds_string,
-			previous_type_string,
-		]
-
-		utils.log_table((table_data, headers, _headers))
+		utils.log_table(table_data)
 
 	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable, neutral_callback: Callable = None):
 		self.work_callback = work_callback

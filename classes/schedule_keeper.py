@@ -185,10 +185,9 @@ class ScheduleKeeper():
             self.schedule = data["schedule"]
             self.valid_branches = data["valid_branches"]
 
-        utils.log_table(self.schedule, ["Work", "Break"])
 
-        # utils.logger.info("Valid branches: " + str(self.schedule_branch) + "/" + str(self.valid_branches))
-        # utils.logger.info("Schedule: " + str(self.schedule))
+    def get_schedule(self) -> List[str]:
+        return self.schedule
 
     def get_timestamps(self) -> List[time]:
         timestamps: List[time] = []
