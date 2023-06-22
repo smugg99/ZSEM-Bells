@@ -43,9 +43,7 @@ async def main():
   
 	wrapper.setup_gpio()
 	update()
- 
-	# Remove after tests...
-	virtual_clock.current_time = datetime(2023, 5, 15, 7, 54, 50)
+
 	virtual_clock.add_wb_callbacks(work_callback, break_callback)	
 
 	clock_task = asyncio.create_task(virtual_clock.start_t())
@@ -73,5 +71,5 @@ async def main():
 if __name__ == "__main__":
 	asyncio.run(main())
 	wrapper.cleanup_gpio()
-
+	
 # ================# Functions #================ #
