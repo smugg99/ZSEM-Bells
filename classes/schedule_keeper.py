@@ -1,11 +1,11 @@
-import json
-import requests
 import asyncio
-
-from urllib.parse import urlparse, parse_qs
-from bs4 import BeautifulSoup
-from typing import Union, Tuple, Optional, List, Dict, Any, Callable
+import json
 from datetime import datetime, time
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from urllib.parse import parse_qs, urlparse
+
+import requests
+from bs4 import BeautifulSoup
 from tabulate import tabulate
 
 import config

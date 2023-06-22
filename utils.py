@@ -1,14 +1,14 @@
-import logging
-import requests
 import asyncio
-
+import logging
 from datetime import datetime, time, timedelta
-from classes.logging_formatter import LoggingFormatter
-from classes.config_manager import ConfigManager
-from typing import Tuple, Optional, Union, Dict, List
+from typing import Dict, List, Optional, Tuple, Union
+
+import requests
 from tabulate import tabulate
 
 import config
+from classes.config_manager import ConfigManager
+from classes.logging_formatter import LoggingFormatter
 
 config_manager = ConfigManager()
 user_config = config_manager.get_config()

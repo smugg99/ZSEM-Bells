@@ -1,12 +1,11 @@
-import requests
 import asyncio
+from datetime import datetime, time, timedelta
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from datetime import datetime, timedelta, time
-from typing import Optional, Union, Tuple, Callable, Dict, List
+import requests
 
 import config
 import utils
-
 
 # ================# Classes #================ #
 
