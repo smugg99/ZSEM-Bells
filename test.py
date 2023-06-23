@@ -12,5 +12,7 @@ GPIO.output(pin, GPIO.HIGH)
 sleep(1)
 while True:
     GPIO.output(pin, GPIO.LOW)
+    print(GPIO.input(pin))
     sleep(1)
     GPIO.output(pin, GPIO.HIGH)
+    print(GPIO.input(pin))
