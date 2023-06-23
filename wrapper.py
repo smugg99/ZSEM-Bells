@@ -60,11 +60,12 @@ def setup_gpio():
 
 			for pin in pins_to_setup:
 				try:
-					GPIO.setup(int(pin), GPIO.OUT, pull_up_down=GPIO.PUD_UP)
+					GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
 				except Exception as e:
 					utils.logger.error("GPIO pins are probably not supported on this device: " + str(e))
 				else:
 					utils.logger.info("Setting pin " + str(pin) + " as output")
+					GPIO.output(pin, GPIO.HIGH)
 	else:
 		utils.logger.warn("GPIOs are disabled")
 
@@ -92,9 +93,9 @@ async def callback_handler(is_work: bool):
 		utils.logger.warn("GPIO pins for wb callback are invalid")
 		return
 
-	GPIO.output(gpio_pin, GPIO.HIGH)
-	await asyncio.sleep(5)
 	GPIO.output(gpio_pin, GPIO.LOW)
+	await asyncio.sleep(5)
+	GPIO.output(gpio_pin, GPIO.HIGH)
  
 	utils.logger.info("Callback of type " + callback_type + " finished")
 
