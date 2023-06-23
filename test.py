@@ -7,7 +7,7 @@ pin: int = 12
 GPIO.setboard(GPIO.H616)
 GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(pin, GPIO.OUT)
 GPIO.output(pin, GPIO.HIGH)
 
 while True:
