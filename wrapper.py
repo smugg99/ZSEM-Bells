@@ -60,7 +60,7 @@ def setup_gpio():
 
 			for pin in pins_to_setup:
 				try:
-					GPIO.setup(int(pin), GPIO.OUT, GPIO.LOW)
+					GPIO.setup(int(pin), GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
 				except Exception as e:
 					utils.logger.error("GPIO pins are probably not supported on this device: " + str(e))
 				else:
