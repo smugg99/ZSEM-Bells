@@ -3,8 +3,8 @@
 	"sync_timestamps": ["00:00:00", "03:15:00", "6:30:00"],
 	"wasteful_debug": true,
 	"disable_gpio_pins": false,
-	"disable_schedule_sync": false,
-	"disable_clock_sync": false,
+	"disable_schedule_sync": true,
+	"disable_clock_sync": true,
 	"gpio_pins": {
 		"neutral_callback": 12,
 		"work_callback": 16,
