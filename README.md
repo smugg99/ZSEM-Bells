@@ -15,6 +15,9 @@ Instructions for further maintainers are currently being work on...
 sudo apt install python3 python3-venv
 ```
 ```
+sudo apt install python3-venv
+```
+```
 sudo apt install python3-dev
 ```
 1. Clone this repo:
