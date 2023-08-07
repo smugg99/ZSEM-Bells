@@ -1,8 +1,8 @@
 from datetime import datetime
 import logging
 
-import config
-import utils
+import data.config as config
+import src.utils as utils
 
 # ================# Classes #================ #
 
@@ -25,7 +25,7 @@ class LoggingFormatter:
     bold_red = "\x1b[31;1m"
     underline = "\x1b[4m"
     reset = "\x1b[0m"
-    
+
     FORMATS = {
         # 25 is between INFO level and WARNING level, it stands for the RAW level
         25: white + config.LOGGER_RAW_FORMAT + reset,
@@ -37,10 +37,12 @@ class LoggingFormatter:
         logging.CRITICAL: bold_red + config.LOGGER_MAX_FORMAT + reset
     }
 
-    def __init__(self) -> None:
+    def __init__(self):
         # Can't choose between them yet...
-        self.raw_formatter = logging.Formatter(config.LOGGER_RAW_FORMAT, datefmt="%H:%M:%S")
-        self.log_formatter = logging.Formatter(config.LOGGER_LOG_FORMAT, datefmt="%H:%M:%S")
+        self.raw_formatter = logging.Formatter(
+            config.LOGGER_RAW_FORMAT, datefmt="%H:%M:%S")
+        self.log_formatter = logging.Formatter(
+            config.LOGGER_LOG_FORMAT, datefmt="%H:%M:%S")
 
     def format(self, record) -> str:
         log_fmt: str = self.FORMATS.get(record.levelno)
@@ -48,14 +50,15 @@ class LoggingFormatter:
 
         return formatter.format(record)
 
-    def startup(self) -> None:
+    def startup(self):
         self.separator("Program Startup")
         utils.logger.raw(str(datetime.now()))
 
-    def separator(self, text: str) -> None:
-        utils.logger.raw("# ================# {} #================ #".format(text))
+    def separator(self, text: str):
+        utils.logger.raw(
+            "# ================# {} #================ #".format(text))
 
-    def test(self) -> None:
+    def test(self):
         self.separator("Logger Test")
 
         utils.logger.log("log message test")

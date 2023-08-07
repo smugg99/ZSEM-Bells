@@ -8,8 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
-import config
-import utils
+import data.config as config
+import src.utils as utils
 
 # ================# Functions #================ #
 
@@ -123,7 +123,7 @@ class ScheduleKeeper():
         if not cls._instance:
             cls._instance = super().__new__(cls)
         return cls._instance
-    
+
     def __init__(self):
         self.file_path: str = config.SCHEDULE_FILE_PATH
 
@@ -157,12 +157,14 @@ class ScheduleKeeper():
         with open(self.file_path, "w") as file:
             json.dump(data, file)
 
-    def sync_schedule(self) -> None:
+    def sync_schedule(self) -> List[str]:
         utils.logging_formatter.separator("Syncing Schedule")
-        utils.logger.info("Syncing schedule from: " + config.SCHEDULE_URL)
-        
-        schedule_sync_disabled: Optional[bool] = utils.user_config.get("disable_schedule_sync", False)	
-  
+        utils.logger.info(
+            "Trying to sync schedule from: " + config.SCHEDULE_URL)
+
+        schedule_sync_disabled: Optional[bool] = utils.user_config.get(
+            "disable_schedule_sync", False)
+
         if not schedule_sync_disabled and utils.check_website_status(config.MAIN_SITE):
             self.valid_branches, self.schedule, self.schedule_branch = _get_valid_branches()
 
@@ -177,27 +179,28 @@ class ScheduleKeeper():
             if schedule_sync_disabled:
                 utils.logger.warn("Syncing schedule is disabled")
             else:
-                utils.logger.error("Can't sync schedule due to " + config.MAIN_SITE + " being down, attempting to use the saved one...")
-            
+                utils.logger.error("Can't sync schedule due to " + config.MAIN_SITE +
+                                   " being down, attempting to use the saved one...")
+
             data: List[str] = self.read_schedule_file()
 
             self.schedule_branch = data["schedule_branch"]
             self.schedule = data["schedule"]
             self.valid_branches = data["valid_branches"]
 
+        return self.schedule
 
     def get_schedule(self) -> List[str]:
         return self.schedule
 
     def get_timestamps(self) -> List[time]:
         timestamps: List[time] = []
-        
+
         for schedule_hours in self.schedule:
             for schedule_hour in schedule_hours:
                 timestamps.append(utils.to_timestamp(schedule_hour))
 
         return sorted(timestamps)
-
 
 
 # ================# Classes #================ #

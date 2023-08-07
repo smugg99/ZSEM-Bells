@@ -4,8 +4,7 @@ from typing import Dict, Optional
 
 import OPi.GPIO as GPIO
 
-import utils
-from classes.config_manager import ConfigManager
+import src.utils as utils
 
 # Allwinner H616
 #  +------+-----+----------+------+---+  Zero 2  +---+------+----------+-----+------+

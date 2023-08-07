@@ -1,10 +1,12 @@
 import json
-import config
+from typing import Dict
+
+import data.config as config
 
 # ================# Classes #================ #
 
 
-class ConfigManager:
+class UserConfigManager:
     _instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -13,11 +15,11 @@ class ConfigManager:
         return cls._instance
 
     def __init__(self):
-        self.config : dict = {}
+        self.config: Dict[str, any] = {}
         with open(config.USER_CONFIG_FILE_PATH, 'r') as file:
-            self.config = json.load(file) 
+            self.config = json.load(file)
 
-    def get_config(self):
+    def get_config(self) -> Dict[str, any]:
         return self.config
-    
+
 # ================# Classes #================ #

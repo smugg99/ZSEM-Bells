@@ -6,12 +6,12 @@ from typing import Dict, List, Optional, Tuple, Union
 import requests
 from tabulate import tabulate
 
-import config
-from classes.config_manager import ConfigManager
+import data.config as config
+from classes.user_config_manager import UserConfigManager
 from classes.logging_formatter import LoggingFormatter
 
-config_manager = ConfigManager()
-user_config = config_manager.get_config()
+user_config_manager = UserConfigManager()
+user_config = user_config_manager.get_config()
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)

@@ -4,8 +4,8 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import requests
 
-import config
-import utils
+import data.config as config
+import src.utils as utils
 
 # ================# Classes #================ #
 
@@ -17,42 +17,41 @@ class VirtualClock:
 		if not cls._instance:
 			cls._instance = super().__new__(cls)
 		return cls._instance
-	
+
 	def __init__(self):
 		self.is_started: bool = False
 		self.current_time: datetime = None
-  
+
 		# Internal timestamps, aquired from schedule keeper
 		self._timestamps: List[time] = []
-  
+
 		# External timestamps, can be added to trigger callbacks on certain occasions
 		self._callback_timestamps: List[List[List[time], Callable]] = []
-  
+
 		self.work_callback: Callable = None
 		self.break_callback: Callable = None
 		self.neutral_callback: Callable = None
-  
+
 	def __call__(self) -> 'VirtualClock':
 		return self
-	
- 
+
 	def sync_time(self) -> datetime:
 		utils.logging_formatter.separator("Syncing Virtual Clock")
-		clock_sync_disabled: Optional[bool] = utils.user_config.get("disable_clock_sync", False)	
-  
+		clock_sync_disabled: Optional[bool] = utils.user_config.get(
+			"disable_clock_sync", False)
 
 		# ================# Local Functions #================ #
-  
+
 		def _use_system_time(e: Exception = None) -> datetime:
 			self.current_time = datetime.now()
 			if clock_sync_disabled:
 				utils.logger.warn("Syncing clock is disabled")
 			else:
-				utils.logger.error("Failed to sync time from API, using system time: " + str(self.current_time) + ("\n" + str(e) if e else ""))
-		
-  		# ================# Local Functions #================ #
+				utils.logger.error("Failed to sync time from API, using system time: " +
+								   str(self.current_time) + ("\n" + str(e) if e else ""))
 
-  
+		# ================# Local Functions #================ #
+
 		if not clock_sync_disabled and utils.check_website_status(config.TIME_API_URL):
 			try:
 				response = requests.get(
@@ -68,7 +67,7 @@ class VirtualClock:
 				self.current_time = _current_time
 
 				utils.logger.info("Synced time from API to: " +
-								str(self.current_time))
+								  str(self.current_time))
 		else:
 			_use_system_time()
 
@@ -92,13 +91,14 @@ class VirtualClock:
 			_repetition: int = 0
 			while self.is_started:
 				await asyncio.sleep(1)
-	
+
 				self.current_time += timedelta(seconds=1)
 				current_timestamp: time = self.current_time.time()
-				
+
 				# Schedule timestamps
 				for index, _timestamp in enumerate(self._timestamps):
-					is_past, delta_seconds = utils.compare_timestamps(current_timestamp, _timestamp)
+					is_past, delta_seconds = utils.compare_timestamps(
+						current_timestamp, _timestamp)
 
 					if is_past and delta_seconds == 0:
 						if callable(self.neutral_callback):
@@ -108,7 +108,7 @@ class VirtualClock:
 							self.break_callback()
 						else:
 							self.work_callback()
-       
+
 				# Other timestamps, they may be used to synchronise things,
 				# they get called on specific timestamps
 				for callback_timestamp in self._callback_timestamps:
@@ -116,20 +116,21 @@ class VirtualClock:
 					callback: Callable = callback_timestamp[1]
 
 					for index, timestamp in enumerate(timestamps):
-						is_past, delta_seconds = utils.compare_timestamps(current_timestamp, timestamp)
+						is_past, delta_seconds = utils.compare_timestamps(
+							current_timestamp, timestamp)
 
 						# Note, this implementation may need to be changed in the future after tests
 						# I don't know yet if the timings will be correct so it won't skip some seconds...
 						if is_past and delta_seconds == 0:
 							callback()
-	
+
 				if utils.user_config.get("wasteful_debug"):
 					self.log_status_table()
 				else:
 					if _repetition >= config.CLOCK_RUNNING_ANNOUNCE_INTERVAL:
 						self.log_status_table()
 						_repetition = 0
-		
+
 					_repetition += 1
 		else:
 			utils.logger.warning("Virtual clock is already running")
@@ -147,21 +148,29 @@ class VirtualClock:
 	# This needs testing when ill sober up
 	def log_status_table(self):
 		current_time = self.current_time.time()
-		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(self._timestamps, current_time, True)
-		previous_timestamp, previous_delta_seconds, _its_index = utils.get_adjacent_timestamp(self._timestamps, current_time, False)
+		next_timestamp, next_delta_seconds, its_index = utils.get_adjacent_timestamp(
+			self._timestamps, current_time, True)
+		previous_timestamp, previous_delta_seconds, _its_index = utils.get_adjacent_timestamp(
+			self._timestamps, current_time, False)
 
-		next_timestamp_string = utils.to_string(next_timestamp) if next_timestamp else "None"
-		next_delta_seconds_string = str(next_delta_seconds) if next_delta_seconds else "None"
+		next_timestamp_string = utils.to_string(
+			next_timestamp) if next_timestamp else "None"
+		next_delta_seconds_string = str(
+			next_delta_seconds) if next_delta_seconds else "None"
 		next_type_string = "Break" if its_index and its_index % 2 else "Work"
 
-		previous_timestamp_string = utils.to_string(previous_timestamp) if previous_timestamp else "None"
-		previous_delta_seconds_string = str(previous_delta_seconds) if previous_delta_seconds else "None"
+		previous_timestamp_string = utils.to_string(
+			previous_timestamp) if previous_timestamp else "None"
+		previous_delta_seconds_string = str(
+			previous_delta_seconds) if previous_delta_seconds else "None"
 		previous_type_string = "Break" if _its_index and _its_index % 2 else "Work"
 
 		table_data = [
 			["Timestamp", "Delta Seconds", "Action", "Current Datetime"],
-			[next_timestamp_string, next_delta_seconds_string, next_type_string, self.current_time.strftime("%Y-%m-%d %H:%M:%S")],
-			[previous_timestamp_string, previous_delta_seconds_string, previous_type_string]
+			[next_timestamp_string, next_delta_seconds_string, next_type_string,
+			 self.current_time.strftime("%Y-%m-%d %H:%M:%S")],
+			[previous_timestamp_string,
+			 previous_delta_seconds_string, previous_type_string]
 		]
 
 		utils.log_table(table_data)
@@ -169,7 +178,7 @@ class VirtualClock:
 	def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable, neutral_callback: Callable = None):
 		self.work_callback = work_callback
 		self.break_callback = break_callback
-  
+
 		self.neutral_callback = neutral_callback
 
 	def add_timestamp_callback(self, timestamps: List[time], callback: Callable):

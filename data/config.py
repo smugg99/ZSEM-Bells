@@ -30,7 +30,7 @@ SCHEDULE_TABLE_HOUR_CLASS_NAME: str = "g"
 
 SCHEDULE_TABLE_MIN_ROWS: int = 2
 
-SCHEDULE_FILE_PATH: str = "schedule.json"
+SCHEDULE_FILE_PATH: str = "data/schedule.json"
 
 # ================# Scraper #================ #
 
@@ -41,7 +41,7 @@ SCHEDULE_FILE_PATH: str = "schedule.json"
 # LOGGER_MED_FORMAT = "%(asctime)s - %(name)s - %(message)s (%(filename)s:%(lineno)d)"
 # LOGGER_MAX_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
 
-LOGS_FILE_PATH: str = "last_logs.txt"
+LOGS_FILE_PATH: str = "data/last_logs.txt"
 
 LOGGER_LOG_FORMAT: str = "%(message)s - (%(filename)s:%(lineno)d) - [%(asctime)s]"
 LOGGER_RAW_FORMAT: str = "%(message)s"
@@ -58,7 +58,7 @@ LOGGER_MAX_FORMAT: str = "[%(asctime)s] - [%(levelname)s] - %(message)s (%(filen
 
 # ================# Misc #================ #
 
-USER_CONFIG_FILE_PATH: str = "user_config.json"
+USER_CONFIG_FILE_PATH: str = "data/user_config.json"
 CLOCK_RUNNING_ANNOUNCE_INTERVAL: int = 60
 
 # ================# Misc #================ #
