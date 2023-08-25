@@ -1,8 +1,15 @@
+
 # ZSEM-Bells
 
 Program for managing bells in my school
 
-Instructions for further maintainers are currently being work on...
+NOTE: Instructions for further maintainers are currently being work on...
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
+    <img src="https://i.imgur.com/CDXbbhS.jpg" alt="image" width="256" height="256" style="margin: 10px;">
+    <img src="https://i.imgur.com/X4R9076.jpg" alt="image" width="256" height="256" style="margin: 10px;">
+    <img src="https://i.imgur.com/FmvJAQ8.jpg" alt="image" width="256" height="256" style="margin: 10px;">
+</div>
 
 # Prerequisites (tested on) 📚
 - Python >3.10.6
