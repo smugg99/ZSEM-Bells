@@ -22,7 +22,7 @@ sudo apt install python3-dev
 ```
 1. Clone this repo:
 ```
-git clone https://github.com/DudusJestem/ZSEM-Bells.git/
+git clone https://github.com/SmeggMann99/ZSEM-Bells.git/
 ```
 2. Cd into the directory:
 ```
@@ -30,7 +30,7 @@ cd ./ZSEM-Bells
 ```
 3. Clone my fork of the OPI.GPIO:
 ```
-git clone https://github.com/DudusJestem/OPI.GPIO.git/
+git clone https://github.com/SmeggMann99/OPI.GPIO.git/
 ```
 3. Setup the virtual environment:
 ```
