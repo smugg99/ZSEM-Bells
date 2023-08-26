@@ -17,7 +17,7 @@ A program that manages bells in my school...
 # Setup ⚙️
 
 ## Automatic installation
-0. 
+0. Make the installer script executable
 ```shell
 chmod a+x ./install.sh
 ```
