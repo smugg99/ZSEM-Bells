@@ -1,8 +1,13 @@
-# ZSEM-Bells
+
+<pre>
+  _________  _____ __  __       ____       _ _     
+ |__  / ___|| ____|  \/  |     | __ )  ___| | |___ 
+   / /\___ \|  _| | |\/| |_____|  _ \ / _ \ | / __|
+  / /_ ___) | |___| |  | |_____| |_) |  __/ | \__ \
+ /____|____/|_____|_|  |_|     |____/ \___|_|_|___/
+</pre>
 
 A program that manages bells in my school...
-
-Instructions for further maintainers are currently being work on...
 
 # Prerequisites (tested on) 📚
 - Python >3.10.6
@@ -16,8 +21,7 @@ Instructions for further maintainers are currently being work on...
 ```shell
 chmod a+x ./install.sh
 ```
-
-1. Run the script
+1. Run the script, wait till the installation completes
 
 ## Manual installation
 0. Install venv  and python3 header files (if needed):
@@ -31,7 +35,7 @@ sudo apt install python3-venv
 sudo apt install python3-dev
 ```
 1. Clone this repo:
-```
+```shell
 git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
 2. Cd into the directory:
@@ -39,7 +43,7 @@ git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 cd ./ZSEM-Bells
 ```
 3. Clone my fork of the OPI.GPIO:
-```
+```shell
 git clone https://github.com/DudusJestem/OPI.GPIO.git/
 ```
 3. Setup the virtual environment:
