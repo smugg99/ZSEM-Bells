@@ -1,19 +1,8 @@
-
-<pre>
-  _________  _____ __  __       ____       _ _     
- |__  / ___|| ____|  \/  |     | __ )  ___| | |___ 
-   / /\___ \|  _| | |\/| |_____|  _ \ / _ \ | / __|
-  / /_ ___) | |___| |  | |_____| |_) |  __/ | \__ \
- /____|____/|_____|_|  |_|     |____/ \___|_|_|___/
-</pre>
+# ZSEM-Bells
 
 A program that manages bells in my school...
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
-    <img src="https://i.imgur.com/CDXbbhS.jpg" alt="image" width="256" height="256" style="margin: 10px;">
-    <img src="https://i.imgur.com/X4R9076.jpg" alt="image" width="256" height="256" style="margin: 10px;">
-    <img src="https://i.imgur.com/FmvJAQ8.jpg" alt="image" width="256" height="256" style="margin: 10px;">
-</div>
+Instructions for further maintainers are currently being work on...
 
 # Prerequisites (tested on) 📚
 - Python >3.10.6
@@ -42,16 +31,16 @@ sudo apt install python3-venv
 sudo apt install python3-dev
 ```
 1. Clone this repo:
-```shell
-git clone https://github.com/SmeggMann99/ZSEM-Bells.git/
+```
+git clone https://github.com/DudusJestem/ZSEM-Bells.git/
 ```
 2. Cd into the directory:
 ```shell
 cd ./ZSEM-Bells
 ```
 3. Clone my fork of the OPI.GPIO:
-```shell
-git clone https://github.com/SmeggMann99/OPI.GPIO.git/
+```
+git clone https://github.com/DudusJestem/OPI.GPIO.git/
 ```
 3. Setup the virtual environment:
 ```shell
