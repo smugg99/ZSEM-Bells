@@ -56,6 +56,16 @@ LOGGER_MAX_FORMAT: str = "[%(asctime)s] - [%(levelname)s] - %(message)s (%(filen
 # ================# Logger #================ #
 
 
+# ================# Runner #================ #
+
+LANGS_FOLDER_PATH: str = "langs"
+REPO_LINK: str = "https://github.com/SmeggMann99/ZSEM-Bells"
+AUTHOR_NAME: str = "SmeggMann99"
+VERSION: str = "1.0"
+
+# ================# Runner #================ #
+
+
 # ================# Misc #================ #
 
 USER_CONFIG_FILE_PATH: str = "data/user_config.json"

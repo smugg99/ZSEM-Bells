@@ -1,0 +1,16 @@
+{
+	"title": "Runner",
+	"welcome": {
+		"title": "About",
+		"description": "Welcome to the ZSEM-Bells running program! \n\nHere you can configure and monitor this program!\nGitHub repo: {}\n\nMade by {}, version {}"
+	},
+	"menu": {
+		"title": "Menu",
+		"description": "Select what would you like to do:",
+		"options": {
+			"service_manager": "Service manager",
+			"user_config": "User config",
+			"show_about": "About"
+		}
+	}
+}

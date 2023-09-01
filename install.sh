@@ -15,16 +15,16 @@ install_if_not_installed() {
 echo "Updating package lists..."
 sudo apt update
 
-# Install python3 if not installed
+# Install required packages
 install_if_not_installed python3
-
-# Install python3-pip if not installed
 install_if_not_installed python3-pip
 
-# Install other required packages
 install_if_not_installed python3-venv
 install_if_not_installed python3-dev
+install_if_not_installed python3-dialog
+
 install_if_not_installed git
+
 
 # Check if systemctl is installed, and if not, install it
 if ! command -v systemctl &>/dev/null; then
