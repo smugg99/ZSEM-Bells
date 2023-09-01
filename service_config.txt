@@ -1,0 +1,7 @@
+
+working_directory="/home/karol/Documents/Repositories/ZSEM-Bells"
+venv_path="/home/karol/Documents/Repositories/ZSEM-Bells/venv"
+script_path="/home/karol/Documents/Repositories/ZSEM-Bells/main.py"
+service_filename="zsem_bells.service"
+service_file_path="/etc/systemd/system"
+

@@ -1,8 +1,8 @@
 from datetime import datetime
 import logging
 
-import data.config as config
-import src.utils as utils
+import config
+import utils
 
 # ================# Classes #================ #
 

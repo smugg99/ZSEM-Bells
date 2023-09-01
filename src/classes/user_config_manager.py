@@ -1,7 +1,8 @@
 import json
 from typing import Dict
 
-import data.config as config
+import config
+
 
 # ================# Classes #================ #
 

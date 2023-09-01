@@ -1,0 +1,18 @@
+[Unit]
+Description="ZSEM-Bells drivers system service"
+After=network.target
+
+[Service]
+User=karol
+Group=karol
+WorkingDirectory=/home/karol/Documents/Repositories/ZSEM-Bells
+Environment="PATH=/home/karol/Documents/Repositories/ZSEM-Bells/venv/bin"
+ExecStart=/home/karol/Documents/Repositories/ZSEM-Bells/venv/bin/python3 /home/karol/Documents/Repositories/ZSEM-Bells/main.py
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=zsem_bells
+
+[Install]
+WantedBy=multi-user.target

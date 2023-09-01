@@ -1,15 +1,16 @@
 import asyncio
 import json
+import requests
+
 from datetime import datetime, time
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from urllib.parse import parse_qs, urlparse
-
-import requests
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
-import data.config as config
-import src.utils as utils
+import config
+import utils
+
 
 # ================# Functions #================ #
 

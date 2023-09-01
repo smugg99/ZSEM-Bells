@@ -26,6 +26,11 @@ install_if_not_installed python3-venv
 install_if_not_installed python3-dev
 install_if_not_installed git
 
+# Check if systemctl is installed, and if not, install it
+if ! command -v systemctl &>/dev/null; then
+    install_if_not_installed systemd
+fi
+
 # Create and activate virtual environment
 echo "Creating and activating virtual environment"
 python3 -m venv venv
@@ -48,6 +53,87 @@ fi
 # Install dependencies from requirements.txt
 echo "Installing dependencies"
 pip install -r requirements.txt
+
+# Automatically retrieve the current username and primary group
+username=$USER
+group=$(id -gn $USER)
+config_file="service_config.txt"
+
+service_filename="zsem_bells.service"
+service_file_path="/etc/systemd/system"
+service_description="ZSEM-Bells drivers system service"
+
+while true; do
+    # If config file exists, load values from it
+    if [ -f "$config_file" ]; then
+        source "$config_file"
+    fi
+
+    # Display currently set values
+    echo "Current username: $username"
+    echo "Current group: $group"
+
+    read -p "Enter working directory: " new_working_directory
+    working_directory=${new_working_directory:-$working_directory}
+
+    read -p "Enter virtual environment path: " new_venv_path
+    venv_path=${new_venv_path:-$venv_path}
+
+    read -p "Enter main script path: " new_script_path
+    script_path=${new_script_path:-$script_path}
+
+    # Save the new values to the config file
+    cat << EOF > "$config_file"
+
+working_directory="$working_directory"
+venv_path="$venv_path"
+script_path="$script_path"
+service_filename="$service_filename"
+service_file_path="$service_file_path"
+
+EOF
+
+    # Confirm user actions
+    read -p "Confirm to create '$service_filename' with provided settings? (yes/no): " confirm
+
+    if [ "$confirm" == "yes" ]; then
+        # Create the service file
+        cat << EOF > zsem_bells.service
+[Unit]
+Description=$service_description
+After=network.target
+
+[Service]
+User=$username
+Group=$group
+WorkingDirectory=$working_directory
+Environment="PATH=$venv_path/bin"
+ExecStart=$venv_path/bin/python3 $script_path
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=zsem_bells
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+        echo "Service file '$service_filename' created"
+        break  # Exit the loop if user confirms
+    else
+        echo "Operation cancelled. Going through configuration again"
+    fi
+done
+
+# Move the service file to the common system service directory
+echo "Moving service file to $service_file_path"
+if [ -f "$service_filename" ]; then
+    sudo mv zsem_bells.service $service_file_path
+    echo "Service file '$service_filename' moved to $service_file_path"
+else
+    echo "Service file '$service_filename' somehow not found. Skipping move."
+fi
 
 echo "All packages checked and installed if needed"
 echo "Installation completed!"

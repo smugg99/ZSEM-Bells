@@ -1,10 +1,10 @@
 import asyncio
 import subprocess
+
 from typing import Dict, Optional
 
 import OPi.GPIO as GPIO
-
-import src.utils as utils
+import utils
 
 # Allwinner H616
 #  +------+-----+----------+------+---+  Zero 2  +---+------+----------+-----+------+
@@ -35,69 +35,78 @@ import src.utils as utils
 # ================# Functions #================ #
 
 def play_wav_file(file_path):
-	command = ['aplay', file_path]
-	subprocess.run(command)
+    command = ['aplay', file_path]
+    subprocess.run(command)
+
 
 def setup_gpio():
-	utils.logging_formatter.separator("Setting up GPIO")
-	gpio_pins_disabled: Optional[bool] = utils.user_config.get("disable_gpio_pins", False)	
+    utils.logging_formatter.separator("Setting up GPIO")
+    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
+        "disable_gpio_pins", False)
 
-	if not gpio_pins_disabled:
-		gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
-	
-		if not gpio_pins_config:
-			utils.logger.warn("GPIO config is empty")
-		else:
-			GPIO.setboard(GPIO.H616)
-			GPIO.setmode(GPIO.BOARD)
+    if not gpio_pins_disabled:
+        gpio_pins_config: Optional[Dict[str, int]
+                                   ] = utils.user_config.get("gpio_pins", {})
 
-			pins_to_setup = [
-				gpio_pins_config["neutral_callback"],
-				gpio_pins_config["work_callback"],
-				gpio_pins_config["break_callback"]
-			]
+        if not gpio_pins_config:
+            utils.logger.warn("GPIO config is empty")
+        else:
+            GPIO.setboard(GPIO.H616)
+            GPIO.setmode(GPIO.BOARD)
 
-			for pin in pins_to_setup:
-				try:
-					GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
-				except Exception as e:
-					utils.logger.error("GPIO pins are probably not supported on this device: " + str(e))
-				else:
-					utils.logger.info("Setting pin " + str(pin) + " as output")
-					GPIO.output(pin, GPIO.HIGH)
-	else:
-		utils.logger.warn("GPIOs are disabled")
+            pins_to_setup = [
+                gpio_pins_config["neutral_callback"],
+                gpio_pins_config["work_callback"],
+                gpio_pins_config["break_callback"]
+            ]
+
+            for pin in pins_to_setup:
+                try:
+                    GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
+                except Exception as e:
+                    utils.logger.error(
+                        "GPIO pins are probably not supported on this device: " + str(e))
+                else:
+                    utils.logger.info("Setting pin " + str(pin) + " as output")
+                    GPIO.output(pin, GPIO.HIGH)
+    else:
+        utils.logger.warn("GPIOs are disabled")
+
 
 def cleanup_gpio():
-	gpio_pins_disabled: Optional[bool] = utils.user_config.get("disable_gpio_pins", False)	
+    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
+        "disable_gpio_pins", False)
 
-	if not gpio_pins_disabled:
-		utils.logging_formatter.separator("Cleaning up GPIO")
-		GPIO.cleanup()
+    if not gpio_pins_disabled:
+        utils.logging_formatter.separator("Cleaning up GPIO")
+        GPIO.cleanup()
+
 
 async def callback_handler(is_work: bool):
-	gpio_pins_disabled: Optional[bool] = utils.user_config.get("disable_gpio_pins", False)	
-	if gpio_pins_disabled:
-		return
+    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
+        "disable_gpio_pins", False)
+    if gpio_pins_disabled:
+        return
 
-	gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
-	
-	if not gpio_pins_config:
-		utils.logger.warn("GPIO config is empty, not executing callback handler")
-		return
+    gpio_pins_config: Optional[Dict[str, int]
+                               ] = utils.user_config.get("gpio_pins", {})
 
-	callback_type: str = ("work" if is_work else "break")
-	gpio_pin: int = gpio_pins_config[callback_type + "_callback"]
-	if not gpio_pin:
-		utils.logger.warn("GPIO pins for wb callback are invalid")
-		return
+    if not gpio_pins_config:
+        utils.logger.warn(
+            "GPIO config is empty, not executing callback handler")
+        return
 
-	GPIO.output(gpio_pin, GPIO.LOW)
-	await asyncio.sleep(5)
-	GPIO.output(gpio_pin, GPIO.HIGH)
- 
-	utils.logger.info("Callback of type " + callback_type + " finished")
+    callback_type: str = ("work" if is_work else "break")
+    gpio_pin: int = gpio_pins_config[callback_type + "_callback"]
+    if not gpio_pin:
+        utils.logger.warn("GPIO pins for wb callback are invalid")
+        return
 
+    GPIO.output(gpio_pin, GPIO.LOW)
+    await asyncio.sleep(5)
+    GPIO.output(gpio_pin, GPIO.HIGH)
+
+    utils.logger.info("Callback of type " + callback_type + " finished")
 
 
 # ================# Functions #================ #

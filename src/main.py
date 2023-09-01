@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-
 import asyncio
+
 from datetime import datetime, time
 from typing import List, Optional
-
 from tabulate import tabulate
 
-import data.config as config
-import src.utils as utils
-import src.wrapper as wrapper
+import config
+import utils
+import wrapper
+
 from classes.schedule_keeper import ScheduleKeeper
 from classes.user_config_manager import UserConfigManager
 from classes.virtual_clock import VirtualClock
+
 
 # ================# Functions #================ #
 
