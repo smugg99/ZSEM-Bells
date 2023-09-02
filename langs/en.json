@@ -1,5 +1,5 @@
 {
-	"title": "Runner",
+	"title": "ZSEM-Bells runner",
 	"welcome": {
 		"title": "About",
 		"description": "Welcome to the ZSEM-Bells running program! \n\nHere you can configure and monitor this program!\nGitHub repo: {}\n\nMade by {}, version {}"
@@ -11,6 +11,18 @@
 			"service_manager": "Service manager",
 			"user_config": "User config",
 			"show_about": "About"
+		}
+	},
+	"service_manager": {
+		"title": "Service manager",
+		"description": "Select what would you like to do with the service:",
+		"options": {
+			"start_service": "Start",
+			"stop_service": "Stop",
+			"restart_service": "Restart",
+			"enable_service": "Enable",
+			"disable_service": "Disable",
+			"get_status": "Get status"
 		}
 	}
 }

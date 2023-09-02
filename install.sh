@@ -22,11 +22,13 @@ install_if_not_installed python3-pip
 install_if_not_installed python3-venv
 install_if_not_installed python3-dev
 install_if_not_installed python3-dialog
+install_if_not_installed python3-systemd
 
 install_if_not_installed git
 
 
-# Check if systemctl is installed, and if not, install it
+# Check if systemctl is installed, and if not, install it,
+# it's usually installed because it's used internally by the system
 if ! command -v systemctl &>/dev/null; then
     install_if_not_installed systemd
 fi

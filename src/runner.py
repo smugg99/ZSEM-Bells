@@ -23,6 +23,11 @@ def load_language(language_code) -> Optional[JSON]:
     return language_data
 
 
+def clear_and_exit():
+    d.clear()
+    sys.exit(1)
+
+
 def prompt_welcome_screen():
     d.msgbox(
         text=language["welcome"]["description"].format(
@@ -30,11 +35,57 @@ def prompt_welcome_screen():
         title=language["welcome"]["title"]
     )
 
+    prompt_menu_screen()
+
+
+def prompt_service_manager_screen():
+    menu_options = [
+        ("1", language["service_manager"]["options"]["start_service"]),
+        ("2", language["service_manager"]["options"]["stop_service"]),
+        ("3", language["service_manager"]["options"]["restart_service"]),
+        ("4", language["service_manager"]["options"]["enable_service"]),
+        ("5", language["service_manager"]["options"]["disable_service"]),
+        ("6", language["service_manager"]["options"]["get_status"]),
+    ]
+
+    # Create a menu with options
+    code, tag = d.menu(
+        text=language["service_manager"]["description"],
+        title=language["service_manager"]["title"],
+        choices=menu_options,
+    )
+
+    # Check the user's choice
+    if code == d.OK:
+        match tag:
+            case "1":
+                prompt_service_manager_screen()
+            case "2":
+                prompt_user_config_screen()
+            case "3":
+                prompt_welcome_screen()
+            case "4":
+                prompt_welcome_screen()
+            case "5":
+                pass
+            case "6":
+                pass
+            case _:
+                clear_and_exit()
+    elif code == d.CANCEL:
+        prompt_menu_screen()
+    else:
+        clear_and_exit()
+
+
+def prompt_user_config_screen():
+    pass
+
 
 def prompt_menu_screen():
     menu_options = [
-        ("1", language["menu"]["options"]["manage_service"]),
-        ("2", "Description of Option 2"),
+        ("1", language["menu"]["options"]["service_manager"]),
+        ("2", language["menu"]["options"]["user_config"]),
         ("3", language["menu"]["options"]["show_about"]),
     ]
 
@@ -47,10 +98,17 @@ def prompt_menu_screen():
 
     # Check the user's choice
     if code == d.OK:
-        selected_option = tag
-        print(f"Selected option: {selected_option}")
+        match tag:
+            case "1":
+                prompt_service_manager_screen()
+            case "2":
+                prompt_user_config_screen()
+            case "3":
+                prompt_welcome_screen()
+            case _:
+                clear_and_exit()
     else:
-        print("User canceled the menu.")
+        clear_and_exit()
 
 
 def main():
@@ -71,7 +129,6 @@ def main():
     d.add_persistent_args(["--no-nl-expand"])
 
     prompt_welcome_screen()
-    prompt_menu_screen()
 
 # ================# Functions #================ #
 
