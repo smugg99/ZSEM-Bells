@@ -41,10 +41,10 @@ def play_wav_file(file_path):
 
 def setup_gpio():
     utils.logging_formatter.separator("Setting up GPIO")
-    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
-        "disable_gpio_pins", False)
+    gpio_pins_enabled: Optional[bool] = utils.user_config.get(
+        "gpio_pins_enabled", False)
 
-    if not gpio_pins_disabled:
+    if gpio_pins_enabled:
         gpio_pins_config: Optional[Dict[str, int]
                                    ] = utils.user_config.get("gpio_pins", {})
 
@@ -74,18 +74,18 @@ def setup_gpio():
 
 
 def cleanup_gpio():
-    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
-        "disable_gpio_pins", False)
+    gpio_pins_enabled: Optional[bool] = utils.user_config.get(
+        "gpio_pins_enabled", False)
 
-    if not gpio_pins_disabled:
+    if gpio_pins_enabled:
         utils.logging_formatter.separator("Cleaning up GPIO")
         GPIO.cleanup()
 
 
 async def callback_handler(is_work: bool):
-    gpio_pins_disabled: Optional[bool] = utils.user_config.get(
-        "disable_gpio_pins", False)
-    if gpio_pins_disabled:
+    gpio_pins_enabled: Optional[bool] = utils.user_config.get(
+        "gpio_pins_enabled", False)
+    if not gpio_pins_enabled:
         return
 
     gpio_pins_config: Optional[Dict[str, int]

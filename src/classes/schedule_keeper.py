@@ -163,10 +163,10 @@ class ScheduleKeeper():
         utils.logger.info(
             "Trying to sync schedule from: " + config.SCHEDULE_URL)
 
-        schedule_sync_disabled: Optional[bool] = utils.user_config.get(
-            "disable_schedule_sync", False)
+        schedule_sync_enabled: Optional[bool] = utils.user_config.get(
+            "schedule_sync_enabled", False)
 
-        if not schedule_sync_disabled and utils.check_website_status(config.MAIN_SITE):
+        if schedule_sync_enabled and utils.check_website_status(config.MAIN_SITE):
             self.valid_branches, self.schedule, self.schedule_branch = _get_valid_branches()
 
             self.write_schedule_file({
@@ -177,7 +177,7 @@ class ScheduleKeeper():
 
             # Compare fetched data to the cached one?
         else:
-            if schedule_sync_disabled:
+            if not schedule_sync_enabled:
                 utils.logger.warn("Syncing schedule is disabled")
             else:
                 utils.logger.error("Can't sync schedule due to " + config.MAIN_SITE +

@@ -1,5 +1,10 @@
 {
 	"title": "ZSEM-Bells runner",
+	"true": "true",
+	"false": "false",
+	"enabled": "enabled",
+	"disabled": "disabled", 
+
 	"welcome": {
 		"title": "About",
 		"description": "Welcome to the ZSEM-Bells running program! \n\nHere you can configure and monitor this program!\nGitHub repo: {}\n\nMade by {}, version {}"
@@ -23,6 +28,20 @@
 			"enable_service": "Enable",
 			"disable_service": "Disable",
 			"get_status": "Get status"
+		}
+	},
+	"user_config": {
+		"title": "User config",
+		"description": "Select what option would you like to change:",
+		"options": {
+			"sync_timestamps": "Sync timestamps",
+			"which_gpio_pins": "GPIO",
+			"runner_lang": "Language",
+			"logs": "Logs {}",
+			"wasteful_debug": "Wasteful debug {}",
+			"gpio_pins": "GPIO {}",
+			"schedule_sync": "Schedule sync {}",
+			"clock_sync": "Clock sync {}"
 		}
 	}
 }

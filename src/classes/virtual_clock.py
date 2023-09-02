@@ -38,14 +38,14 @@ class VirtualClock:
 
     def sync_time(self) -> datetime:
         utils.logging_formatter.separator("Syncing Virtual Clock")
-        clock_sync_disabled: Optional[bool] = utils.user_config.get(
-            "disable_clock_sync", False)
+        clock_sync_enabled: Optional[bool] = utils.user_config.get(
+            "clock_sync_enabled", False)
 
         # ================# Local Functions #================ #
 
         def _use_system_time(e: Exception = None) -> datetime:
             self.current_time = datetime.now()
-            if clock_sync_disabled:
+            if not clock_sync_enabled:
                 utils.logger.warn("Syncing clock is disabled")
             else:
                 utils.logger.error("Failed to sync time from API, using system time: " +
@@ -53,7 +53,7 @@ class VirtualClock:
 
         # ================# Local Functions #================ #
 
-        if not clock_sync_disabled and utils.check_website_status(config.TIME_API_URL):
+        if clock_sync_enabled and utils.check_website_status(config.TIME_API_URL):
             try:
                 response = requests.get(
                     config.TIME_API_URL, timeout=config.TIME_API_REQUEST_TIMEOUT)
@@ -125,7 +125,7 @@ class VirtualClock:
                         if is_past and delta_seconds == 0:
                             callback()
 
-                if utils.user_config.get("wasteful_debug"):
+                if utils.user_config.get("wasteful_debug_enabled"):
                     self.log_status_table()
                 else:
                     if _repetition >= config.CLOCK_RUNNING_ANNOUNCE_INTERVAL:

@@ -3,7 +3,7 @@ import logging
 import requests
 
 from datetime import datetime, time, timedelta
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union, Any
 from tabulate import tabulate
 
 import config
@@ -13,7 +13,7 @@ from classes.logging_formatter import LoggingFormatter
 
 
 user_config_manager = UserConfigManager()
-user_config = user_config_manager.get_config()
+user_config: Dict[str, Any] = user_config_manager.get_config()
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -26,7 +26,7 @@ stream_handler.setFormatter(logging_formatter)
 
 logger.addHandler(stream_handler)
 
-if user_config["enable_logs"]:
+if user_config["logs_enabled"]:
     file_handler = logging.FileHandler(config.LOGS_FILE_PATH)
     file_handler.setLevel(logging.INFO)
 
