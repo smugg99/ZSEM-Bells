@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import requests
 
@@ -11,9 +10,7 @@ import config
 from classes.user_config_manager import UserConfigManager
 from classes.logging_formatter import LoggingFormatter
 
-
-user_config_manager = UserConfigManager()
-user_config: Dict[str, Any] = user_config_manager.get_config()
+user_config: Dict[str, Any] = UserConfigManager().get_config()
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)

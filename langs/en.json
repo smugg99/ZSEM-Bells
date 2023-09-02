@@ -4,6 +4,8 @@
 	"false": "false",
 	"enabled": "enabled",
 	"disabled": "disabled", 
+	"enabled_state": "●",
+	"disabled_state": "○", 
 
 	"welcome": {
 		"title": "About",
@@ -32,7 +34,7 @@
 	},
 	"user_config": {
 		"title": "User config",
-		"description": "Select what option would you like to change:",
+		"description": "NOTE: Remember to restart the service for changes to take effect",
 		"options": {
 			"sync_timestamps": "Sync timestamps",
 			"which_gpio_pins": "GPIO",

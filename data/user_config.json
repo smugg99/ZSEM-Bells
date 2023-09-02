@@ -1,14 +1,18 @@
 {
-	"sync_timestamps": ["00:00:00", "03:15:00", "6:30:00"],
-	"logs_enabled": false,
-	"wasteful_debug_enabled": true,
-	"gpio_pins_enabled": false,
-	"schedule_sync_enabled": false,
-	"clock_sync_enabled": false,
-	"gpio_pins": {
-		"neutral_callback": 12,
-		"work_callback": 16,
-		"break_callback": 18
-	},
-	"runner_lang": "en"
+    "sync_timestamps": [
+        "00:00:00",
+        "03:15:00",
+        "6:30:00"
+    ],
+    "logs_enabled": true,
+    "wasteful_debug_enabled": false,
+    "gpio_pins_enabled": false,
+    "schedule_sync_enabled": false,
+    "clock_sync_enabled": false,
+    "gpio_pins": {
+        "neutral_callback": 12,
+        "work_callback": 16,
+        "break_callback": 18
+    },
+    "runner_lang": "en"
 }
