@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
 import sys
+import os
 import json
 import locale
+import glob
+
 from dialog import Dialog
 from typing import Dict, Optional, List, Callable, Tuple, Any
 
 from classes.user_config_manager import UserConfigManager
+from classes.dialog_screen import DialogScreen, DialogScreenType
 
 import utils
 import config
@@ -20,9 +24,13 @@ output_terminal = open('/dev/pts/0', 'w')
 sys.stdout = output_terminal
 
 d = Dialog(dialog="dialog", autowidgetsize=True)
+
+language_keys: List[str] = []
 language: Dict[str, Any] = None
 
 user_config: Dict[str, Any] = UserConfigManager().get_config()
+
+dialog_screens: Dict[str, DialogScreen] = {}
 
 
 # ================# Functions #================ #
@@ -33,6 +41,12 @@ def clear_and_exit():
 
 
 def load_language(language_code: str) -> Optional[Dict[str, Any]]:
+    json_files = glob.glob(os.path.join(config.LANGS_FOLDER_PATH, "*.json"))
+
+    global language_keys
+    language_keys = [os.path.splitext(os.path.basename(file))[
+        0] for file in json_files]
+
     try:
         with open(f"{config.LANGS_FOLDER_PATH}/{language_code}.json", "r", encoding="utf-8") as file:
             return json.load(file)
@@ -68,48 +82,31 @@ def prompt_welcome_screen():
     prompt_menu_screen()
 
 
-def prompt_service_manager_screen():
-    _options: Dict[str, str] = language["service_manager"]["options"]
-
-    menu_options = [
-        ("1", _options["start_service"]),
-        ("2", _options["stop_service"]),
-        ("3", _options["restart_service"]),
-        ("4", _options["enable_service"]),
-        ("5", _options["disable_service"]),
-        ("6", _options["get_status"]),
-    ]
-
-    # Create a menu with options
-    code, tag = d.menu(
-        text=language["service_manager"]["description"],
-        title=language["service_manager"]["title"],
-        choices=menu_options,
-    )
-
-    # Not done yet
-    choice_bindings: Dict[str, Callable] = {
-        "1": prompt_welcome_screen,
-        "2": prompt_welcome_screen,
-        "3": prompt_welcome_screen,
-        "4": prompt_welcome_screen,
-        "5": prompt_welcome_screen,
-        "6": prompt_welcome_screen
-    }
-
-    if code == d.CANCEL:
-        prompt_menu_screen()
-    else:
-        choice_bindings.get(tag, clear_and_exit)()
-
-
-def prompt_user_config_screen(_default_tag: Optional[str] = None):
+def prompt_user_config_screen():
     global user_config
 
     # ================# Local Functions #================ #
 
     def create_update_function(key, value) -> Callable:
         return lambda: UserConfigManager().update_key([key], not value)
+
+    def prompt_language_change_screen():
+        radiolist_options: List[Tuple(str, str, bool)] = []
+
+        current_language_code: str = user_config.get("runner_lang")
+
+        for language_code, locale in config.LANGUAGE_BINDINGS.items():
+            radiolist_options.append(
+                (locale, language_code, True if language_code == current_language_code else False))
+
+        code, tag = d.radiolist(
+            text=language["language_config"]["description"],
+            title=language["language_config"]["title"],
+            choices=radiolist_options
+        )
+
+        if code == d.CANCEL:
+            prompt_user_config_screen()
 
     # ================# Local Functions #================ #
 
@@ -130,7 +127,7 @@ def prompt_user_config_screen(_default_tag: Optional[str] = None):
     choice_bindings: Dict[str, Callable] = {
         "1": prompt_welcome_screen,
         "2": prompt_welcome_screen,
-        "3": prompt_welcome_screen,
+        "3": prompt_language_change_screen,
     }
 
     options_index_start: int = len(menu_options) + 1
@@ -151,28 +148,23 @@ def prompt_user_config_screen(_default_tag: Optional[str] = None):
         choice_bindings[_tag] = create_update_function(
             config_bool_key, config_value)
 
-    print(menu_options)
-    print(choice_bindings)
-
     code, tag = d.menu(
         text=language["user_config"]["description"],
         title=language["user_config"]["title"],
-        choices=menu_options,
-        default_item=_default_tag or menu_options[0][0],
+        choices=menu_options
     )
 
     if code == d.CANCEL:
         prompt_menu_screen()
     else:
         # Note: Only when used on "bool changing" items in the list
-        print(tag)
         choice_bindings.get(tag, clear_and_exit)()
 
         # Update the user config with new settings
         user_config = UserConfigManager().get_config()
 
         # Update the dialog menu with new settings
-        prompt_user_config_screen(tag)
+        prompt_user_config_screen()
 
 
 def prompt_menu_screen():
@@ -189,7 +181,7 @@ def prompt_menu_screen():
     )
 
     choice_bindings: Dict[str, Callable] = {
-        "1": prompt_service_manager_screen,
+        "1": prompt_welcome_screen,
         "2": prompt_user_config_screen,
         "3": prompt_welcome_screen
     }
@@ -197,25 +189,29 @@ def prompt_menu_screen():
     choice_bindings.get(tag, clear_and_exit)()
 
 
-def main():
-    # Check if a language code argument is provided
-    if len(sys.argv) < 2:
-        print("Usage: python3 your_script.py <language_code>")
-        sys.exit(1)
+def initialize_dialog_screens():
+    _ws_lang: Dict[str, str] = language["welcome"]
+    _ws_lang["description"] = _ws_lang["description"].format(
+        config.REPO_LINK, config.AUTHOR_NAME, config.VERSION)
 
+    welcome_screen = DialogScreen(d, _ws_lang, DialogScreenType.MSG_BOX)
+
+    global dialog_screens
+    dialog_screens = {
+        "welcome_screen": welcome_screen,
+    }
+
+    welcome_screen.display()
+
+def main():
     # Get the language code from the command-line
     # argument or use the user specified one
     language_code: str = sys.argv[1] or utils.user_config.get("runner_lang")
 
-    language_bindings: Dict[str, str] = {
-        "en": "en_US.UTF-8",
-        "pl": "pl_PL.UTF-8"
-    }
-
     # Set the locale to the specified runner locale,
     # used for measurements, units, date formats etc.
-    locale.setlocale(locale.LC_ALL, language_bindings.get(
-        language_code, language_bindings["en"]))
+    locale.setlocale(locale.LC_ALL, config.LANGUAGE_BINDINGS.get(
+        language_code, config.LANGUAGE_BINDINGS["en"]))
 
     # Load translations for the specified language
     global language
@@ -225,7 +221,7 @@ def main():
     d.set_background_title(language["title"])
     d.add_persistent_args(["--no-nl-expand"])
 
-    prompt_welcome_screen()
+    initialize_dialog_screens()
 
 # ================# Functions #================ #
 

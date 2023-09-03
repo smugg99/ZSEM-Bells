@@ -45,5 +45,13 @@
 			"schedule_sync_enabled": "Schedule sync {}",
 			"clock_sync_enabled": "Clock sync {}"
 		}
+	},
+	"language_config": {
+		"title": "Language config",
+		"description": "Change the language of this program",
+		"options": {
+			"en": "English",
+			"pl": "Polish"
+		}
 	}
 }

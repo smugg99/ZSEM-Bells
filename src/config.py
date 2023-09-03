@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 # ================# API #================ #
 
 # Examples
@@ -58,10 +61,15 @@ LOGGER_MAX_FORMAT: str = "[%(asctime)s] - [%(levelname)s] - %(message)s (%(filen
 
 # ================# Runner #================ #
 
-LANGS_FOLDER_PATH: str = "langs"
 REPO_LINK: str = "https://github.com/SmeggMann99/ZSEM-Bells"
 AUTHOR_NAME: str = "SmeggMann99"
 VERSION: str = "1.0"
+
+LANGS_FOLDER_PATH: str = "langs"
+LANGUAGE_BINDINGS: Dict[str, str] = {
+    "en": "en_US.UTF-8",
+    "pl": "pl_PL.UTF-8"
+}
 
 # ================# Runner #================ #
 
