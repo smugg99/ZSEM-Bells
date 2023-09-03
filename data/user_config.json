@@ -4,7 +4,7 @@
         "03:15:00",
         "6:30:00"
     ],
-    "logs_enabled": true,
+    "logs_enabled": false,
     "wasteful_debug_enabled": false,
     "gpio_pins_enabled": false,
     "schedule_sync_enabled": false,

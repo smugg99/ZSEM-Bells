@@ -11,6 +11,14 @@ from classes.user_config_manager import UserConfigManager
 import utils
 import config
 
+
+# Open a different terminal for output
+# Replace '/dev/pts/X' with the appropriate terminal device
+output_terminal = open('/dev/pts/0', 'w')
+
+# Redirect stdout to the new terminal
+sys.stdout = output_terminal
+
 d = Dialog(dialog="dialog", autowidgetsize=True)
 language: Dict[str, Any] = None
 
@@ -19,24 +27,35 @@ user_config: Dict[str, Any] = UserConfigManager().get_config()
 
 # ================# Functions #================ #
 
-def load_language(language_code: str) -> Optional[Dict[str, Any]]:
-    # Load the language resource based on the language code
-    with open(f"{config.LANGS_FOLDER_PATH}/{language_code}.json", "r", encoding="utf-8") as file:
-        language_data = json.load(file)
-    return language_data
-
-
 def clear_and_exit():
     d.clear()
     sys.exit(1)
 
 
+def load_language(language_code: str) -> Optional[Dict[str, Any]]:
+    try:
+        with open(f"{config.LANGS_FOLDER_PATH}/{language_code}.json", "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        utils.logger.error(f"Language file not found for {language_code}.")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        utils.logger.error(
+            f"Invalid JSON in the language file for {language_code}.")
+        sys.exit(1)
+
+
 # Formats bool to "enabled" for True and "disabled" for False
-def bool_to_e_d(value: bool, to_state: bool = False) -> str:
+def bool_to_e_d(value: bool, to_state: Optional[bool] = False) -> str:
     _enabled: str = "enabled_state" if to_state else "enabled"
     _disabled: str = "disabled_state" if to_state else "disabled"
 
     return language[_enabled if value else _disabled]
+
+
+def force_option_key_width(key: str, value: str, forced_width: int) -> str:
+    max_separators: int = forced_width - len(key) - len(value)
+    return " " * max_separators + value
 
 
 def prompt_welcome_screen():
@@ -50,13 +69,15 @@ def prompt_welcome_screen():
 
 
 def prompt_service_manager_screen():
+    _options: Dict[str, str] = language["service_manager"]["options"]
+
     menu_options = [
-        ("1", language["service_manager"]["options"]["start_service"]),
-        ("2", language["service_manager"]["options"]["stop_service"]),
-        ("3", language["service_manager"]["options"]["restart_service"]),
-        ("4", language["service_manager"]["options"]["enable_service"]),
-        ("5", language["service_manager"]["options"]["disable_service"]),
-        ("6", language["service_manager"]["options"]["get_status"]),
+        ("1", _options["start_service"]),
+        ("2", _options["stop_service"]),
+        ("3", _options["restart_service"]),
+        ("4", _options["enable_service"]),
+        ("5", _options["disable_service"]),
+        ("6", _options["get_status"]),
     ]
 
     # Create a menu with options
@@ -85,28 +106,53 @@ def prompt_service_manager_screen():
 def prompt_user_config_screen(_default_tag: Optional[str] = None):
     global user_config
 
-    _logs: str = language["user_config"]["options"]["logs"]
-    _wasteful_debug: str = language["user_config"]["options"]["wasteful_debug"]
-    _gpio_pins: str = language["user_config"]["options"]["gpio_pins"]
-    _schedule_sync: str = language["user_config"]["options"]["schedule_sync"]
-    _clock_sync: str = language["user_config"]["options"]["clock_sync"]
+    # ================# Local Functions #================ #
 
-    _logs_enabled: bool = user_config.get("logs_enabled")
-    _wasteful_debug_enabled: bool = user_config.get("wasteful_debug_enabled")
-    _gpio_pins_enabled: bool = user_config.get("gpio_pins_enabled")
-    _schedule_sync_enabled: bool = user_config.get("schedule_sync_enabled")
-    _clock_sync_enabled: bool = user_config.get("clock_sync_enabled")
+    def create_update_function(key, value) -> Callable:
+        return lambda: UserConfigManager().update_key([key], not value)
+
+    # ================# Local Functions #================ #
+
+    config_bool_keys: List[str] = [
+        "logs_enabled",
+        "wasteful_debug_enabled",
+        "gpio_pins_enabled",
+        "schedule_sync_enabled",
+        "clock_sync_enabled"
+    ]
 
     menu_options: List[Tuple(str, str)] = [
         ("1", language["user_config"]["options"]["sync_timestamps"]),
         ("2", language["user_config"]["options"]["which_gpio_pins"]),
         ("3", language["user_config"]["options"]["runner_lang"]),
-        ("4", _logs.format(bool_to_e_d(_logs_enabled, True))),
-        ("5", _wasteful_debug.format(bool_to_e_d(_wasteful_debug_enabled, True))),
-        ("6", _gpio_pins.format(bool_to_e_d(_gpio_pins_enabled, True))),
-        ("7", _schedule_sync.format(bool_to_e_d(_schedule_sync_enabled, True))),
-        ("8", _clock_sync.format(bool_to_e_d(_clock_sync_enabled, True))),
     ]
+
+    choice_bindings: Dict[str, Callable] = {
+        "1": prompt_welcome_screen,
+        "2": prompt_welcome_screen,
+        "3": prompt_welcome_screen,
+    }
+
+    options_index_start: int = len(menu_options) + 1
+    longest_str_lenght: int = len(max(config_bool_keys, key=len) or "")
+
+    for i, config_bool_key in enumerate(config_bool_keys):
+        language_str: str = language["user_config"]["options"][config_bool_key]
+        config_value: bool = user_config.get(config_bool_key)
+        e_d_str: str = bool_to_e_d(config_value, True)
+
+        formatted_str: str = language_str.format(force_option_key_width(
+            language_str, e_d_str, longest_str_lenght))
+
+        _tag: bool = str(i + options_index_start)
+
+        # Assuming len(menu_options) == len(choice_bindings)
+        menu_options.append((_tag, formatted_str))
+        choice_bindings[_tag] = create_update_function(
+            config_bool_key, config_value)
+
+    print(menu_options)
+    print(choice_bindings)
 
     code, tag = d.menu(
         text=language["user_config"]["description"],
@@ -115,21 +161,11 @@ def prompt_user_config_screen(_default_tag: Optional[str] = None):
         default_item=_default_tag or menu_options[0][0],
     )
 
-    choice_bindings: Dict[str, Callable] = {
-        "1": prompt_welcome_screen,
-        "2": prompt_welcome_screen,
-        "3": prompt_welcome_screen,
-        "4": lambda: UserConfigManager().update_key(["logs_enabled"], not _logs_enabled),
-        "5": lambda: UserConfigManager().update_key(["wasteful_debug_enabled"], not _wasteful_debug_enabled),
-        "6": lambda: UserConfigManager().update_key(["gpio_pins_enabled"], not _gpio_pins_enabled),
-        "7": lambda: UserConfigManager().update_key(["schedule_sync_enabled"], not _schedule_sync_enabled),
-        "8": lambda: UserConfigManager().update_key(["clock_sync_enabled"], not _clock_sync_enabled)
-    }
-
     if code == d.CANCEL:
         prompt_menu_screen()
     else:
         # Note: Only when used on "bool changing" items in the list
+        print(tag)
         choice_bindings.get(tag, clear_and_exit)()
 
         # Update the user config with new settings

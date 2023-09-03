@@ -39,11 +39,11 @@
 			"sync_timestamps": "Sync timestamps",
 			"which_gpio_pins": "GPIO",
 			"runner_lang": "Language",
-			"logs": "Logs {}",
-			"wasteful_debug": "Wasteful debug {}",
-			"gpio_pins": "GPIO {}",
-			"schedule_sync": "Schedule sync {}",
-			"clock_sync": "Clock sync {}"
+			"logs_enabled": "Logs {}",
+			"wasteful_debug_enabled": "Wasteful debug {}",
+			"gpio_pins_enabled": "GPIO {}",
+			"schedule_sync_enabled": "Schedule sync {}",
+			"clock_sync_enabled": "Clock sync {}"
 		}
 	}
 }
