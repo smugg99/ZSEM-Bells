@@ -1,10 +1,14 @@
-import asyncio
+import os
 import subprocess
+import threading
 
-from typing import Dict, Optional
+from time import sleep
+from typing import Dict, Optional, List
 
 import OPi.GPIO as GPIO
 import utils
+import config
+
 
 # Allwinner H616
 #  +------+-----+----------+------+---+  Zero 2  +---+------+----------+-----+------+
@@ -34,12 +38,38 @@ import utils
 
 # ================# Functions #================ #
 
-def play_wav_file(file_path):
-    command = ['aplay', file_path]
-    subprocess.run(command)
+def play_wav_blocking(wav_filename: str):
+    # Get the project root directory
+    project_root: str = os.path.abspath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), ".."))
+
+    # Construct the path to the WAV file based on the config_dir and sound_filename
+    wav_file_path: str = os.path.join(
+        project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
+
+    # Create the aplay command with the specified audio device
+    aplay_command: List[str] = ["aplay", "-D",
+                                config.DEFAULT_AUDIO_DEVICE, wav_file_path]
+
+    try:
+        # Run the aplay command in a separate thread
+        process = subprocess.Popen(aplay_command)
+
+        # Wait for a maximum of 5 seconds for the sound to finish
+        process_thread = threading.Thread(target=process.wait)
+        process_thread.start()
+        process_thread.join(timeout=config.MAX_SOUND_DURATION)
+
+        # If the thread is still alive, the sound hasn't finished in 5 seconds, so terminate it
+        if process_thread.is_alive():
+            process.terminate()
+            process_thread.join()
+
+    except Exception as e:
+        print(e)
 
 
-def setup_gpio():
+def setup_gpio() -> bool:
     utils.logging_formatter.separator("Setting up GPIO")
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
         "gpio_pins_enabled", False)
@@ -50,6 +80,7 @@ def setup_gpio():
 
         if not gpio_pins_config:
             utils.logger.warn("GPIO config is empty")
+            return False
         else:
             GPIO.setboard(GPIO.H616)
             GPIO.setmode(GPIO.BOARD)
@@ -66,11 +97,15 @@ def setup_gpio():
                 except Exception as e:
                     utils.logger.error(
                         "GPIO pins are probably not supported on this device: " + str(e))
+                    return False
                 else:
                     utils.logger.info("Setting pin " + str(pin) + " as output")
                     GPIO.output(pin, GPIO.HIGH)
+
+            return True
     else:
         utils.logger.warn("GPIOs are disabled")
+        return False
 
 
 def cleanup_gpio():
@@ -82,32 +117,36 @@ def cleanup_gpio():
         GPIO.cleanup()
 
 
-async def callback_handler(is_work: bool):
+def callback_handler(is_work: bool, gpio_setup_good: bool):
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
         "gpio_pins_enabled", False)
-    if not gpio_pins_enabled:
-        return
 
     gpio_pins_config: Optional[Dict[str, int]
                                ] = utils.user_config.get("gpio_pins", {})
+    _callback_type: str = ("work" if is_work else "break")
+    _gpio_good: bool = False
 
-    if not gpio_pins_config:
-        utils.logger.warn(
-            "GPIO config is empty, not executing callback handler")
-        return
+    if gpio_pins_enabled and gpio_setup_good:
+        if not gpio_pins_config:
+            utils.logger.warn(
+                "GPIO config is empty, not changing any states")
+        else:
+            gpio_pin: int = gpio_pins_config[_callback_type + "_callback"]
+            if not gpio_pin:
+                utils.logger.warn("GPIO pins for wb callback are invalid")
+            else:
+                _gpio_good = True
 
-    callback_type: str = ("work" if is_work else "break")
-    gpio_pin: int = gpio_pins_config[callback_type + "_callback"]
-    if not gpio_pin:
-        utils.logger.warn("GPIO pins for wb callback are invalid")
-        return
+    if utils.user_config["sounds_enabled"]:
+        _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
+        play_wav_blocking(_bell_sound_filename)
+    else:
+        sleep(config.MAX_BELL_DURATION)
 
-    print(gpio_pin)
-    GPIO.output(gpio_pin, GPIO.LOW)
-    await asyncio.sleep(5)
-    GPIO.output(gpio_pin, GPIO.HIGH)
+    if _gpio_good and gpio_setup_good:
+        GPIO.output(gpio_pin, GPIO.HIGH)
 
-    utils.logger.info("Callback of type " + callback_type + " finished")
+    utils.logger.info("Callback of type " + _callback_type + " finished")
 
 
 # ================# Functions #================ #

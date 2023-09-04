@@ -4,7 +4,7 @@
     "gpio_pins_enabled": true,
     "schedule_sync_enabled": false,
     "clock_sync_enabled": false,
-    "only_use_neutral_bell_sound_enabled": true,
+    "sounds_enabled": true,
     "runner_lang": "en",
 
     "gpio_pins": {
@@ -18,7 +18,6 @@
         "6:30:00"
     ],
     "bell_sounds": {
-        "neutral": "bell_sound.wav",
         "work": "bell_sound.wav",
         "break": "bell_sound.wav"
     }

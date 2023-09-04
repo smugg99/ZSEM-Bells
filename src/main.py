@@ -25,15 +25,17 @@ async def main():
     schedule_keeper = ScheduleKeeper()
     virtual_clock = VirtualClock()
 
+    gpio_setup_good: bool = wrapper.setup_gpio()
+
     # ================# Local Functions #================ #
 
     def break_callback():
         utils.logger.info("Break callback triggered")
-        asyncio.create_task(wrapper.callback_handler(False))
+        wrapper.callback_handler(False, gpio_setup_good)
 
     def work_callback():
         utils.logger.info("Work callback triggered")
-        asyncio.create_task(wrapper.callback_handler(True))
+        wrapper.callback_handler(True, gpio_setup_good)
 
     def update():
         _schedule: List[str] = schedule_keeper.sync_schedule()
@@ -44,11 +46,10 @@ async def main():
 
     # ================# Local Functions #================ #
 
-    wrapper.setup_gpio()
     update()
 
     # Note: remove after testing!
-    virtual_clock.current_time = datetime(2023, 6, 23, 7, 54, 45)
+    virtual_clock.current_time = datetime(2023, 6, 23, 7, 54, 55)
     virtual_clock.add_wb_callbacks(work_callback, break_callback)
 
     clock_task = asyncio.create_task(virtual_clock.start_t())
