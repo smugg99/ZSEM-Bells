@@ -56,8 +56,8 @@ def setup_gpio():
 
             pins_to_setup = [
                 gpio_pins_config["neutral_callback"],
-                gpio_pins_config["work_callback"],
-                gpio_pins_config["break_callback"]
+                # gpio_pins_config["work_callback"],
+                # gpio_pins_config["break_callback"]
             ]
 
             for pin in pins_to_setup:

@@ -160,13 +160,14 @@ class ScheduleKeeper():
 
     def sync_schedule(self) -> List[str]:
         utils.logging_formatter.separator("Syncing Schedule")
-        utils.logger.info(
-            "Trying to sync schedule from: " + config.SCHEDULE_URL)
 
         schedule_sync_enabled: Optional[bool] = utils.user_config.get(
             "schedule_sync_enabled", False)
 
         if schedule_sync_enabled and utils.check_website_status(config.MAIN_SITE):
+            utils.logger.info(
+                "Trying to sync schedule from: " + config.SCHEDULE_URL)
+
             self.valid_branches, self.schedule, self.schedule_branch = _get_valid_branches()
 
             self.write_schedule_file({
