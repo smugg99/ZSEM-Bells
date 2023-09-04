@@ -4,9 +4,9 @@
         "03:15:00",
         "6:30:00"
     ],
-    "logs_enabled": true,
+    "logs_enabled": false,
     "wasteful_debug_enabled": true,
-    "gpio_pins_enabled": false,
+    "gpio_pins_enabled": true,
     "schedule_sync_enabled": false,
     "clock_sync_enabled": false,
     "gpio_pins": {

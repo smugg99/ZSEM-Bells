@@ -157,3 +157,4 @@ OPI.GPIO
 service_config.txt
 src/classes/runner_formatter.py
 src/_runner.py
+data/last_logs.txt
