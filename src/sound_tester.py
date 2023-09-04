@@ -4,6 +4,9 @@ from pydub import AudioSegment
 from pydub.playback import play
 import os
 
+# Set the audio player command (use 'aplay' or another player if preferred)
+pydub_audio_player = 'aplay'
+
 # Get the parent directory of the script (where your script is located)
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,7 +23,8 @@ sound = AudioSegment.from_file(wav_file_path)
 volume = 0.5
 sound = sound - 30 * (1 - volume)  # Adjust volume level
 
-# Play the modified audio
-play(sound)
+# Play the modified audio using 'aplay' or the chosen player
+sound.export(os.path.join(script_dir, "temp.wav"), format="wav")  # Export the audio to a temporary file
+os.system(f"{pydub_audio_player} {os.path.join(script_dir, 'temp.wav')}")  # Play the temporary file
 
 print("deezx")
