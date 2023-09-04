@@ -77,7 +77,9 @@ async def main():
     await clock_task
 
 if __name__ == "__main__":
-    asyncio.run(main())
-    wrapper.cleanup_gpio()
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        wrapper.cleanup_gpio()
 
 # ================# Functions #================ #
