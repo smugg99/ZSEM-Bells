@@ -123,7 +123,7 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
 
     gpio_pins_config: Optional[Dict[str, int]
                                ] = utils.user_config.get("gpio_pins", {})
-    _callback_type: str = [("work" if is_work else "break"), "neutral"]
+    _callback_type: str = ("work" if is_work else "break")
     _gpio_good: bool = False
 
     if gpio_pins_enabled and gpio_setup_good:
@@ -131,8 +131,9 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
             utils.logger.warn(
                 "GPIO config is empty, not changing any states")
         else:
-            gpio_pin: int = gpio_pins_config[_callback_type[0] + "_callback"]
-            neutral_gpio_pin: int = gpio_pins_config[_callback_type[1] + "_callback"]
+            gpio_pin: int = gpio_pins_config[_callback_type + "_callback"]
+            neutral_gpio_pin: int = gpio_pins_config["neutral_callback"]
+
             if not gpio_pin or not neutral_gpio_pin:
                 utils.logger.warn("GPIO pins for wb callback are invalid")
             else:
@@ -141,14 +142,14 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
                 GPIO.output(neutral_gpio_pin, GPIO.LOW)
 
     if utils.user_config["sounds_enabled"]:
-        _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type[0]]
+        _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
         play_wav_blocking(_bell_sound_filename)
     else:
         sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
-        GPIO.output(gpio_pin, GPIO.LOW)
-        GPIO.output(neutral_gpio_pin, GPIO.LOW)
+        GPIO.output(gpio_pin, GPIO.HIGH)
+        GPIO.output(neutral_gpio_pin, GPIO.HIGH)
 
     utils.logger.info("Callback of type " + _callback_type + " finished")
 
