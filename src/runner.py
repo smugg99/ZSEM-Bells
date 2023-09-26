@@ -77,13 +77,14 @@ def initialize_dialog_screens():
 
     _ms_lang: Dict[str, str] = language["menu"]
 
-    welcome_screen = DialogScreen(dw, _ws_lang, DialogScreenType.MSG_BOX)
+    welcome_screen = DialogScreen(
+        dw, _ws_lang, DialogScreenType.MSG_BOX, on_ok="menu")
 
     _ms_choices: List[DialogChoice] = [
-        DialogChoice(DialogChoiceType.LOCATION_CHANGER, "welcome screen",
-                     location=welcome_screen),
-        DialogChoice(DialogChoiceType.LOCATION_CHANGER, "welcome screen again",
-                     location=welcome_screen)
+        DialogChoice(dw, DialogChoiceType.LOCATION_CHANGER, "welcome screen",
+                     location="welcome"),
+        DialogChoice(dw, DialogChoiceType.LOCATION_CHANGER, "welcome screen again",
+                     location="welcome")
     ]
 
     menu_screen = DialogScreen(
