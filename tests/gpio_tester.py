@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 from time import sleep
-
 import OPi.GPIO as GPIO
-
 
 def main():
     GPIO.setboard(GPIO.H616)

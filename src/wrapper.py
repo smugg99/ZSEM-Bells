@@ -55,12 +55,12 @@ def play_wav_blocking(wav_filename: str):
         # Run the aplay command in a separate thread
         process = subprocess.Popen(aplay_command)
 
-        # Wait for a maximum of 5 seconds for the sound to finish
+        # Wait for a maximum of x seconds for the sound to finish
         process_thread = threading.Thread(target=process.wait)
         process_thread.start()
         process_thread.join(timeout=config.MAX_SOUND_DURATION)
 
-        # If the thread is still alive, the sound hasn't finished in 5 seconds, so terminate it
+        # If the thread is still alive, the sound hasn't finished in x seconds, so terminate it
         if process_thread.is_alive():
             process.terminate()
             process_thread.join()

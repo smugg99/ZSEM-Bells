@@ -10,7 +10,6 @@ import utils
 import wrapper
 
 from classes.schedule_keeper import ScheduleKeeper
-from classes.user_config_manager import UserConfigManager
 from classes.virtual_clock import VirtualClock
 
 
@@ -60,6 +59,8 @@ async def main():
         utils.logger.warn("Sync timestamps are empty")
     else:
         timestamps: List[time] = []
+
+        # Validate all sync timestamps
         for raw_timestamp in sync_timestamps:
             is_valid, timestamp = utils.is_valid_timestamp(raw_timestamp)
 
@@ -81,6 +82,7 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except Exception as e:
+        print(e)
         wrapper.cleanup_gpio()
 
 # ================# Functions #================ #

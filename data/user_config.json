@@ -1,10 +1,10 @@
 {
     "logs_enabled": false,
-    "wasteful_debug_enabled": false,
+    "wasteful_debug_enabled": true,
     "gpio_pins_enabled": false,
     "schedule_sync_enabled": false,
     "clock_sync_enabled": false,
-    "sounds_enabled": true,
+    "sounds_enabled": false,
     "runner_lang": "en",
     "gpio_pins": {
         "neutral_callback": 12,

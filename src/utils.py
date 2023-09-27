@@ -1,8 +1,8 @@
 import logging
 import requests
 
-from datetime import datetime, time, timedelta
-from typing import Dict, List, Optional, Tuple, Union, Any
+from datetime import datetime, time
+from typing import Dict, List, Optional, Tuple, Any
 from tabulate import tabulate
 
 import config
