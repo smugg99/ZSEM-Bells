@@ -64,3 +64,5 @@ systemctl start zsem_bells
 <h1 align="center">Information ℹ️</h1>
 
 Instructions for further maintainers are currently still being work on, but if you need help or you have any questions about this piece of software, message me on Discord (link is on my profile) or reach to me directly.
+
+(If something breaks, google the error message, ask chat gpt or just contact me)
