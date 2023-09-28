@@ -19,6 +19,7 @@
 <h1 align="center">Setup ⚙️</h1>
 
 0. Clone this repo
+
 ```shell
 git clone https://github.com/SmeggMann99/ZSEM-Bells
 ```
@@ -31,6 +32,9 @@ chmod a+x ./install.sh
 
 2. Run the script, wait till the installation completes
 
+```shell
+./install.sh
+```
 
 <br>
 <h1 align="center">Running ⚡</h2>
