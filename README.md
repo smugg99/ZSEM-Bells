@@ -17,9 +17,7 @@
 
 <br>
 <h1 align="center">Setup ⚙️</h1>
-
 <br>
-<h2 align="center">Automatic</h2>
 
 0. Make the installer script executable
 
