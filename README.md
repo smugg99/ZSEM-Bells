@@ -34,11 +34,11 @@ chmod a+x ./install.sh
 <br>
 <h2 align="center">Use systemctl (recommended)</h2>
 
-1. Create and fill in the service file using the template file
+-1. Create and fill in the service file using the template file
 
-2. Place the service file in "/etc/systemd/system" or in other system services directory
+0. Place the service file in "/etc/systemd/system" or in other system services directory
 
-3. Enable and start the service:
+1. Enable and start the service:
 
 ```shell
 systemctl enable zsem_bells

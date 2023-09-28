@@ -28,7 +28,7 @@ install_if_not_installed git
 
 
 # Check if systemctl is installed, and if not, install it,
-# it's usually installed because it's used internally by the system
+# it's usually installed because it's used internally by this system
 if ! command -v systemctl &>/dev/null; then
     install_if_not_installed systemd
 fi
@@ -42,11 +42,16 @@ source ./venv/bin/activate
 if python3 -c "import OPI.GPIO" &>/dev/null; then
     echo "OPI.GPIO is already installed"
 else
+    # Create 'lib' directory if it doesn't exist
+    if [ ! -d "lib" ]; then
+        mkdir "lib"
+    fi
+
     echo "OPI.GPIO is not installed. Cloning..."
-    git clone https://github.com/SmeggMann99/OPI.GPIO.git/
+    git clone https://github.com/SmeggMann99/OPI.GPIO.git/ ./lib
     
     echo "Installing OPI.GPIO module"
-    pushd OPI.GPIO
+    pushd ./lib/OPI.GPIO
     sudo python3 setup.py install
     pip install ./
     popd
