@@ -1,3 +1,20 @@
+"""
+config.py
+
+This Python script defines various configuration settings for the application. It includes settings
+related to API endpoints, scraper parameters, logging formats, runner information,
+and miscellaneous options. Modify these settings to customize the behavior of the application.
+
+Configuration Sections:
+- API: Settings related to external APIs and web endpoints.
+- Scraper: Parameters for web scraping and data extraction.
+- Logger: Logging format and levels for application logs.
+- Runner: Information about the application, author, and version.
+- Misc: Miscellaneous settings, including user configuration file paths, audio settings, and other options.
+
+"""
+
+
 from typing import Dict
 
 

@@ -1,4 +1,27 @@
 #!/usr/bin/env python3
+
+"""
+main.py
+
+This Python script serves as the main entry point for the application. It coordinates various
+tasks related to time management, scheduling, and GPIO pin control. The script initializes
+the application, manages schedule updates, and triggers callbacks for work and break events.
+
+Dependencies:
+- asyncio: Handling asynchronous tasks and event loops.
+- datetime: Manipulating timestamps and datetime objects.
+- typing: Specifying function argument and return types.
+- tabulate: Formatting data into tables.
+
+Functionality:
+- Initializing and configuring the application.
+- Managing the schedule and updating timestamps.
+- Triggering callbacks for work and break events.
+- Handling exceptions and cleaning up GPIO pins in case of errors.
+
+"""
+
+
 import asyncio
 
 from datetime import datetime, time
@@ -15,8 +38,6 @@ from classes.virtual_clock import VirtualClock
 
 # ================# Functions #================ #
 
-
-# TO-DO: Add starting program arguments
 async def main():
     utils.logging_formatter.startup()
     utils.logging_formatter.test()
