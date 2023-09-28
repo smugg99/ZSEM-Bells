@@ -18,13 +18,18 @@
 <br>
 <h1 align="center">Setup ⚙️</h1>
 
-0. Make the installer script executable
+0. Clone this repo
+```shell
+git clone https://github.com/SmeggMann99/ZSEM-Bells
+```
+
+1. Make the installer script executable
 
 ```shell
 chmod a+x ./install.sh
 ```
 
-1. Run the script, wait till the installation completes
+2. Run the script, wait till the installation completes
 
 
 <br>
