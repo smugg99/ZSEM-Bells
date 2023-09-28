@@ -42,11 +42,6 @@ source ./venv/bin/activate
 if python3 -c "import OPI.GPIO" &>/dev/null; then
     echo "OPI.GPIO is already installed"
 else
-    # Create 'lib' directory if it doesn't exist
-    if [ ! -d "lib" ]; then
-        mkdir "lib"
-    fi
-
     echo "OPI.GPIO is not installed. Cloning..."
     git clone https://github.com/SmeggMann99/OPI.GPIO.git/ ./lib
     
