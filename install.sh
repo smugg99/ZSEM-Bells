@@ -43,7 +43,7 @@ if python3 -c "import OPI.GPIO" &>/dev/null; then
     echo "OPI.GPIO is already installed"
 else
     echo "OPI.GPIO is not installed. Cloning..."
-    git clone https://github.com/SmeggMann99/OPI.GPIO.git/ ./lib
+    git clone https://github.com/SmeggMann99/OPI.GPIO.git/
     
     echo "Installing OPI.GPIO module"
     pushd OPI.GPIO
