@@ -29,101 +29,20 @@ chmod a+x ./install.sh
 
 1. Run the script, wait till the installation completes
 
-<br>
-<h2 align="center">Manual</h2>
-<h5 align="right">(if something breaks, or you're not lazy)</h4>
-
-0. Install venv and python3 header files (if needed):
-
-```shell
-sudo apt install python3 python3-venv
-```
-
-```shell
-sudo apt install python3-venv
-```
-
-```shell
-sudo apt install python3-dev
-```
-
-<br>
-1. Clone this repo:
-
-```shell
-git clone https://github.com/DudusJestem/ZSEM-Bells.git/
-```
-
-<br>
-2. Cd into the directory:
-
-```shell
-cd ./ZSEM-Bells
-```
-
-<br>
-3. Clone my fork of the OPI.GPIO:
-
-```shell
-git clone https://github.com/DudusJestem/OPI.GPIO.git/
-```
-
-<br>
-4. Setup the virtual environment:
-
-```shell
-python3 -m venv venv
-```
-
-```shell
-source ./venv/bin/activate
-```
-
-<br>
-5. Build the OPI.GPIO module:
-
-```shell
-cd OPI.GPIO
-```
-
-```shell
-sudo python3 setup.py install
-```
-
-```shell
-pip install ./
-```
-
-<br>
-6. Install required packages
-
-```shell
-pip install -r requirements.txt
-```
-
-<br>
-7. Make the main file executable
-
-```shell
-chmod a+x ./main.py
-```
-
 
 <br>
 <h1 align="center">Running ⚡</h2>
 
 
 <br>
-<h2 align="center">Option A (recommended)</h2>
+<h2 align="center">Use systemctl (recommended)</h2>
 
-1. Use systemctl
+1. Create and fill in the service file using the template file
 
+2. Place the service file in "/etc/systemd/system" or in other system services directory
 
-2. Create and fill in the service file using the template file
+3. Enable and start the service:
 
-3. Place the service file in "/etc/systemd/system" or in other system services directory
-
-4. Enable and start the service:
 ```shell
 systemctl enable zsem_bells
 ```
@@ -132,17 +51,16 @@ systemctl start zsem_bells
 ```
 
 <br>
-<h2 align="center">Option C (use for testing only)</h2>
+<h2 align="center">Run the main script (use for testing only)</h2>
 
-1. Run the main script directly
 ```shell
 ./main.py &
 ```
 
 <br>
-<h2 align="center">Option B (WIP)</h2>
+<h2 align="center">Use the almost ready runner script 🧙🏻‍♂️</h2>
 
-1. Use the runner script 🧙🏻‍♂️
+1. I ain't getting paid 🗿
 
 
 <br>
