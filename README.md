@@ -108,15 +108,21 @@ pip install -r requirements.txt
 chmod a+x ./main.py
 ```
 
+
 <br>
 <h1 align="center">Running ⚡</h2>
+
 
 <br>
 <h2 align="center">Option A (recommended)</h2>
 
 1. Use systemctl
+
+
 2. Create and fill in the service file using the template file
+
 3. Place the service file in "/etc/systemd/system" or in other system services directory
+
 4. Enable and start the service:
 ```shell
 systemctl enable zsem_bells
@@ -125,19 +131,18 @@ systemctl enable zsem_bells
 systemctl start zsem_bells
 ```
 
-1. Use the runner script 🧙🏻‍♂️
 <br>
-
 <h2 align="center">Option C (use for testing only)</h2>
 
 1. Run the main script directly
-
 ```shell
 ./main.py &
 ```
 
 <br>
 <h2 align="center">Option B (WIP)</h2>
+
+1. Use the runner script 🧙🏻‍♂️
 
 
 <br>
