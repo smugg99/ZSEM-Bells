@@ -51,7 +51,7 @@ else
     git clone https://github.com/SmeggMann99/OPI.GPIO.git/ ./lib
     
     echo "Installing OPI.GPIO module"
-    pushd ./lib/OPI.GPIO
+    pushd OPI.GPIO
     sudo python3 setup.py install
     pip install ./
     popd
