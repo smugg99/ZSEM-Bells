@@ -112,7 +112,23 @@ chmod a+x ./main.py
 <h1 align="center">Running ⚡</h2>
 
 <br>
-<h2 align="center">Option A</h2>
+<h2 align="center">Option A (recommended)</h2>
+
+1. Use systemctl
+2. Create and fill in the service file using the template file
+3. Place the service file in "/etc/systemd/system" or in other system services directory
+4. Enable and start the service:
+```shell
+systemctl enable zsem_bells
+```
+```shell
+systemctl start zsem_bells
+```
+
+1. Use the runner script 🧙🏻‍♂️
+<br>
+
+<h2 align="center">Option C (use for testing only)</h2>
 
 1. Run the main script directly
 
@@ -123,24 +139,8 @@ chmod a+x ./main.py
 <br>
 <h2 align="center">Option B (WIP)</h2>
 
-1. Use the runner script 🧙🏻‍♂️
-<br>
-
-<h2 align="center">Option A (recommended)</h2>
-
-1. Use systemctl
-2. Create a service file using the template file in the repository root directory
-3. Place the service file in "/etc/systemd/system" or in other system service directory
-4. Enable and start the service:
-```shell
-systemctl enable zsem_bells
-```
-```shell
-systemctl start zsem_bells
-```
 
 <br>
-
 <h1 align="center">Information ℹ️</h1>
 
 Instructions for further maintainers are currently still being work on, but if you need help or you have any questions about this piece of software, message me on Discord (link is on my profile) or reach to me directly.

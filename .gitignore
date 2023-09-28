@@ -160,3 +160,5 @@ src/_runner.py
 data/last_logs.txt
 src/runner.py
 lib/dialog_wrapper
+run.sh
+dialogrc
