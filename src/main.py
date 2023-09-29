@@ -49,27 +49,27 @@ async def main():
 
     # ================# Local Functions #================ #
 
-    def break_callback():
+    async def break_callback():
         utils.logger.info("Break callback triggered")
         wrapper.callback_handler(False, gpio_setup_good)
 
-    def work_callback():
+    async def work_callback():
         utils.logger.info("Work callback triggered")
         wrapper.callback_handler(True, gpio_setup_good)
 
-    def update():
+    async def update():
         _schedule: List[str] = schedule_keeper.sync_schedule()
         utils.log_table(_schedule)
 
-        virtual_clock.sync_time()
+        await virtual_clock.sync_time()
         virtual_clock.set_timestamps(schedule_keeper.get_timestamps())
 
     # ================# Local Functions #================ #
 
-    update()
+    await update()
 
     # Note: remove after testing!
-    # virtual_clock.current_time = datetime(2023, 9, 29, 7, 54, 55)
+    virtual_clock.current_time = datetime(2023, 9, 29, 0, 0, 40)
     virtual_clock.add_wb_callbacks(work_callback, break_callback)
 
     clock_task = asyncio.create_task(virtual_clock.start_t())
@@ -101,6 +101,7 @@ async def main():
 
 if __name__ == "__main__":
     try:
+        wrapper.cleanup_gpio()
         asyncio.run(main())
     except Exception as e:
         print(e)

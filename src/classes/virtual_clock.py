@@ -36,7 +36,10 @@ class VirtualClock:
     def __call__(self) -> 'VirtualClock':
         return self
 
-    def sync_time(self) -> datetime:
+    def set_timestamps(self, timestamps: List[time]):
+        self._timestamps = timestamps
+
+    async def sync_time(self) -> datetime:
         utils.logging_formatter.separator("Syncing Virtual Clock")
         clock_sync_enabled: Optional[bool] = utils.user_config.get(
             "clock_sync_enabled", False)
@@ -74,9 +77,6 @@ class VirtualClock:
 
         return self.current_time
 
-    def set_timestamps(self, timestamps: List[time]):
-        self._timestamps = timestamps
-
     async def start_t(self):
         utils.logging_formatter.separator("Starting Virtual Clock")
 
@@ -85,9 +85,12 @@ class VirtualClock:
 
             self.is_started = True
             if not self.current_time:
-                self.sync_time()
+                await self.sync_time()
 
             self.log_status_table()
+
+            clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
+                "clock_sync_after_callbacks_enabled", False)
 
             _repetition: int = 0
             while self.is_started:
@@ -106,9 +109,12 @@ class VirtualClock:
                             self.neutral_callback()
 
                         if index % 2 == 0:
-                            self.break_callback()
+                            asyncio.create_task(self.break_callback())
                         else:
-                            self.work_callback()
+                            asyncio.create_task(self.work_callback())
+
+                        if clock_sync_after_callbacks_enabled:
+                            asyncio.create_task(self.sync_time())
 
                 # Other timestamps, they may be used to synchronise things,
                 # they get called on specific timestamps
@@ -123,7 +129,7 @@ class VirtualClock:
                         # Note, this implementation may need to be changed in the future after tests
                         # I don't know yet if the timings will be correct so it won't skip some seconds...
                         if is_past and delta_seconds == 0:
-                            callback()
+                            asyncio.create_task(callback())
 
                 if utils.user_config.get("wasteful_debug_enabled"):
                     self.log_status_table()

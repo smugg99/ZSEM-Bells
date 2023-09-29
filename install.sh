@@ -48,13 +48,13 @@ else
     echo "Installing OPI.GPIO module"
     pushd OPI.GPIO
     sudo python3 setup.py install
-    pip install ./
+    pip3 install ./
     popd
 fi
 
 # Install dependencies from requirements.txt
 echo "Installing dependencies"
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Automatically retrieve the current username and primary group
 username=$USER

@@ -102,4 +102,6 @@ SOUNDS_FOLDER_PATH: str = "sounds"
 
 MAX_BELL_DURATION: int = 5
 
+INVERT_RELAY: bool = True
+
 # ================# Misc #================ #

@@ -166,8 +166,10 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
                 utils.logger.warn("GPIO pins for wb callback are invalid")
             else:
                 _gpio_good = True
-                GPIO.output(gpio_pin, GPIO.LOW)
-                GPIO.output(neutral_gpio_pin, GPIO.LOW)
+                _gpio_value: bool = GPIO.LOW if config.INVERT_RELAY else GPIO.HIGH
+
+                GPIO.output(gpio_pin, _gpio_value)
+                GPIO.output(neutral_gpio_pin, _gpio_value)
 
     if utils.user_config["sounds_enabled"]:
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
@@ -176,8 +178,10 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
         sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
-        GPIO.output(gpio_pin, GPIO.HIGH)
-        GPIO.output(neutral_gpio_pin, GPIO.HIGH)
+        _gpio_value: bool = GPIO.LHIGHOW if config.INVERT_RELAY else GPIO.LOW
+
+        GPIO.output(gpio_pin, _gpio_value)
+        GPIO.output(neutral_gpio_pin, _gpio_value)
 
     utils.logger.info("Callback of type " + _callback_type + " finished")
 
