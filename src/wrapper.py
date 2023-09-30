@@ -19,8 +19,8 @@ Usage:
 dictionary for your specific hardware and use case.
 
 Functions:
-- play_wav_blocking(wav_filename: str): Play a WAV audio file in a blocking manner.
-- setup_gpio() -> bool: Set up GPIO pins for callbacks and check if GPIO pins are enabled.
+- play_wav_async(wav_filename: str): Play a WAV audio file in a asynchronous manner.
+- setup_gpio_pins() -> bool: Set up GPIO pins for callbacks and check if GPIO pins are enabled.
 - cleanup_gpio(): Clean up GPIO pins, releasing associated resources.
 - callback_handler(is_work: bool, gpio_setup_good: bool): Handle "work" or "break" callbacks,
 playing audio and controlling GPIO pins based on user configuration.
@@ -51,12 +51,9 @@ Allwinner H616
  +------+-----+----------+------+---+  Zero 2  +---+------+----------+-----+------+
 """
 
-
+import asyncio
 import os
-import subprocess
-import threading
 
-from time import sleep
 from typing import Dict, Optional, List
 
 import OPi.GPIO as GPIO
@@ -66,7 +63,7 @@ import config
 
 # ================# Functions #================ #
 
-def play_wav_blocking(wav_filename: str):
+async def play_wav_async(wav_filename: str):
     # Get the project root directory
     project_root: str = os.path.abspath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -80,24 +77,42 @@ def play_wav_blocking(wav_filename: str):
                                 config.DEFAULT_AUDIO_DEVICE, wav_file_path]
 
     try:
-        # Run the aplay command in a separate thread
-        process = subprocess.Popen(aplay_command)
+        # Run the aplay command asynchronously using asyncio.create_subprocess_exec
+        process = await asyncio.create_subprocess_exec(*aplay_command)
+
+        # Create a task to wait for the process to complete
+        async def wait_for_process():
+            await process.wait()
 
         # Wait for a maximum of x seconds for the sound to finish
-        process_thread = threading.Thread(target=process.wait)
-        process_thread.start()
-        process_thread.join(timeout=config.MAX_SOUND_DURATION)
+        task = asyncio.create_task(wait_for_process())
+        await asyncio.wait_for(task, timeout=config.MAX_SOUND_DURATION)
 
-        # If the thread is still alive, the sound hasn't finished in x seconds, so terminate it
-        if process_thread.is_alive():
+        # If the task is still running, the sound hasn't finished in x seconds, so terminate it
+        if not task.done():
             process.terminate()
-            process_thread.join()
+            await task  # Wait for the task to complete
 
     except Exception as e:
         print(e)
 
 
-def setup_gpio() -> bool:
+def setup_gpio_pin(pin: int, direction: int, pull_up_down: int, default_state: Optional[int] = 0) -> bool:
+    try:
+        GPIO.setup(pin, direction, pull_up_down=pull_up_down)
+    except Exception as e:
+        utils.logger.error(
+            "GPIO pins are probably not supported on this device: " + str(e))
+        return False
+    else:
+        _gpio_direction: str = "output" if direction == GPIO.OUT else "input"
+        utils.logger.info("Setting pin " + str(pin) + " as " + _gpio_direction)
+
+        if direction == GPIO.OUT and default_state:
+            GPIO.output(pin, default_state)
+
+
+def setup_gpio_pins() -> bool:
     utils.logging_formatter.separator("Setting up GPIO")
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
         "gpio_pins_enabled", False)
@@ -106,6 +121,11 @@ def setup_gpio() -> bool:
         gpio_pins_config: Optional[Dict[str, int]
                                    ] = utils.user_config.get("gpio_pins", {})
 
+        _outputs_config: Optional[Dict[str, int]
+                                  ] = gpio_pins_config.get("outputs", {})
+        _inputs_config: Optional[Dict[str, int]
+                                 ] = gpio_pins_config.get("inputs", {})
+
         if not gpio_pins_config:
             utils.logger.warn("GPIO config is empty")
             return False
@@ -113,24 +133,17 @@ def setup_gpio() -> bool:
             GPIO.setboard(GPIO.H616)
             GPIO.setmode(GPIO.BOARD)
 
-            pins_to_setup = [
-                gpio_pins_config["neutral_callback"],
-                gpio_pins_config["work_callback"],
-                gpio_pins_config["break_callback"]
-            ]
+            _success: bool = True
 
-            for pin in pins_to_setup:
-                try:
-                    GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
-                except Exception as e:
-                    utils.logger.error(
-                        "GPIO pins are probably not supported on this device: " + str(e))
-                    return False
-                else:
-                    utils.logger.info("Setting pin " + str(pin) + " as output")
-                    GPIO.output(pin, GPIO.HIGH)
+            for output_pin in _outputs_config:
+                _success = setup_gpio_pin(
+                    output_pin, GPIO.OUT, GPIO.PUD_DOWN, GPIO.LOW)
 
-            return True
+            for input_pin in _inputs_config:
+                _success = setup_gpio_pin(
+                    input_pin, GPIO.IN, GPIO.PUD_DOWN)
+
+            return _success
     else:
         utils.logger.warn("GPIOs are disabled")
         return False
@@ -145,7 +158,7 @@ def cleanup_gpio():
         GPIO.cleanup()
 
 
-def callback_handler(is_work: bool, gpio_setup_good: bool):
+async def callback_handler(is_work: bool, gpio_setup_good: bool):
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
         "gpio_pins_enabled", False)
 
@@ -173,9 +186,9 @@ def callback_handler(is_work: bool, gpio_setup_good: bool):
 
     if utils.user_config["sounds_enabled"]:
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
-        play_wav_blocking(_bell_sound_filename)
+        await play_wav_async(_bell_sound_filename)
     else:
-        sleep(config.MAX_BELL_DURATION)
+        await asyncio.sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
         _gpio_value: bool = GPIO.LHIGHOW if config.INVERT_RELAY else GPIO.LOW

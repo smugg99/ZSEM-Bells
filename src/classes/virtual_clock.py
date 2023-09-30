@@ -181,7 +181,7 @@ class VirtualClock:
         ]
 
         utils.log_table(table_data)
-
+      
     def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable, neutral_callback: Callable = None):
         self.work_callback = work_callback
         self.break_callback = break_callback

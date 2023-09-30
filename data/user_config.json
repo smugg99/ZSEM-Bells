@@ -2,29 +2,27 @@
     "logs_enabled": false,
     "wasteful_debug_enabled": true,
     "gpio_pins_enabled": false,
-    "schedule_sync_enabled": false,
+    "schedule_sync_enabled": true,
     "conservative_schedule_sync_enabled": true,
-    "clock_sync_enabled": true,
-    "clock_sync_after_callbacks_enabled": true,
+    "clock_sync_enabled": false,
+    "clock_sync_after_callbacks_enabled": false,
     "sounds_enabled": false,
     "runner_lang": "en",
     "gpio_pins": {
-        "neutral_callback": 12,
-        "work_callback": 16,
-        "break_callback": 18,
-        "internet_access_led": 0,
-        "schedule_site_status_led": 0,
-        "relay_status_led": 0,
-        "force_relay_button": 0,
-        "toggle_relay_switch": 0
+        "inputs": {
+            "force_relay_button": 0,
+            "toggle_relay_switch": 0
+        },
+        "outputs": {
+            "neutral_callback": 12,
+            "work_callback": 16,
+            "break_callback": 18,
+            "internet_access_led": 0,
+            "schedule_site_status_led": 0,
+            "relay_status_led": 0
+        }
     },
     "sync_timestamps": [
-        "00:00:00",
-        "00:01:00",
-        "00:02:00",
-        "00:03:00",
-        "00:04:00",
-        "00:05:00",
         "03:15:00",
         "6:30:00"
     ],
