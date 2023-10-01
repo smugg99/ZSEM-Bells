@@ -69,7 +69,7 @@ async def main():
     await update()
 
     # Note: remove after testing!
-    virtual_clock.current_time = datetime(2023, 9, 29, 0, 0, 50)
+    # virtual_clock.current_time = datetime(2023, 9, 29, 0, 0, 50)
     virtual_clock.add_wb_callbacks(work_callback, break_callback)
 
     clock_task = asyncio.create_task(virtual_clock.start_t())

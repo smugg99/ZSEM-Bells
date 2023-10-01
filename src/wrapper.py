@@ -97,9 +97,9 @@ async def play_wav_async(wav_filename: str):
         print(e)
 
 
-def setup_gpio_pin(pin: int, direction: int, pull_up_down: int, default_state: Optional[int] = 0) -> bool:
+def setup_gpio_pin(pin: int, direction: int, _pull_up_down: int, default_state: Optional[int] = 0) -> bool:
     try:
-        GPIO.setup(pin, direction, pull_up_down=pull_up_down)
+        GPIO.setup(pin, direction, pull_up_down=_pull_up_down)
     except Exception as e:
         utils.logger.error(
             "GPIO pins are probably not supported on this device: " + str(e))
@@ -121,29 +121,43 @@ def setup_gpio_pins() -> bool:
         gpio_pins_config: Optional[Dict[str, int]
                                    ] = utils.user_config.get("gpio_pins", {})
 
-        _outputs_config: Optional[Dict[str, int]
-                                  ] = gpio_pins_config.get("outputs", {})
-        _inputs_config: Optional[Dict[str, int]
-                                 ] = gpio_pins_config.get("inputs", {})
+        outputs_config: Optional[Dict[str, int]
+                                 ] = gpio_pins_config.get("outputs", {})
 
-        if not gpio_pins_config:
+        # _outputs_config: Optional[Dict[str, int]
+        #                           ] = gpio_pins_config.get("outputs", {})
+        # _inputs_config: Optional[Dict[str, int]
+        #                          ] = gpio_pins_config.get("inputs", {})
+
+        if not gpio_pins_config or not outputs_config:
             utils.logger.warn("GPIO config is empty")
             return False
         else:
             GPIO.setboard(GPIO.H616)
             GPIO.setmode(GPIO.BOARD)
 
-            _success: bool = True
+            pins_to_setup = [
+                outputs_config["neutral_callback"],
+                outputs_config["work_callback"],
+                outputs_config["break_callback"]
+            ]
 
-            for output_pin in _outputs_config:
-                _success = setup_gpio_pin(
-                    output_pin, GPIO.OUT, GPIO.PUD_DOWN, GPIO.LOW)
+            for pin in pins_to_setup:
+                setup_gpio_pin(pin, GPIO.OUT, GPIO.PUD_UP, GPIO.HIGH)
 
-            for input_pin in _inputs_config:
-                _success = setup_gpio_pin(
-                    input_pin, GPIO.IN, GPIO.PUD_DOWN)
+            # _success: bool = True
 
-            return _success
+            # for output_pin in _outputs_config:
+            #     print(output_pin)
+            #     _success = setup_gpio_pin(
+            #         int(output_pin), GPIO.OUT, GPIO.PUD_DOWN, GPIO.LOW)
+
+            # for input_pin in _inputs_config:
+            #     print(input_pin)
+            #     _success = setup_gpio_pin(
+            #         int(input_pin), GPIO.IN, GPIO.PUD_DOWN)
+
+            # return _success
     else:
         utils.logger.warn("GPIOs are disabled")
         return False
