@@ -97,6 +97,7 @@ async def play_wav_async(wav_filename: str):
         print(e)
 
 
+# Note: This should actually be called setup callback pins or something
 def setup_gpio_pins() -> bool:
     utils.logging_formatter.separator("Setting up GPIO")
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
@@ -132,24 +133,12 @@ def setup_gpio_pins() -> bool:
                     GPIO.setup(pin, GPIO.OUT)
                 except Exception as e:
                     print(e)
+                    return False
                 else:
                     utils.logger.log("Setting gpio " + str(pin) + " as OUTPUT")
                     GPIO.output(pin, GPIO.LOW)
-                # setup_gpio_pin(pin, GPIO.OUT, GPIO.PUD_UP, GPIO.HIGH)
 
-            # _success: bool = True
-
-            # for output_pin in _outputs_config:
-            #     print(output_pin)
-            #     _success = setup_gpio_pin(
-            #         int(output_pin), GPIO.OUT, GPIO.PUD_DOWN, GPIO.LOW)
-
-            # for input_pin in _inputs_config:
-            #     print(input_pin)
-            #     _success = setup_gpio_pin(
-            #         int(input_pin), GPIO.IN, GPIO.PUD_DOWN)
-
-            # return _success
+        return True
     else:
         utils.logger.warn("GPIOs are disabled")
         return False
@@ -174,8 +163,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
     _callback_type: str = ("work" if is_work else "break")
-    _gpio_good: bool = True
-    gpio_setup_good = True
+    _gpio_good: bool = False
 
     if gpio_pins_enabled and gpio_setup_good:
         if not gpio_pins_config or not outputs:

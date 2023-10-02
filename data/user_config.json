@@ -3,9 +3,9 @@
     "wasteful_debug_enabled": true,
     "gpio_pins_enabled": true,
     "schedule_sync_enabled": false,
-    "conservative_schedule_sync_enabled": true,
+    "conservative_schedule_sync_enabled": false,
     "clock_sync_enabled": false,
-    "clock_sync_after_callbacks_enabled": true,
+    "clock_sync_after_callbacks_enabled": false,
     "sounds_enabled": false,
     "runner_lang": "en",
     "gpio_pins": {

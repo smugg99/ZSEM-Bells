@@ -46,12 +46,13 @@ async def main():
     virtual_clock = VirtualClock()
 
     gpio_setup_good: bool = wrapper.setup_gpio_pins()
-    clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get("clock_sync_after_callbacks_enabled", False)
-
+    clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
+        "clock_sync_after_callbacks_enabled", False)
 
     # ================# Local Functions #================ #
 
     # Note: Add lambdas here
+
     async def break_callback():
         utils.logger.info("Break callback triggered")
         await wrapper.callback_handler(False, gpio_setup_good)
@@ -78,7 +79,7 @@ async def main():
     await update()
 
     # Note: remove after testing!
-    # virtual_clock.current_time = datetime(2023, 9, 29, 0, 0, 50)
+    virtual_clock.current_time = datetime(2023, 9, 29, 6, 59, 55)
     virtual_clock.add_wb_callbacks(work_callback, break_callback)
 
     clock_task = asyncio.create_task(virtual_clock.start_t())
