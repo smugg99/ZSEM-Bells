@@ -151,7 +151,7 @@ def setup_gpio_pins() -> bool:
                     print(e)
                 else:
                     print("Setting gpio " + str(pin) + " as OUTPUT")
-                    GPIO.output(pin, GPIO.HIGH)
+                    GPIO.output(pin, GPIO.LOW)
                 #setup_gpio_pin(pin, GPIO.OUT, GPIO.PUD_UP, GPIO.HIGH)
                 
 
