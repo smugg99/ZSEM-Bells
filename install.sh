@@ -35,7 +35,7 @@ fi
 
 # Create and activate virtual environment
 echo "Creating and activating virtual environment"
-python3 -m venv venv
+sudo python3 -m venv venv
 source ./venv/bin/activate
 
 # Check and install OPI.GPIO
@@ -136,6 +136,9 @@ if [ -f "$service_filename" ]; then
 else
     echo "Service file '$service_filename' somehow not found. Skipping move."
 fi
+
+echo "Deactivating virtual environment"
+deactivate
 
 echo "All packages checked and installed if needed"
 echo "Installation completed!"

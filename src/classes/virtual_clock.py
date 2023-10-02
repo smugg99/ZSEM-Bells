@@ -94,21 +94,7 @@ class VirtualClock:
 
             while self.is_started:
                 before_sleep_time: float = _loop.time()
-
-                await asyncio.sleep(1)
-
-                after_sleep_time: float = _loop.time()
-
-                # Actual time slept is used here to compensate for the time drift
-                # caused by the lack of the external RTC module, it doesn't interfere
-                # with functions that compare timestamps and calculate their delta
-                # because they operate only on hours, minutes and seconds
-                actual_time_slept: float = after_sleep_time - before_sleep_time
-
-                self.current_time += timedelta(seconds=actual_time_slept)
                 current_timestamp: time = self.current_time.time()
-
-                print(actual_time_slept)
 
                 # Schedule timestamps
                 for index, _timestamp in enumerate(self._timestamps):
@@ -149,6 +135,20 @@ class VirtualClock:
                         _repetition = 0
 
                     _repetition += 1
+
+                await asyncio.sleep(1)
+
+                after_sleep_time: float = _loop.time()
+
+                # Actual time slept is used here to compensate for the time drift
+                # caused by the lack of the external RTC module, it doesn't interfere
+                # with functions that compare timestamps and calculate their delta
+                # because they operate only on hours, minutes and seconds
+                actual_time_slept: float = after_sleep_time - before_sleep_time
+
+                self.current_time += timedelta(seconds=actual_time_slept)
+
+                print(actual_time_slept)
         else:
             utils.logger.warning("Virtual clock is already running")
 
