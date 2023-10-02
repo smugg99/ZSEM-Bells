@@ -205,6 +205,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
                 _gpio_good = True
                 _gpio_value: bool = GPIO.HIGH
 
+                print("on")
                 GPIO.output(gpio_pin, _gpio_value)
                 GPIO.output(neutral_gpio_pin, _gpio_value)
 
@@ -217,6 +218,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     if _gpio_good and gpio_setup_good:
         _gpio_value: bool = GPIO.LOW
 
+        print("off")
         GPIO.output(gpio_pin, _gpio_value)
         GPIO.output(neutral_gpio_pin, _gpio_value)
 

@@ -110,7 +110,7 @@ async def main():
 
 if __name__ == "__main__":
     try:
-        wrapper.cleanup_gpio()
+        # wrapper.cleanup_gpio()
         asyncio.run(main())
     except Exception as e:
         print(e)
