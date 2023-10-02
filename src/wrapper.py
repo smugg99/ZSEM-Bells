@@ -146,7 +146,7 @@ def setup_gpio_pins() -> bool:
 
             for pin in pins_to_setup:
                 try:
-                    GPIO.setup(pin, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
+                    GPIO.setup(pin, GPIO.OUT)
                 except Exception as e:
                     print(e)
                 else:
