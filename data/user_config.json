@@ -5,7 +5,7 @@
     "schedule_sync_enabled": true,
     "conservative_schedule_sync_enabled": true,
     "clock_sync_enabled": true,
-    "clock_sync_after_callbacks_enabled": false,
+    "clock_sync_after_callbacks_enabled": true,
     "sounds_enabled": false,
     "runner_lang": "en",
     "gpio_pins": {
@@ -23,8 +23,11 @@
         }
     },
     "sync_timestamps": [
+        "00:00:00",
         "03:15:00",
-        "6:30:00"
+        "05:30:00",
+        "06:30:00",
+        "06:50:00"
     ],
     "bell_sounds": {
         "work": "bell_sound.wav",

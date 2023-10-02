@@ -89,9 +89,6 @@ class VirtualClock:
 
             self.log_status_table()
 
-            clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
-                "clock_sync_after_callbacks_enabled", False)
-
             _repetition: int = 0
             while self.is_started:
                 await asyncio.sleep(1)
@@ -113,8 +110,6 @@ class VirtualClock:
                         else:
                             asyncio.create_task(self.work_callback())
 
-                        if clock_sync_after_callbacks_enabled:
-                            asyncio.create_task(self.sync_time())
 
                 # Other timestamps, they may be used to synchronise things,
                 # they get called on specific timestamps

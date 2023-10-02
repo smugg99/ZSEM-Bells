@@ -51,6 +51,7 @@ async def main():
 
     # ================# Local Functions #================ #
 
+    # Note: Add lambdas here
     async def break_callback():
         utils.logger.info("Break callback triggered")
         await wrapper.callback_handler(False, gpio_setup_good)
