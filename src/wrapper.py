@@ -192,7 +192,8 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
     _callback_type: str = ("work" if is_work else "break")
-    _gpio_good: bool = False
+    _gpio_good: bool = True
+    gpio_setup_good = True
 
     if gpio_pins_enabled and gpio_setup_good:
         print("1")
