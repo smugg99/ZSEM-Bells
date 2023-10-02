@@ -94,10 +94,10 @@ class VirtualClock:
                 _old_timestamp: time = self.current_time.time()
                 await asyncio.sleep(1)
 
-                print(current_timestamp - _old_timestamp)
-
                 self.current_time += timedelta(seconds=1)
                 current_timestamp: time = self.current_time.time()
+
+                print(current_timestamp - _old_timestamp)
 
                 # Schedule timestamps
                 for index, _timestamp in enumerate(self._timestamps):
