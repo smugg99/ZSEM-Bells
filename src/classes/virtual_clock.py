@@ -90,14 +90,21 @@ class VirtualClock:
             self.log_status_table()
 
             _repetition: int = 0
+            _loop = asyncio.get_event_loop()
+
             while self.is_started:
-                _old_timestamp: time = self.current_time.time()
+                before_sleep_time: float = _loop.time()
+                
                 await asyncio.sleep(1)
+
+                after_sleep_time: float = _loop.time()
 
                 self.current_time += timedelta(seconds=1)
                 current_timestamp: time = self.current_time.time()
 
-                print(current_timestamp - _old_timestamp)
+                actual_time_slept: float = after_sleep_time - before_sleep_time
+
+                print(actual_time_slept)
 
                 # Schedule timestamps
                 for index, _timestamp in enumerate(self._timestamps):
