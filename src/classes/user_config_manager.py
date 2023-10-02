@@ -62,7 +62,6 @@ class UserConfigManager:
         current_dict = self.config
         
         for key in keys:
-            print(key)
             if key in current_dict and isinstance(current_dict[key], dict):
                 current_dict = current_dict[key]
             elif key in current_dict and not isinstance(current_dict[key], dict):

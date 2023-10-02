@@ -54,6 +54,9 @@ class VirtualClock:
                 utils.logger.error("Failed to sync time from API, using system time: " +
                                    str(self.current_time) + ("\n" + str(e) if e else ""))
 
+        # def _use_rtc_time():
+        #     pass
+
         # ================# Local Functions #================ #
 
         if clock_sync_enabled and utils.check_website_status(config.TIME_API_URL):
@@ -120,8 +123,6 @@ class VirtualClock:
                         is_past, delta_seconds = utils.compare_timestamps(
                             current_timestamp, timestamp)
 
-                        print(is_past, delta_seconds)
-
                         # Note, this implementation may need to be changed in the future after tests
                         # I don't know yet if the timings will be correct so it won't skip some seconds...
                         if is_past and delta_seconds == 0:
@@ -147,8 +148,6 @@ class VirtualClock:
                 actual_time_slept: float = after_sleep_time - before_sleep_time
 
                 self.current_time += timedelta(seconds=actual_time_slept)
-
-                print(actual_time_slept)
         else:
             utils.logger.warning("Virtual clock is already running")
 
