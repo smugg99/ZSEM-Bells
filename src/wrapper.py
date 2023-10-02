@@ -188,16 +188,19 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
 
     gpio_pins_config: Optional[Dict[str, int]
                                ] = utils.user_config.get("gpio_pins", {})
+    
+    outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
+
     _callback_type: str = ("work" if is_work else "break")
     _gpio_good: bool = False
 
     if gpio_pins_enabled and gpio_setup_good:
-        if not gpio_pins_config:
+        if not gpio_pins_config or not outputs:
             utils.logger.warn(
                 "GPIO config is empty, not changing any states")
         else:
-            gpio_pin: int = gpio_pins_config[_callback_type + "_callback"]
-            neutral_gpio_pin: int = gpio_pins_config["neutral_callback"]
+            gpio_pin: int = outputs[_callback_type + "_callback"]
+            neutral_gpio_pin: int = outputs["neutral_callback"]
 
             if not gpio_pin or not neutral_gpio_pin:
                 utils.logger.warn("GPIO pins for wb callback are invalid")
