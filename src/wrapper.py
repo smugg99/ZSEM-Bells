@@ -97,21 +97,6 @@ async def play_wav_async(wav_filename: str):
         print(e)
 
 
-def setup_gpio_pin(pin: int, direction: int, _pull_up_down: int, default_state: Optional[int] = 0) -> bool:
-    try:
-        GPIO.setup(pin, direction, pull_up_down=_pull_up_down)
-    except Exception as e:
-        utils.logger.error(
-            "GPIO pins are probably not supported on this device: " + str(e))
-        return False
-    else:
-        _gpio_direction: str = "output" if direction == GPIO.OUT else "input"
-        utils.logger.info("Setting pin " + str(pin) + " as " + _gpio_direction)
-
-        if direction == GPIO.OUT and default_state:
-            GPIO.output(pin, default_state)
-
-
 def setup_gpio_pins() -> bool:
     utils.logging_formatter.separator("Setting up GPIO")
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
@@ -121,15 +106,15 @@ def setup_gpio_pins() -> bool:
         gpio_pins_config: Optional[Dict[str, int]
                                    ] = utils.user_config.get("gpio_pins", {})
 
-        outputs_config: Optional[Dict[str, int]
-                                 ] = gpio_pins_config.get("outputs", {})
+        _outputs_config: Optional[Dict[str, int]
+                                  ] = gpio_pins_config.get("outputs", {})
 
         # _outputs_config: Optional[Dict[str, int]
         #                           ] = gpio_pins_config.get("outputs", {})
         # _inputs_config: Optional[Dict[str, int]
         #                          ] = gpio_pins_config.get("inputs", {})
 
-        if not gpio_pins_config or not outputs_config:
+        if not gpio_pins_config or not _outputs_config:
             utils.logger.warn("GPIO config is empty")
             return False
         else:
@@ -137,12 +122,10 @@ def setup_gpio_pins() -> bool:
             GPIO.setmode(GPIO.BOARD)
 
             pins_to_setup = [
-                outputs_config["neutral_callback"],
-                outputs_config["work_callback"],
-                outputs_config["break_callback"]
+                _outputs_config["neutral_callback"],
+                _outputs_config["work_callback"],
+                _outputs_config["break_callback"]
             ]
-
-            print(pins_to_setup)
 
             for pin in pins_to_setup:
                 try:
@@ -150,10 +133,9 @@ def setup_gpio_pins() -> bool:
                 except Exception as e:
                     print(e)
                 else:
-                    print("Setting gpio " + str(pin) + " as OUTPUT")
+                    utils.logger.log("Setting gpio " + str(pin) + " as OUTPUT")
                     GPIO.output(pin, GPIO.LOW)
-                #setup_gpio_pin(pin, GPIO.OUT, GPIO.PUD_UP, GPIO.HIGH)
-                
+                # setup_gpio_pin(pin, GPIO.OUT, GPIO.PUD_UP, GPIO.HIGH)
 
             # _success: bool = True
 
@@ -188,7 +170,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
 
     gpio_pins_config: Optional[Dict[str, int]
                                ] = utils.user_config.get("gpio_pins", {})
-    
+
     outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
     _callback_type: str = ("work" if is_work else "break")
@@ -196,12 +178,10 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     gpio_setup_good = True
 
     if gpio_pins_enabled and gpio_setup_good:
-        print("1")
         if not gpio_pins_config or not outputs:
             utils.logger.warn(
                 "GPIO config is empty, not changing any states")
         else:
-            print("2")
             gpio_pin: int = outputs[_callback_type + "_callback"]
             neutral_gpio_pin: int = outputs["neutral_callback"]
 
@@ -211,7 +191,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
                 _gpio_good = True
                 _gpio_value: bool = GPIO.HIGH
 
-                print("on")
+                utils.logger.log("GPIO " + str(gpio_pin) + " is ON!")
                 GPIO.output(gpio_pin, _gpio_value)
                 GPIO.output(neutral_gpio_pin, _gpio_value)
 
@@ -219,13 +199,12 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
         await play_wav_async(_bell_sound_filename)
     else:
-        print("3")
         await asyncio.sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
         _gpio_value: bool = GPIO.LOW
 
-        print("off")
+        utils.logger.log("GPIO " + str(gpio_pin) + " is OFF!")
         GPIO.output(gpio_pin, _gpio_value)
         GPIO.output(neutral_gpio_pin, _gpio_value)
 

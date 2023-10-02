@@ -91,7 +91,10 @@ class VirtualClock:
 
             _repetition: int = 0
             while self.is_started:
+                _old_timestamp: time = self.current_time.time()
                 await asyncio.sleep(1)
+
+                print(current_timestamp - _old_timestamp)
 
                 self.current_time += timedelta(seconds=1)
                 current_timestamp: time = self.current_time.time()
@@ -109,7 +112,6 @@ class VirtualClock:
                             asyncio.create_task(self.break_callback())
                         else:
                             asyncio.create_task(self.work_callback())
-
 
                 # Other timestamps, they may be used to synchronise things,
                 # they get called on specific timestamps
@@ -176,7 +178,7 @@ class VirtualClock:
         ]
 
         utils.log_table(table_data)
-      
+
     def add_wb_callbacks(self, work_callback: Callable, break_callback: Callable, neutral_callback: Callable = None):
         self.work_callback = work_callback
         self.break_callback = break_callback
