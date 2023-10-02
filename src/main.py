@@ -46,6 +46,8 @@ async def main():
     virtual_clock = VirtualClock()
 
     gpio_setup_good: bool = wrapper.setup_gpio_pins()
+    clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get("clock_sync_after_callbacks_enabled", False)
+
 
     # ================# Local Functions #================ #
 
@@ -53,9 +55,15 @@ async def main():
         utils.logger.info("Break callback triggered")
         await wrapper.callback_handler(False, gpio_setup_good)
 
+        if clock_sync_after_callbacks_enabled:
+            asyncio.create_task(virtual_clock.sync_time())
+
     async def work_callback():
         utils.logger.info("Work callback triggered")
         await wrapper.callback_handler(True, gpio_setup_good)
+
+        if clock_sync_after_callbacks_enabled:
+            asyncio.create_task(virtual_clock.sync_time())
 
     async def update():
         _schedule: List[str] = schedule_keeper.sync_schedule()
