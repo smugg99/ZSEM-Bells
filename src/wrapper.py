@@ -215,7 +215,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
         await asyncio.sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
-        _gpio_value: bool = GPIO.LHIGHOW if config.INVERT_RELAY else GPIO.LOW
+        _gpio_value: bool = GPIO.HIGH if config.INVERT_RELAY else GPIO.LOW
 
         GPIO.output(gpio_pin, _gpio_value)
         GPIO.output(neutral_gpio_pin, _gpio_value)
