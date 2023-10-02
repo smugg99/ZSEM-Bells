@@ -203,7 +203,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
                 utils.logger.warn("GPIO pins for wb callback are invalid")
             else:
                 _gpio_good = True
-                _gpio_value: bool = GPIO.LOW if config.INVERT_RELAY else GPIO.HIGH
+                _gpio_value: bool = GPIO.HIGH
 
                 GPIO.output(gpio_pin, _gpio_value)
                 GPIO.output(neutral_gpio_pin, _gpio_value)
@@ -215,7 +215,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
         await asyncio.sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
-        _gpio_value: bool = GPIO.HIGH if config.INVERT_RELAY else GPIO.LOW
+        _gpio_value: bool = GPIO.LOW
 
         GPIO.output(gpio_pin, _gpio_value)
         GPIO.output(neutral_gpio_pin, _gpio_value)
