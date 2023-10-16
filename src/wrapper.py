@@ -165,11 +165,15 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     _callback_type: str = ("work" if is_work else "break")
     _gpio_good: bool = False
 
+    print("1")
+
     if gpio_pins_enabled and gpio_setup_good:
+        print("2")
         if not gpio_pins_config or not outputs:
             utils.logger.warn(
                 "GPIO config is empty, not changing any states")
         else:
+            print("3")
             gpio_pin: int = outputs[_callback_type + "_callback"]
             neutral_gpio_pin: int = outputs["neutral_callback"]
 
@@ -185,8 +189,10 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
 
     if utils.user_config["sounds_enabled"]:
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
+        print("Deez nuts 33")
         await play_wav_async(_bell_sound_filename)
     else:
+        print("Deez nuts 333")
         await asyncio.sleep(config.MAX_BELL_DURATION)
 
     if _gpio_good and gpio_setup_good:
