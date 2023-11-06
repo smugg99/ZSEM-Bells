@@ -1,5 +1,7 @@
 #!/bin/bash
 
+opirepo=https://github.com/SmeggMann99/OPI.GPIO.git/
+
 # Function to install a package if it's not already installed
 install_if_not_installed() {
     PACKAGE=$1
@@ -43,7 +45,7 @@ if python3 -c "import OPI.GPIO" &>/dev/null; then
     echo "OPI.GPIO is already installed"
 else
     echo "OPI.GPIO is not installed. Cloning..."
-    git clone https://github.com/SmeggMann99/OPI.GPIO.git/
+    git clone $opirepo
     
     echo "Installing OPI.GPIO module"
     pushd OPI.GPIO
@@ -54,7 +56,12 @@ fi
 
 # Install dependencies from requirements.txt
 echo "Installing dependencies"
-pip3 install -r requirements.txt
+./venv/bin/pip install -r requirements.txt
+
+# Deactivate virtual environment
+echo "Deactivating virtual environment"
+deactivate
+
 
 # Automatically retrieve the current username and primary group
 username=$USER
