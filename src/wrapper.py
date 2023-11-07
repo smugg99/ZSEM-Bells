@@ -53,6 +53,7 @@ Allwinner H616
 
 import asyncio
 import os
+import pygame
 
 from typing import Dict, Optional, List
 
@@ -95,6 +96,28 @@ async def play_wav_async(wav_filename: str):
 
     except Exception as e:
         print(e)
+        raise(e)
+
+async def _play_wav_async(wav_filename: str):
+    try:
+        # Get the project root directory
+        project_root: str = os.path.abspath(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), ".."))
+
+        # Construct the path to the WAV file based on the config_dir and sound_filename
+        wav_file_path: str = os.path.join(
+            project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
+        
+        pygame.mixer.init()
+        pygame.mixer.music.load(wav_file_path)
+        pygame.mixer.music.play()
+        
+        await asyncio.sleep(config.MAX_SOUND_DURATION)
+        
+        pygame.mixer.quit()
+    except Exception as e:
+        print(e)
+        raise(e)
 
 
 # Note: This should actually be called setup callback pins or something
@@ -186,7 +209,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     if utils.user_config["sounds_enabled"]:
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
         utils.logger.info("Sound should be playing right now!")
-        await play_wav_async(_bell_sound_filename)
+        await _play_wav_async(_bell_sound_filename)
     else:
         utils.logger.info("Delay should be performed right now!")
         await asyncio.sleep(config.MAX_BELL_DURATION)
