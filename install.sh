@@ -1,6 +1,6 @@
 #!/bin/bash
 
-opirepo=https://github.com/SmeggMann99/OPI.GPIO.git/
+opirepo=https://github.com/smugg99/OPI.GPIO.git/
 
 # Function to install a package if it's not already installed
 install_if_not_installed() {
