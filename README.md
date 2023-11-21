@@ -21,7 +21,7 @@
 0. Clone this repo
 
 ```shell
-git clone https://github.com/SmeggMann99/ZSEM-Bells
+git clone https://github.com/smug99/ZSEM-Bells
 ```
 
 1. Make the installer script executable
