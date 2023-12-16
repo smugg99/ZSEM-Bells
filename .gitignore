@@ -161,4 +161,3 @@ data/last_logs.txt
 run.sh
 src/runner.py
 dialogrc
-data/schedule.json
