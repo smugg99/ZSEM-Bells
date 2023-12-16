@@ -109,6 +109,7 @@ async def _play_wav_async(wav_filename: str):
             project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
         
         pygame.mixer.init()
+        print(wav_file_path)
         pygame.mixer.music.load(wav_file_path)
         pygame.mixer.music.play()
         
