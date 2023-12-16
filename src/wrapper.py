@@ -210,7 +210,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     if utils.user_config["sounds_enabled"]:
         _bell_sound_filename: str = utils.user_config["bell_sounds"][_callback_type]
         utils.logger.info("Sound should be playing right now!")
-        await _play_wav_async(_bell_sound_filename)
+        await play_wav_async(_bell_sound_filename)
     else:
         utils.logger.info("Delay should be performed right now!")
         await asyncio.sleep(config.MAX_BELL_DURATION)
