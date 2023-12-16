@@ -96,7 +96,7 @@ LANGUAGE_BINDINGS: Dict[str, str] = {
 USER_CONFIG_FILE_PATH: str = "data/user_config.json"
 CLOCK_RUNNING_ANNOUNCE_INTERVAL: int = 60
 
-DEFAULT_AUDIO_DEVICE: str = "hw:0,0"
+DEFAULT_AUDIO_DEVICE: str = "hw:0,1"
 MAX_SOUND_DURATION: int = 5
 SOUNDS_FOLDER_PATH: str = "sounds"
 
