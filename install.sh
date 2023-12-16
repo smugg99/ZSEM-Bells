@@ -37,7 +37,7 @@ fi
 
 # Create and activate virtual environment
 echo "Creating and activating virtual environment"
-sudo python3 -m venv venv
+python3 -m venv venv
 source ./venv/bin/activate
 
 # Check and install OPI.GPIO
@@ -49,7 +49,7 @@ else
     
     echo "Installing OPI.GPIO module"
     pushd OPI.GPIO
-    sudo python3 setup.py install
+    python3 setup.py install
     pip3 install ./
     popd
 fi
