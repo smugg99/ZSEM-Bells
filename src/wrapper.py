@@ -56,6 +56,7 @@ import os
 import pygame
 
 from typing import Dict, Optional, List
+from asyncio.subprocess import Process
 
 import OPi.GPIO as GPIO
 import utils
@@ -65,38 +66,32 @@ import config
 # ================# Functions #================ #
 
 async def play_wav_async(wav_filename: str):
-    # Get the project root directory
-    project_root: str = os.path.abspath(os.path.join(
+    project_root = os.path.abspath(os.path.join(
         os.path.dirname(os.path.abspath(__file__)), ".."))
 
-    # Construct the path to the WAV file based on the config_dir and sound_filename
-    wav_file_path: str = os.path.join(
+    wav_file_path = os.path.join(
         project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
 
-    # Create the aplay command with the specified audio device
-    aplay_command: List[str] = ["aplay", "-D",
-                                config.DEFAULT_AUDIO_DEVICE, wav_file_path]
+    aplay_command = ["aplay", "-D", config.DEFAULT_AUDIO_DEVICE, wav_file_path]
 
     try:
-        # Run the aplay command asynchronously using asyncio.create_subprocess_exec
-        process = await asyncio.create_subprocess_exec(*aplay_command)
+        process: Process = await asyncio.create_subprocess_exec(*aplay_command)
 
-        # Create a task to wait for the process to complete
-        async def wait_for_process():
-            await process.wait()
+        # Wait for the process to complete with a timeout
+        await asyncio.wait_for(process.wait(), timeout=config.MAX_SOUND_DURATION)
 
-        # Wait for a maximum of x seconds for the sound to finish
-        task = asyncio.create_task(wait_for_process())
-        await asyncio.wait_for(task, timeout=config.MAX_SOUND_DURATION)
+    except asyncio.TimeoutError:
+        # Handle TimeoutError separately
+        print(f"Timeout while playing {wav_filename}")
 
-        # If the task is still running, the sound hasn't finished in x seconds, so terminate it
-        if not task.done():
-            process.terminate()
-            await task  # Wait for the task to complete
+        # Terminate the process if it's still running
+        process.terminate()
+        await process.wait()  # Wait for the process to terminate
 
     except Exception as e:
-        print(e)
-        raise(e)
+        # Handle other exceptions
+        print(f"Error playing {wav_filename}: {e}")
+        raise e
 
 async def _play_wav_async(wav_filename: str):
     try:
