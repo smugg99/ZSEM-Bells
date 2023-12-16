@@ -15,8 +15,13 @@ import utils
 # ================# Functions #================ #
 
 
-def _parse_hour_range(hour_range: str) -> List[str]:
-    return hour_range.replace(" ", "").split("-")
+# def _parse_hour_range(hour_range: str) -> List[str]:
+#     return hour_range.replace(" ", "").split("-")
+
+def parse_hour_range(hour_range_str: str) -> List[str]:
+    return hour_range_str.strip().split("-")
+
+
 
 
 def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[str]]:
