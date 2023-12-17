@@ -100,6 +100,7 @@ def setup_gpio_pins() -> bool:
             GPIO.setmode(GPIO.BOARD)
 
             for pin in _outputs_config.values():
+                print(pin)
                 try:
                     GPIO.setup(pin, GPIO.OUT)
                 except Exception as e:
