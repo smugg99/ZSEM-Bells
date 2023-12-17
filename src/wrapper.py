@@ -11,7 +11,7 @@ import config
 
 from enum import Enum
 
-
+gpio_pins_enabled: Optional[bool] = utils.user_config.get("gpio_pins_enabled", False)
 gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
 _outputs_config: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
@@ -79,8 +79,6 @@ async def _play_wav_async(wav_filename: str):
 # Note: This should actually be called setup callback pins or something
 def setup_gpio_pins() -> bool:
     utils.logging_formatter.separator("Setting up GPIO")
-    gpio_pins_enabled: Optional[bool] = utils.user_config.get(
-        "gpio_pins_enabled", False)
 
     if gpio_pins_enabled:
         # gpio_pins_config: Optional[Dict[str, int]
@@ -132,6 +130,9 @@ def cleanup_gpio():
         GPIO.cleanup()
 
 def toggle_status_led(status_led : StatusLed, value : bool):
+    if not gpio_pins_enabled:
+        return
+    
     GPIO.output(status_led.value, value)
 
 async def callback_handler(is_work: bool, gpio_setup_good: bool):
