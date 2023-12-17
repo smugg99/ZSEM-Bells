@@ -6,6 +6,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import config
 import utils
+import wrapper
 
 
 # ================# Classes #================ #
@@ -53,6 +54,7 @@ class VirtualClock:
             else:
                 utils.logger.error("Failed to sync time from API, using system time: " +
                                    str(self.current_time) + ("\n" + str(e) if e else ""))
+                wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS, False)
 
         # def _use_rtc_time():
         #     pass
@@ -75,6 +77,8 @@ class VirtualClock:
 
                 utils.logger.info("Synced time from API to: " +
                                   str(self.current_time))
+                
+                wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS)
         else:
             _use_system_time()
 

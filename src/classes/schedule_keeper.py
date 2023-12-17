@@ -10,6 +10,7 @@ from tabulate import tabulate
 
 import config
 import utils
+import wrapper
 
 
 # ================# Functions #================ #
@@ -20,8 +21,6 @@ import utils
 
 def parse_hour_range(hour_range_str: str) -> List[str]:
     return hour_range_str.strip().split("-")
-
-
 
 
 def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[str]]:
@@ -51,7 +50,7 @@ def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[
             "td", class_=config.SCHEDULE_TABLE_HOUR_CLASS_NAME))
 
     for hour_range in _hour_ranges:
-        hour_ranges.append(_parse_hour_range(hour_range.text))
+        hour_ranges.append(parse_hour_range(hour_range.text))
 
     return hour_ranges
 
@@ -146,10 +145,12 @@ class ScheduleKeeper():
                 data = json.load(file)
             except json.JSONDecodeError:
                 utils.logger.critical("Failed to decode schedule file")
+                wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
                 raise
             else:
                 if len(data) <= 0:
                     utils.logger.critical("Schedule file is empty")
+                    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
                     raise
 
                 # Reconsider this?
@@ -157,6 +158,7 @@ class ScheduleKeeper():
                     return data
                 else:
                     utils.logger.critical("Invalid data in the schedule file")
+                    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
                     raise TypeError()
 
     def write_schedule_file(self, data: Dict[str, Any]):
@@ -181,6 +183,8 @@ class ScheduleKeeper():
                 "schedule": self.schedule
             })
 
+            wrapper.toggle_status_led(wrapper.StatusLed.API_ACCESS)
+
             # Compare fetched data to the cached one?
         else:
             if not schedule_sync_enabled:
@@ -188,6 +192,7 @@ class ScheduleKeeper():
             else:
                 utils.logger.error("Can't sync schedule due to " + config.MAIN_SITE +
                                    " being down, attempting to use the saved one...")
+                wrapper.toggle_status_led(wrapper.StatusLed.API_ACCESS, False)
 
             data: List[str] = self.read_schedule_file()
 

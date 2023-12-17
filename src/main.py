@@ -25,17 +25,10 @@ async def main(gpio_setup_good: bool):
 
     clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
         "clock_sync_after_callbacks_enabled", False)
-
-    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
-    await asyncio.sleep(1)
-    wrapper.toggle_status_led(wrapper.StatusLed.WARNING)
-    await asyncio.sleep(1)
+    
     wrapper.toggle_status_led(wrapper.StatusLed.SUCCESS)
-
-    wrapper.toggle_status_led(wrapper.StatusLed.API_ACCESS)
-    wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS)
-
-
+    
+    
     # ================# Local Functions #================ #
 
     # Note: Add lambdas here
@@ -66,7 +59,7 @@ async def main(gpio_setup_good: bool):
     await update()
 
     # Note: remove after testing!
-    virtual_clock.current_time = datetime(2023, 9, 29, 6, 59, 55)
+    # virtual_clock.current_time = datetime(2023, 9, 29, 6, 59, 55)
     virtual_clock.add_wb_callbacks(work_callback, break_callback)
 
     clock_task = asyncio.create_task(virtual_clock.start_t())
@@ -75,6 +68,7 @@ async def main(gpio_setup_good: bool):
 
     if not sync_timestamps:
         utils.logger.warn("Sync timestamps are empty")
+        wrapper.toggle_status_led(wrapper.StatusLed.WARNING)
     else:
         timestamps: List[time] = []
 
@@ -85,6 +79,7 @@ async def main(gpio_setup_good: bool):
             if not is_valid:
                 utils.logger.error(
                     "Invalid timestamp in user config: " + str(raw_timestamp))
+                wrapper.toggle_status_led(wrapper.StatusLed.WARNING)
                 continue
 
             timestamps.append(timestamp)
@@ -106,6 +101,10 @@ if __name__ == "__main__":
         asyncio.run(main(gpio_setup_good))
     except Exception as e:
         print(e)
+        
+        for status_led in wrapper.StatusLed:
+            wrapper.toggle_status_led(status_led, False)
+            
         wrapper.toggle_status_led(wrapper.StatusLed.ERROR, True)
         # wrapper.cleanup_gpio()
 
