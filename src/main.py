@@ -89,10 +89,13 @@ async def main():
 
 if __name__ == "__main__":
     try:
-        # wrapper.cleanup_gpio()
+        for status_led in wrapper.StatusLed:
+            wrapper.toggle_status_led(status_led, False)
+        
         asyncio.run(main())
     except Exception as e:
         print(e)
+        wrapper.toggle_status_led(wrapper.StatusLed.ERROR, True)
         wrapper.cleanup_gpio()
 
 # ================# Functions #================ #

@@ -9,6 +9,16 @@ import OPi.GPIO as GPIO
 import utils
 import config
 
+from enum import Enum
+
+
+class StatusLed(Enum):
+    SUCCESS = utils.user_config.get("success_led")
+    WARNING = utils.user_config.get("warning_led")
+    ERROR = utils.user_config.get("error_led")
+    INTERNET_ACCESS = utils.user_config.get("internet_access_led")
+    API_ACCESS = utils.user_config.get("api_access_led")
+
 
 # ================# Functions #================ #
 
@@ -118,6 +128,8 @@ def cleanup_gpio():
         utils.logging_formatter.separator("Cleaning up GPIO")
         GPIO.cleanup()
 
+def toggle_status_led(status_led : StatusLed, value : bool):
+    GPIO.output(status_led, value)
 
 async def callback_handler(is_work: bool, gpio_setup_good: bool):
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
