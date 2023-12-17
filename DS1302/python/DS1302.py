@@ -1,6 +1,6 @@
 from ctypes import CDLL, c_int
 
-ds1302_lib = CDLL('../build/DS1302.so')
+ds1302_lib = CDLL('./build/DS1302.so')
 
 ds1302_lib.ds1302setup.argtypes = [c_int, c_int, c_int]
 ds1302_lib.ds1302clockRead.argtypes = [c_int * 8]
