@@ -16,19 +16,15 @@ from classes.virtual_clock import VirtualClock
 
 # ================# Functions #================ #
 
-async def main():
+async def main(gpio_setup_good: bool):
     utils.logging_formatter.startup()
     utils.logging_formatter.test()
 
     schedule_keeper = ScheduleKeeper()
     virtual_clock = VirtualClock()
 
-    gpio_setup_good: bool = wrapper.setup_gpio_pins()
     clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
         "clock_sync_after_callbacks_enabled", False)
-
-    for status_led in wrapper.StatusLed:
-        wrapper.toggle_status_led(status_led, False)
 
 
     # ================# Local Functions #================ #
@@ -93,7 +89,12 @@ async def main():
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        gpio_setup_good: bool = wrapper.setup_gpio_pins()
+        
+        for status_led in wrapper.StatusLed:
+            wrapper.toggle_status_led(status_led, False)
+
+        asyncio.run(main(gpio_setup_good))
     except Exception as e:
         print(e)
         wrapper.toggle_status_led(wrapper.StatusLed.ERROR, True)
