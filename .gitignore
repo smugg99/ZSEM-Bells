@@ -162,3 +162,4 @@ run.sh
 src/runner.py
 dialogrc
 lib/OPI.DS1302
+service_template.service
