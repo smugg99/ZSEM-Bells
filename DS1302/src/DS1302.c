@@ -219,3 +219,10 @@ void setup(const int clockPin, const int dataPin, const int csPin) {
     wiringPiSetup();
     ds1302setup(clockPin, dataPin, csPin);
 }
+
+int main() {
+    setup(7, 5, 8);
+    setLinuxClock();
+
+    return 0;
+}
