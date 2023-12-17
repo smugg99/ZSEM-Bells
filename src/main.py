@@ -26,6 +26,16 @@ async def main(gpio_setup_good: bool):
     clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
         "clock_sync_after_callbacks_enabled", False)
 
+    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
+    await asyncio.sleep(1)
+    wrapper.toggle_status_led(wrapper.StatusLed.WARNING)
+    await asyncio.sleep(1)
+    wrapper.toggle_status_led(wrapper.StatusLed.SUCCESS)
+
+
+    wrapper.toggle_status_led(wrapper.StatusLed.API_ACCESS)
+    wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS)
+
 
     # ================# Local Functions #================ #
 
@@ -92,12 +102,12 @@ if __name__ == "__main__":
         gpio_setup_good: bool = wrapper.setup_gpio_pins()
         
         for status_led in wrapper.StatusLed:
-            wrapper.toggle_status_led(status_led, True)
+            wrapper.toggle_status_led(status_led, False)
 
         asyncio.run(main(gpio_setup_good))
     except Exception as e:
         print(e)
         wrapper.toggle_status_led(wrapper.StatusLed.ERROR, True)
-        wrapper.cleanup_gpio()
+        # wrapper.cleanup_gpio()
 
 # ================# Functions #================ #
