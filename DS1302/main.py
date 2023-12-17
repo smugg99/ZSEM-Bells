@@ -1,4 +1,4 @@
-from DS1302 import setup, get_ds_clock
+from python.DS1302 import setup, get_ds_clock
 from datetime import datetime
 
 setup(clock_pin=7, data_pin=5, cs_pin=8)
