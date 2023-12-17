@@ -3,12 +3,15 @@ Description=ZSEM-Bells drivers system service
 After=network.target
 
 [Service]
-User=
-Group=
-WorkingDirectory=/ZSEM-Bells
-Environment="PATH=/ZSEM-Bells/venv/bin"
-ExecStart=/ZSEM-Bells/venv/bin/python3 /ZSEM-Bells/main.py
+Type=simple
+User=orangepi
+Group=orangepi
+WorkingDirectory=/home/orangepi/ZSEM-Bells
+Environment="AUDIODEV=hw:0,0"
+Environment="PATH=/home/orangepi/ZSEM-Bells/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin"
+ExecStart=/home/orangepi/ZSEM-Bells/venv/bin/python3 /home/orangepi/ZSEM-Bells/src/main.py
 Restart=always
+RestartSec=5
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=zsem_bells

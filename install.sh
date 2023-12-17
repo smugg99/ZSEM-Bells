@@ -2,6 +2,17 @@
 
 opirepo=https://github.com/smugg99/OPI.GPIO.git/
 
+# Automatically retrieve the current username and primary group
+username=$USER
+group=$(id -gn $USER)
+audio_device="hw:0,0"
+config_file="service_config.txt"
+
+service_filename="zsem_bells.service"
+service_file_path="/etc/systemd/system"
+service_description="ZSEM-Bells drivers system service"
+
+
 # Function to install a package if it's not already installed
 install_if_not_installed() {
     PACKAGE=$1
@@ -63,15 +74,6 @@ echo "Deactivating virtual environment"
 deactivate
 
 
-# Automatically retrieve the current username and primary group
-username=$USER
-group=$(id -gn $USER)
-config_file="service_config.txt"
-
-service_filename="zsem_bells.service"
-service_file_path="/etc/systemd/system"
-service_description="ZSEM-Bells drivers system service"
-
 while true; do
     # If config file exists, load values from it
     if [ -f "$config_file" ]; then
@@ -91,11 +93,15 @@ while true; do
     read -p "Enter main script path: " new_script_path
     script_path=${new_script_path:-$script_path}
 
+    read -p "Enter the desired audio device (example: hw:0,0): " new_audio_device
+    script_path=${new_audio_device:-$audio_device}
+
     # Save the new values to the config file
     cat << EOF > "$config_file"
 
 working_directory="$working_directory"
 venv_path="$venv_path"
+audio_device="$audio_device"
 script_path="$script_path"
 service_filename="$service_filename"
 service_file_path="$service_file_path"
@@ -105,9 +111,10 @@ EOF
     # Confirm user actions
     read -p "Confirm to create '$service_filename' with provided settings? (yes/no): " confirm
 
-    if [ "$confirm" == "yes" ]; then
+    if [ "$confirm" == "yes" || "$confirm" == "y" ]; then
         # Create the service file
         cat << EOF > zsem_bells.service
+
 [Unit]
 Description=$service_description
 After=network.target
@@ -116,7 +123,8 @@ After=network.target
 User=$username
 Group=$group
 WorkingDirectory=$working_directory
-Environment="PATH=$venv_path/bin"
+Environment="AUDIODEV=hw:$audio_device"
+Environment="PATH=$venv_path/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin"
 ExecStart=$venv_path/bin/python3 $script_path
 Restart=always
 RestartSec=5
