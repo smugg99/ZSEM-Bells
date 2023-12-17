@@ -13,14 +13,14 @@
             "universal_switch": 6
         },
         "outputs": {
-            "neutral_callback": 2,
-            "work_callback": 2,
-            "break_callback": 2,
-            "internet_access_led": 17,
-            "api_access_led": 15,
-            "success_led": 13,
-            "warning_led": 9,
-            "error_led": 10
+            "neutral_callback": 7,
+            "work_callback": 7,
+            "break_callback": 7,
+            "internet_access_led": 27,
+            "api_access_led": 24,
+            "success_led": 22,
+            "warning_led": 16,
+            "error_led": 18
         }
     },
     "sync_timestamps": [
