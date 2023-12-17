@@ -1,6 +1,7 @@
 from ctypes import CDLL, c_int
 
-libwiringPiDev = CDLL('/usr/local/lib/libwiringPiDev.so')
+libwiringPiDev = CDLL('./build/DS1302.so')
+# libwiringPiDev = CDLL('/usr/local/lib/libwiringPiDev.so')
 
 libwiringPiDev.ds1302setup.argtypes = [c_int, c_int, c_int]
 libwiringPiDev.ds1302clockRead.argtypes = [c_int * 8]

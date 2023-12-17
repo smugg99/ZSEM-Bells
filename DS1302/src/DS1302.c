@@ -30,7 +30,7 @@
 #include <wiringPi.h>
 #include <ds1302.h>
 
-// Register defines
+ // Register defines
 
 #define RTC_SECS 0
 #define RTC_MINS 1
