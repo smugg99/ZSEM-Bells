@@ -12,12 +12,15 @@ import config
 from enum import Enum
 
 
+gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
+_outputs_config: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
+
 class StatusLed(Enum):
-    SUCCESS = utils.user_config.get("success_led")
-    WARNING = utils.user_config.get("warning_led")
-    ERROR = utils.user_config.get("error_led")
-    INTERNET_ACCESS = utils.user_config.get("internet_access_led")
-    API_ACCESS = utils.user_config.get("api_access_led")
+    SUCCESS = _outputs_config["success_led"]
+    WARNING = _outputs_config["warning_led"]
+    ERROR = _outputs_config["error_led"]
+    INTERNET_ACCESS = _outputs_config["internet_access_led"]
+    API_ACCESS = _outputs_config["api_access_led"]
 
 
 # ================# Functions #================ #
@@ -80,11 +83,11 @@ def setup_gpio_pins() -> bool:
         "gpio_pins_enabled", False)
 
     if gpio_pins_enabled:
-        gpio_pins_config: Optional[Dict[str, int]
-                                   ] = utils.user_config.get("gpio_pins", {})
+        # gpio_pins_config: Optional[Dict[str, int]
+        #                            ] = utils.user_config.get("gpio_pins", {})
 
-        _outputs_config: Optional[Dict[str, int]
-                                  ] = gpio_pins_config.get("outputs", {})
+        # _outputs_config: Optional[Dict[str, int]
+        #                           ] = gpio_pins_config.get("outputs", {})
 
         # _outputs_config: Optional[Dict[str, int]
         #                           ] = gpio_pins_config.get("outputs", {})
