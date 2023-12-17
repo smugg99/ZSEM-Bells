@@ -1,31 +1,37 @@
 from ctypes import CDLL, c_int
 
-ds1302_lib = CDLL('./build/DS1302.so')
+libwiringPiDev = CDLL('/usr/local/lib/libwiringPiDev.so')
 
-ds1302_lib.ds1302setup.argtypes = [c_int, c_int, c_int]
-ds1302_lib.ds1302clockRead.argtypes = [c_int * 8]
-ds1302_lib.ds1302clockWrite.argtypes = [c_int * 8]
-ds1302_lib.setDSclock.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int]
-
+libwiringPiDev.ds1302setup.argtypes = [c_int, c_int, c_int]
+libwiringPiDev.ds1302clockRead.argtypes = [c_int * 8]
+libwiringPiDev.ds1302clockWrite.argtypes = [c_int * 8]
 
 def setup(clock_pin, data_pin, cs_pin):
-    ds1302_lib.setup(clock_pin, data_pin, cs_pin)
+    libwiringPiDev.ds1302setup(clock_pin, data_pin, cs_pin)
+
 
 def get_clock():
-    year, mon, mday, hour, min, sec = c_int(), c_int(), c_int(), c_int(), c_int(), c_int()
-    ds1302_lib.getDSclock(year, mon, mday, hour, min, sec)
+    from ctypes import byref
 
-    return year.value, mon.value, mday.value, hour.value, min.value, sec.value
+    sec = c_int()
+    min = c_int()
+    hour = c_int()
+    mday = c_int()
+    mon = c_int()
+    wday = c_int()
+    year = c_int()
+
+    libwiringPiDev.ds1302clockRead(byref(sec), byref(min), byref(
+        hour), byref(mday), byref(mon), byref(wday), byref(year))
+
+    return sec.value, min.value, hour.value, mday.value, mon.value, wday.value, year.value
 
 
 def set_clock(sec, min, hour, mday, mon, wday, year):
-    ds1302_lib.ds1302clockWrite(sec, min, hour, mday, mon, wday, year)
+    libwiringPiDev.ds1302clockWrite(sec, min, hour, mday, mon, wday, year)
 
-def set_ds_clock(sec, min, hour, mday, mon, wday, year):
-    ds1302_lib.setDSclock(sec, min, hour, mday, mon, wday, year)
+# def set_linux_clock():
+#     ds1302_lib.setLinuxClock()
 
-def set_linux_clock():
-    ds1302_lib.setLinuxClock()
-
-def ram_test():
-    ds1302_lib.ramTest()
+# def ram_test():
+#     ds1302_lib.ramTest()
