@@ -5,7 +5,7 @@ ds1302_lib = CDLL('./build/DS1302.so')
 ds1302_lib.ds1302setup.argtypes = [c_int, c_int, c_int]
 ds1302_lib.ds1302clockRead.argtypes = [c_int * 8]
 ds1302_lib.ds1302clockWrite.argtypes = [c_int * 8]
-ds1302_lib.setDSclock.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int]
+# ds1302_lib.setDSclock.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int]
 
 
 def setup(clock_pin, data_pin, cs_pin):
