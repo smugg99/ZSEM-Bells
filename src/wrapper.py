@@ -99,13 +99,7 @@ def setup_gpio_pins() -> bool:
             GPIO.setboard(GPIO.H616)
             GPIO.setmode(GPIO.BOARD)
 
-            pins_to_setup = [
-                _outputs_config["neutral_callback"],
-                _outputs_config["work_callback"],
-                _outputs_config["break_callback"]
-            ]
-
-            for pin in pins_to_setup:
+            for pin in _outputs_config.values():
                 try:
                     GPIO.setup(pin, GPIO.OUT)
                 except Exception as e:
