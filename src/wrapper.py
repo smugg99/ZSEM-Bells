@@ -129,7 +129,7 @@ def cleanup_gpio():
         GPIO.cleanup()
 
 def toggle_status_led(status_led : StatusLed, value : bool):
-    GPIO.output(status_led, value)
+    GPIO.output(status_led.value, value)
 
 async def callback_handler(is_work: bool, gpio_setup_good: bool):
     gpio_pins_enabled: Optional[bool] = utils.user_config.get(
