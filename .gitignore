@@ -161,3 +161,4 @@ data/last_logs.txt
 run.sh
 src/runner.py
 dialogrc
+lib/OPI.DS1302

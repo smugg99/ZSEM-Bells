@@ -1,31 +1,3 @@
-"""
-utils.py
-
-This Python script provides utility functions and settings related to logging,
-network requests, and timestamp manipulation. It is primarily used to support
-other parts of the application and enhanceits functionality.
-
-Dependencies:
-- logging: Handling logging and log formatting.
-- requests: Making HTTP requests to check website status.
-- datetime: Manipulating timestamps and datetime objects.
-- typing: Specifying function argument and return types.
-- tabulate: Formatting data into tables.
-
-Functions and Features:
-- Logging setup and custom log levels.
-- Building branch URLs based on branch indices.
-- Checking the status of websites and reporting their status.
-- Validating and converting timestamps.
-- Finding adjacent timestamps and calculating time differences.
-- Logging data as formatted tables.
-
-Note:
-Customize logging levels, log file paths, and other settings in the 'config' module.
-
-"""
-
-
 import logging
 import requests
 
