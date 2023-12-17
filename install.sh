@@ -111,7 +111,7 @@ EOF
     # Confirm user actions
     read -p "Confirm to create '$service_filename' with provided settings? (yes/no): " confirm
 
-    if [ "$confirm" == "yes" || "$confirm" == "y" ]; then
+    if [ "$confirm" == "yes" ] || [ "$confirm" == "y" ]; then
         # Create the service file
         cat << EOF > zsem_bells.service
 
