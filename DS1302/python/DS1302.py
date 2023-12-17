@@ -8,7 +8,8 @@ libwiringPiDev.ds1302clockRead.argtypes = [c_int * 8]
 libwiringPiDev.ds1302clockWrite.argtypes = [c_int * 8]
 
 def setup(clock_pin, data_pin, cs_pin):
-    libwiringPiDev.ds1302setup(clock_pin, data_pin, cs_pin)
+    libwiringPiDev.setup(clock_pin, data_pin, cs_pin);
+    # libwiringPiDev.ds1302setup(clock_pin, data_pin, cs_pin)
 
 
 def get_clock():
