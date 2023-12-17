@@ -32,7 +32,6 @@ async def main(gpio_setup_good: bool):
     await asyncio.sleep(1)
     wrapper.toggle_status_led(wrapper.StatusLed.SUCCESS)
 
-
     wrapper.toggle_status_led(wrapper.StatusLed.API_ACCESS)
     wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS)
 

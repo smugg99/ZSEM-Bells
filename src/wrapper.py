@@ -126,14 +126,17 @@ def toggle_status_led(status_led: StatusLed, value: bool = True):
     if not status_pins_enabled:
         return
     
-    # Turn off all LEDs in the Success, Warning, Error group
-    for led in [StatusLed.SUCCESS, StatusLed.WARNING, StatusLed.ERROR]:
+    alone_group: list[StatusLed] = [StatusLed.SUCCESS, StatusLed.WARNING, StatusLed.ERROR]
+    
+    if status_led not in alone_group:
+        GPIO.output(status_led.value, value)
+        return
+        
+    for led in alone_group:
         if led == status_led:
             GPIO.output(led.value, value)
         else:
             GPIO.output(led.value, False)
-    
-    GPIO.output(status_led.value, value)
 
 async def callback_handler(is_work: bool, gpio_setup_good: bool):
     outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
