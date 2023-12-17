@@ -80,10 +80,8 @@ USER_CONFIG_FILE_PATH: str = "data/user_config.json"
 CLOCK_RUNNING_ANNOUNCE_INTERVAL: int = 60
 
 DEFAULT_AUDIO_DEVICE: str = "hw:0,0"
-MAX_SOUND_DURATION: int = 10
+MAX_SIGNAL_DURATION: int = 10
 SOUNDS_FOLDER_PATH: str = "sounds"
-
-MAX_BELL_DURATION: int = 5
 
 INVERT_RELAY: bool = True
 

@@ -38,7 +38,7 @@ async def play_wav_async(wav_filename: str):
         process: Process = await asyncio.create_subprocess_exec(*aplay_command)
 
         # Wait for the process to complete with a timeout
-        await asyncio.wait_for(process.wait(), timeout=config.MAX_SOUND_DURATION)
+        await asyncio.wait_for(process.wait(), timeout=config.MAX_SIGNAL_DURATION)
 
     except asyncio.TimeoutError:
         # Handle TimeoutError separately
@@ -68,7 +68,7 @@ async def _play_wav_async(wav_filename: str):
         pygame.mixer.music.load(wav_file_path)
         pygame.mixer.music.play()
         
-        await asyncio.sleep(config.MAX_SOUND_DURATION)
+        await asyncio.sleep(config.MAX_SIGNAL_DURATION)
         
         pygame.mixer.quit()
     except Exception as e:
@@ -166,7 +166,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
         await play_wav_async(_bell_sound_filename)
     else:
         utils.logger.info("Delay should be performed right now!")
-        await asyncio.sleep(config.MAX_BELL_DURATION)
+        await asyncio.sleep(config.MAX_SIGNAL_DURATION)
 
     if _gpio_good and gpio_setup_good:
         _gpio_value: bool = GPIO.LOW
