@@ -92,7 +92,7 @@ if __name__ == "__main__":
         gpio_setup_good: bool = wrapper.setup_gpio_pins()
         
         for status_led in wrapper.StatusLed:
-            wrapper.toggle_status_led(status_led, False)
+            wrapper.toggle_status_led(status_led, True)
 
         asyncio.run(main(gpio_setup_good))
     except Exception as e:
