@@ -152,8 +152,5 @@ else
     echo "Service file '$service_filename' somehow not found. Skipping move."
 fi
 
-echo "Deactivating virtual environment"
-deactivate
-
 echo "All packages checked and installed if needed"
 echo "Installation completed!"
