@@ -176,7 +176,7 @@ static int setLinuxClock(void) {
  *	Get the DS1302 time
  *********************************************************************************
  */
-static void getDSclock(int* year, int* mon, int* mday, int* hour, int* min, int* sec) {
+void getDSclock(int* year, int* mon, int* mday, int* hour, int* min, int* sec) {
     int clock[8];
     ds1302clockRead(clock);
 
@@ -194,7 +194,7 @@ static void getDSclock(int* year, int* mon, int* mday, int* hour, int* min, int*
  *********************************************************************************
  */
 
-static int setDSclock(int sec, int min, int hour, int mday, int mon, int wday, int year) {
+int setDSclock(int sec, int min, int hour, int mday, int mon, int wday, int year) {
     int clock[8];
 
     printf("Setting the clock in the DS1302 from given time... ");
@@ -215,7 +215,7 @@ static int setDSclock(int sec, int min, int hour, int mday, int mon, int wday, i
     return 0;
 }
 
-static void setup(const int clockPin, const int dataPin, const int csPin) {
+void setup(const int clockPin, const int dataPin, const int csPin) {
     wiringPiSetup();
     ds1302setup(clockPin, dataPin, csPin);
 }
