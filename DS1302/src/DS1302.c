@@ -216,7 +216,8 @@ int setDSclock(int sec, int min, int hour, int mday, int mon, int wday, int year
 }
 
 void setup(const int clockPin, const int dataPin, const int csPin) {
-    wiringPiSetup();
+    printf("Setup");
     wiringPiSetupGpio();
+    wiringPiSetup();
     ds1302setup(clockPin, dataPin, csPin);
 }
