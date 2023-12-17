@@ -94,7 +94,7 @@ while true; do
     script_path=${new_script_path:-$script_path}
 
     read -p "Enter the desired audio device (example: hw:0,0): " new_audio_device
-    script_path=${new_audio_device:-$audio_device}
+    audio_device=${new_audio_device:-$audio_device}
 
     # Save the new values to the config file
     cat << EOF > "$config_file"
