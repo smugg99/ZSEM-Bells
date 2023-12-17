@@ -27,6 +27,10 @@ async def main():
     clock_sync_after_callbacks_enabled: Optional[bool] = utils.user_config.get(
         "clock_sync_after_callbacks_enabled", False)
 
+    for status_led in wrapper.StatusLed:
+        wrapper.toggle_status_led(status_led, False)
+
+
     # ================# Local Functions #================ #
 
     # Note: Add lambdas here
@@ -89,9 +93,6 @@ async def main():
 
 if __name__ == "__main__":
     try:
-        for status_led in wrapper.StatusLed:
-            wrapper.toggle_status_led(status_led, False)
-        
         asyncio.run(main())
     except Exception as e:
         print(e)
