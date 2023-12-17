@@ -123,7 +123,7 @@ After=network.target
 User=$username
 Group=$group
 WorkingDirectory=$working_directory
-Environment="AUDIODEV=hw:$audio_device"
+Environment="AUDIODEV=$audio_device"
 Environment="PATH=$venv_path/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin"
 ExecStart=$venv_path/bin/python3 $script_path
 Restart=always
