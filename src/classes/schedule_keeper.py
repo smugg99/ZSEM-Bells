@@ -16,11 +16,8 @@ import wrapper
 # ================# Functions #================ #
 
 
-# def _parse_hour_range(hour_range: str) -> List[str]:
-#     return hour_range.replace(" ", "").split("-")
-
-def parse_hour_range(hour_range_str: str) -> List[str]:
-    return hour_range_str.strip().split("-")
+def _parse_hour_range(hour_range: str) -> List[str]:
+    return hour_range.replace(" ", "").split("-")
 
 
 def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[str]]:
@@ -50,7 +47,7 @@ def _extract_hour_ranges(page_content: str, branch_index: int) -> Optional[List[
             "td", class_=config.SCHEDULE_TABLE_HOUR_CLASS_NAME))
 
     for hour_range in _hour_ranges:
-        hour_ranges.append(parse_hour_range(hour_range.text))
+        hour_ranges.append(_parse_hour_range(hour_range.text))
 
     return hour_ranges
 
