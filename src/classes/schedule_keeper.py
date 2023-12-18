@@ -142,12 +142,12 @@ class ScheduleKeeper():
                 data = json.load(file)
             except json.JSONDecodeError:
                 utils.logger.critical("Failed to decode schedule file")
-                wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
+                wrapper.handle_error(json.JSONDecodeError)
                 raise
             else:
                 if len(data) <= 0:
                     utils.logger.critical("Schedule file is empty")
-                    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
+                    wrapper.handle_error(json.JSONDecoderError)
                     raise
 
                 # Reconsider this?
@@ -155,7 +155,7 @@ class ScheduleKeeper():
                     return data
                 else:
                     utils.logger.critical("Invalid data in the schedule file")
-                    wrapper.toggle_status_led(wrapper.StatusLed.ERROR)
+                    wrapper.handle_error(TypeError)
                     raise TypeError()
 
     def write_schedule_file(self, data: Dict[str, Any]):

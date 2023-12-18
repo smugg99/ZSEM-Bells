@@ -179,4 +179,13 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
     utils.logger.info("Callback of type " + _callback_type + " finished")
 
 
+def handle_error(exception):
+    print(f"Error occurred: {exception}")
+
+    for status_led in StatusLed:
+        toggle_status_led(status_led, False)
+
+    toggle_status_led(StatusLed.ERROR, True)
+    # cleanup_gpio()
+
 # ================# Functions #================ #

@@ -16,15 +16,6 @@ from classes.virtual_clock import VirtualClock
 
 # ================# Functions #================ #
 
-def handle_error(exception):
-    print(f"Error occurred: {exception}")
-
-    for status_led in wrapper.StatusLed:
-        wrapper.toggle_status_led(status_led, False)
-
-    wrapper.toggle_status_led(wrapper.StatusLed.ERROR, True)
-    # wrapper.cleanup_gpio()
-
 async def main(gpio_setup_good: bool):
     utils.logging_formatter.startup()
     utils.logging_formatter.test()
@@ -50,7 +41,7 @@ async def main(gpio_setup_good: bool):
             if clock_sync_after_callbacks_enabled:
                 asyncio.create_task(virtual_clock.sync_time())
         except Exception as e:
-            handle_error(e)
+            wrapper.handle_error(e)
 
     async def work_callback():
         try:
@@ -60,7 +51,7 @@ async def main(gpio_setup_good: bool):
             if clock_sync_after_callbacks_enabled:
                 asyncio.create_task(virtual_clock.sync_time())
         except Exception as e:
-            handle_error(e)
+            wrapper.handle_error(e)
 
     async def update():
         try:
@@ -70,7 +61,7 @@ async def main(gpio_setup_good: bool):
             await virtual_clock.sync_time()
             virtual_clock.set_timestamps(schedule_keeper.get_timestamps())
         except Exception as e:
-            handle_error(e)
+            wrapper.handle_error(e)
 
     # ================# Local Functions #================ #
 
@@ -118,6 +109,6 @@ if __name__ == "__main__":
 
         asyncio.run(main(gpio_setup_good))
     except Exception as e:
-        handle_error(e)
+        wrapper.handle_error(e)
 
 # ================# Functions #================ #
