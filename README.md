@@ -51,12 +51,14 @@ systemctl enable zsem_bells
 ```shell
 systemctl start zsem_bells
 ```
-
+```shell
+journalctl -f -u zsem_bells
+```
 <br>
 <h2 align="center">Run the main script (use for testing only)</h2>
 
 ```shell
-./main.py &
+sudo venv/bin/python3 ./src/main.py
 ```
 
 <br>
