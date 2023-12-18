@@ -3,6 +3,7 @@ import logging
 from typing import Dict, Any, List
 
 import config
+import wrapper
 
 
 # ================# Classes #================ #
@@ -26,9 +27,12 @@ class UserConfigManager:
                 self.config = json.load(file)
         except FileNotFoundError:
             logging.error("Config file not found")
+            wrapper.handle_error()
             raise FileNotFoundError("Config file not found")
         except json.JSONDecodeError:
             logging.error("Error decoding JSON in config file")
+            wrapper.handle_error()
+            
             raise ValueError("Error decoding JSON in config file")
 
     def get_config(self) -> Dict[str, Any]:
@@ -40,6 +44,8 @@ class UserConfigManager:
                 json.dump(self.config, file, indent=4)
         except IOError:
             logging.error("Error writing to config file")
+            wrapper.handle_error()
+            
             raise IOError("Error writing to config file")
 
     def update_key(self, keys: List[str], value: Any):
@@ -68,6 +74,8 @@ class UserConfigManager:
                 current_dict = current_dict[key]
             else:
                 logging.error(f"Key '{key}' is not found or not a dictionary")
+                wrapper.handle_error()
+                
                 raise KeyError(
                     f"Key '{key}' is not found or not a dictionary")
 
