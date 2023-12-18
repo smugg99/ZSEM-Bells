@@ -52,6 +52,7 @@ async def main(gpio_setup_good: bool):
         utils.log_table(_schedule)
 
         await virtual_clock.sync_time()
+        print(schedule_keeper.get_timestamps())
         virtual_clock.set_timestamps(schedule_keeper.get_timestamps())
 
     # ================# Local Functions #================ #
