@@ -1,7 +1,7 @@
 {
     "logs_enabled": false,
     "wasteful_debug_enabled": true,
-    "callback_pins_enabled": true,
+    "callback_pins_enabled": false,
     "status_pins_enabled": false,
     "schedule_sync_enabled": false,
     "conservative_schedule_sync_enabled": false,
