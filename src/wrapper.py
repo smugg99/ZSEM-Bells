@@ -14,13 +14,14 @@ from enum import Enum
 callback_pins_enabled: Optional[bool] = utils.user_config.get("callback_pins_enabled", False)
 status_pins_enabled: Optional[bool] = utils.user_config.get("status_pins_enabled", False)
 gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
-callback_pins: Dict[str, int] = [
-    "work_callback",
-    "break_callback",
-    "neutral_callback"
-]
 
 _outputs_config: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
+callback_pins: Dict[str, int] = [
+    _outputs_config["work_callback"],
+    _outputs_config["break_callback"],
+    _outputs_config["neutral_callback"]
+]
+
 
 class StatusLed(Enum):
     SUCCESS = _outputs_config["success_led"]
