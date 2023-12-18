@@ -14,6 +14,12 @@ from enum import Enum
 callback_pins_enabled: Optional[bool] = utils.user_config.get("callback_pins_enabled", False)
 status_pins_enabled: Optional[bool] = utils.user_config.get("status_pins_enabled", False)
 gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
+callback_pins: Dict[str, int] = [
+    "work_callback",
+    "break_callback",
+    "neutral_callback"
+]
+
 _outputs_config: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
 class StatusLed(Enum):
@@ -108,7 +114,10 @@ def setup_gpio_pins() -> bool:
                     return False
                 else:
                     utils.logger.log("Setting gpio " + str(pin) + " as OUTPUT")
-                    GPIO.output(pin, GPIO.LOW)
+                    if pin in callback_pins:
+                        GPIO.output(pin, GPIO.HIGH)
+                    else:
+                        GPIO.output(pin, GPIO.LOW)
 
         return True
     else:
@@ -155,7 +164,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
                 utils.logger.warn("GPIO pins for wb callback are invalid")
             else:
                 _gpio_good = True
-                _gpio_value: bool = GPIO.HIGH
+                _gpio_value: bool = GPIO.LOW
 
                 utils.logger.log("GPIO " + str(gpio_pin) + " is ON!")
                 GPIO.output(gpio_pin, _gpio_value)
@@ -170,7 +179,7 @@ async def callback_handler(is_work: bool, gpio_setup_good: bool):
         await asyncio.sleep(config.MAX_SIGNAL_DURATION)
 
     if _gpio_good and gpio_setup_good:
-        _gpio_value: bool = GPIO.LOW
+        _gpio_value: bool = GPIO.HIGH
 
         utils.logger.log("GPIO " + str(gpio_pin) + " is OFF!")
         GPIO.output(gpio_pin, _gpio_value)
