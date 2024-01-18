@@ -74,6 +74,9 @@ class VirtualClock:
                 _current_time = datetime.strptime(
                     _data["datetime"], "%Y-%m-%dT%H:%M:%S.%f%z")
                 _unix_timestamp = _data["unixtime"]
+                
+                # _current_time = datetime(2024, 1, 21, 6, 59, 55)
+                # _unix_timestamp = _current_time.timestamp()
 
                 self.is_weekend = utils.is_weekend(_unix_timestamp)
                 self.current_time = _current_time
