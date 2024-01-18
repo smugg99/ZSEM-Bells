@@ -14,6 +14,7 @@ from enum import Enum
 callback_pins_enabled: Optional[bool] = utils.user_config.get("callback_pins_enabled", False)
 status_pins_enabled: Optional[bool] = utils.user_config.get("status_pins_enabled", False)
 gpio_pins_config: Optional[Dict[str, int]] = utils.user_config.get("gpio_pins", {})
+skip_weekends: Optional[bool] = utils.user_config.get("skip_weekends", False)
 
 _outputs_config: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 callback_pins: Dict[str, int] = [
@@ -147,11 +148,15 @@ def toggle_status_led(status_led: StatusLed, value: bool = True):
         else:
             GPIO.output(led.value, False)
 
-async def callback_handler(is_work: bool, gpio_setup_good: bool):
+async def callback_handler(is_work: bool, is_weekend: bool, gpio_setup_good: bool):
     outputs: Optional[Dict[str, int]] = gpio_pins_config.get("outputs", {})
 
     _callback_type: str = ("work" if is_work else "break")
     _gpio_good: bool = False
+
+    if is_weekend and skip_weekends:
+        utils.logger.info("Skipping callback, it's the weekend!")
+        return
 
     if callback_pins_enabled and gpio_setup_good:
         if not gpio_pins_config or not outputs:

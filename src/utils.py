@@ -61,6 +61,11 @@ def check_website_status(url: str) -> bool:
         logger.warn("Website " + url + " failed to report it\'s status")
         return False
 
+def is_weekend(unix_timestamp : int) -> bool:
+    dt_object = datetime.utcfromtimestamp(unix_timestamp)
+    day_of_week = dt_object.weekday()
+
+    return day_of_week in [5, 6]
 
 def is_valid_timestamp(timestamp: str) -> Tuple[bool, Optional[time]]:
     try:

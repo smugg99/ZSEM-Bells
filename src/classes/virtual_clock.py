@@ -23,6 +23,7 @@ class VirtualClock:
     def __init__(self):
         self.is_started: bool = False
         self.current_time: datetime = None
+        self.is_weekend: bool = False
 
         # Internal timestamps, aquired from schedule keeper
         self._timestamps: List[time] = []
@@ -72,11 +73,12 @@ class VirtualClock:
                 _data = response.json()
                 _current_time = datetime.strptime(
                     _data["datetime"], "%Y-%m-%dT%H:%M:%S.%f%z")
+                _unix_timestamp = _data["unixtime"]
 
+                self.is_weekend = utils.is_weekend(_unix_timestamp)
                 self.current_time = _current_time
 
-                utils.logger.info("Synced time from API to: " +
-                                  str(self.current_time))
+                utils.logger.info("Synced time from API to: " + str(self.current_time) + " Weekend: " + str(self.is_weekend))
                 
                 wrapper.toggle_status_led(wrapper.StatusLed.INTERNET_ACCESS)
         else:
@@ -190,7 +192,7 @@ class VirtualClock:
             [next_timestamp_string, next_delta_seconds_string, next_type_string,
              self.current_time.strftime("%Y-%m-%d %H:%M:%S")],
             [previous_timestamp_string,
-             previous_delta_seconds_string, previous_type_string]
+             previous_delta_seconds_string, previous_type_string, "Is weekend: " + str(self.is_weekend)]
         ]
 
         utils.log_table(table_data)

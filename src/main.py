@@ -36,7 +36,7 @@ async def main(gpio_setup_good: bool):
     async def break_callback():
         try:
             utils.logger.info("Break callback triggered")
-            await wrapper.callback_handler(False, gpio_setup_good)
+            await wrapper.callback_handler(False, virtual_clock.is_weekend, gpio_setup_good)
 
             if clock_sync_after_callbacks_enabled:
                 asyncio.create_task(virtual_clock.sync_time())
@@ -46,7 +46,7 @@ async def main(gpio_setup_good: bool):
     async def work_callback():
         try:
             utils.logger.info("Work callback triggered")
-            await wrapper.callback_handler(True, gpio_setup_good)
+            await wrapper.callback_handler(True, virtual_clock.is_weekend, gpio_setup_good)
 
             if clock_sync_after_callbacks_enabled:
                 asyncio.create_task(virtual_clock.sync_time())
