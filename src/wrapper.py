@@ -1,6 +1,6 @@
 import asyncio
 import os
-import pygame
+# import pygame
 
 from typing import Dict, Optional, List
 from asyncio.subprocess import Process
@@ -62,27 +62,27 @@ async def play_wav_async(wav_filename: str):
         print(f"Error playing {wav_filename}: {e}")
         raise e
 
-async def _play_wav_async(wav_filename: str):
-    try:
-        # Get the project root directory
-        project_root: str = os.path.abspath(os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), ".."))
+# async def _play_wav_async(wav_filename: str):
+#     try:
+#         # Get the project root directory
+#         project_root: str = os.path.abspath(os.path.join(
+#             os.path.dirname(os.path.abspath(__file__)), ".."))
 
-        # Construct the path to the WAV file based on the config_dir and sound_filename
-        wav_file_path: str = os.path.join(
-            project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
+#         # Construct the path to the WAV file based on the config_dir and sound_filename
+#         wav_file_path: str = os.path.join(
+#             project_root, config.SOUNDS_FOLDER_PATH, wav_filename)
         
-        pygame.mixer.init()
-        print(wav_file_path)
-        pygame.mixer.music.load(wav_file_path)
-        pygame.mixer.music.play()
+#         pygame.mixer.init()
+#         print(wav_file_path)
+#         pygame.mixer.music.load(wav_file_path)
+#         pygame.mixer.music.play()
         
-        await asyncio.sleep(config.MAX_SIGNAL_DURATION)
+#         await asyncio.sleep(config.MAX_SIGNAL_DURATION)
         
-        pygame.mixer.quit()
-    except Exception as e:
-        print(e)
-        raise(e)
+#         pygame.mixer.quit()
+#     except Exception as e:
+#         print(e)
+#         raise(e)
 
 
 # Note: This should actually be called setup callback pins or something
